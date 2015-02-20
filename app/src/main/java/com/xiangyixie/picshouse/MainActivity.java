@@ -1,5 +1,6 @@
 package com.xiangyixie.picshouse;
 
+import android.content.Context;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.app.Activity;
@@ -7,10 +8,12 @@ import android.content.Intent;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Display;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
@@ -29,7 +32,7 @@ public class MainActivity extends Activity {
 
     public static MainActivity instance = null;
 
-    private ViewPager mTabPager;
+    private MyViewPager_notSwiping mTabPager;
     private View mTab1,mTab2,mTab3,mTab4,mTab5;
 
     private int curIndex = 0;     //current page tab index for 'mTabPager': 0--4
@@ -51,8 +54,8 @@ public class MainActivity extends Activity {
         instance = this;
 
 
-        mTabPager = (ViewPager)findViewById(R.id.tabpager);
-        
+        mTabPager = (MyViewPager_notSwiping)findViewById(R.id.tabpager);
+        mTabPager.setPagingEnabled(false);                                   //setting not swiping!
         mTabPager.setOnPageChangeListener(new MyOnPageChangeListener());
 
         mTab1 = (View) findViewById(R.id.bottom_house);
@@ -61,7 +64,7 @@ public class MainActivity extends Activity {
         mTab4 = (View) findViewById(R.id.bottom_notification);
         mTab5 = (View) findViewById(R.id.bottom_user);
 
-        mTab1.setOnClickListener(new MyOnClickListener(0));
+        mTab1.setOnClickListener(new MyOnClickListener(0));       //control tab pager index
         mTab2.setOnClickListener(new MyOnClickListener(1));
         mTab3.setOnClickListener(new MyOnClickListener(2));
         mTab4.setOnClickListener(new MyOnClickListener(3));
@@ -93,22 +96,24 @@ public class MainActivity extends Activity {
 
             @Override
             public boolean isViewFromObject(View arg0, Object arg1) {
+
                 return arg0 == arg1;
             }
 
             @Override
             public int getCount() {
+
                 return views.size();
             }
 
             @Override
             public void destroyItem(View container, int position, Object object) {
-                ((ViewPager)container).removeView(views.get(position));
+                ((MyViewPager_notSwiping)container).removeView(views.get(position));
             }
 
             @Override
             public Object instantiateItem(View container, int position) {
-                ((ViewPager)container).addView(views.get(position));
+                ((MyViewPager_notSwiping)container).addView(views.get(position));
                 return views.get(position);
             }
         };
@@ -117,6 +122,43 @@ public class MainActivity extends Activity {
     }
 
 
+
+
+
+
+/*
+    //'MyViewPager_notSwiping' class for tab pager
+    public class MyViewPager_notSwiping extends ViewPager {
+
+        private boolean enabled;
+
+        public MyViewPager_notSwiping(Context context, AttributeSet attrs) {
+            super(context, attrs);
+            this.enabled = true;
+        }
+
+        @Override
+        public boolean onTouchEvent(MotionEvent event) {
+            if (this.enabled) {
+                return super.onTouchEvent(event);
+            }
+            return false;
+        }
+
+        @Override
+        public boolean onInterceptTouchEvent(MotionEvent event) {
+            if (this.enabled) {
+                return super.onInterceptTouchEvent(event);
+            }
+            return false;
+        }
+
+        public void setPagingEnabled(boolean enabled) {
+            this.enabled = enabled;
+        }
+    }
+
+*/
 
 
 
@@ -132,7 +174,7 @@ public class MainActivity extends Activity {
         @Override
         public void onClick(View v) {
 
-            mTabPager.setCurrentItem(index);        //important!Use this to control 'mTabPager'
+            mTabPager.setCurrentItem(index);      //important!Use this to control 'mTabPager' index!
 
         }
     };

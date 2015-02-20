@@ -139,12 +139,12 @@ android:background="#eee" >
     android:layout_above="@id/main_bottom"
     android:orientation="vertical" >
 
-    <android.support.v4.view.ViewPager
+    <com.xiangyixie.picshouse.MyViewPager_notSwiping
         android:id="@+id/tabpager"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center" >
-    </android.support.v4.view.ViewPager>
+    </com.xiangyixie.picshouse.MyViewPager_notSwiping>
 </LinearLayout>
 
     <TextView
