@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:id="@+id/main_picshouse"
+android:layout_width="fill_parent"
+android:layout_height="fill_parent"
+android:orientation="vertical"
+android:background="#eee" >
+
+<RelativeLayout
+    android:id="@+id/main_bottom"
+    android:layout_width="match_parent"
+    android:layout_height="55dp"
+    android:layout_alignParentBottom="true"
+    android:orientation="vertical">
+
+
+    <View android:background="@color/yellow"
+        android:layout_height="2dp"
+        android:layout_width="fill_parent"/>
+
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+        android:baselineAligned="true">
+
+
+        <LinearLayout
+            android:id="@+id/bottom_house"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"
+            android:clickable="true">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scaleType="fitCenter"
+                android:src="@drawable/house"/>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/bottom_discover"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"
+            android:clickable="true">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scaleType="fitCenter"
+                android:src="@drawable/discover" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/bottom_camera"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:background="#111111"
+            android:clickable="true">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scaleType="fitCenter"
+                android:src="@drawable/camera3" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/bottom_notification"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"
+            android:clickable="true">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scaleType="fitCenter"
+                android:src="@drawable/notification" />
+        </LinearLayout>
+
+
+
+        <LinearLayout
+            android:id="@+id/bottom_user"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"
+            android:clickable="true">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scaleType="fitCenter"
+                android:src="@drawable/user" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>
+
+
+
+
+<LinearLayout
+    android:id="@+id/main_body"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentTop="true"
+    android:layout_above="@id/main_bottom"
+    android:orientation="vertical" >
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/tabpager"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center" >
+    </android.support.v4.view.ViewPager>
+</LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Text"
+        android:id="@+id/textView"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="157dp"
+        android:layout_marginStart="157dp" />
+
+
+</RelativeLayout>
+
