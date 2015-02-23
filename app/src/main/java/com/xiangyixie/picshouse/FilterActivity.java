@@ -14,12 +14,12 @@ import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.xiangyixie.picshouse.imagefilter.IceFilter;
-import com.xiangyixie.picshouse.imagefilter.IdenticalFilter;
-import com.xiangyixie.picshouse.imagefilter.ImageFilterI;
-import com.xiangyixie.picshouse.imagefilter.SketchFilter;
+import com.xiangyixie.picshouse.imagefilter.*;
 
 import java.io.IOException;
+
+
+
 
 
 public class FilterActivity extends ActionBarActivity {
@@ -48,7 +48,11 @@ public class FilterActivity extends ActionBarActivity {
         ImageFilterI[] filters = new ImageFilterI [] {
                 new IdenticalFilter(),
                 new IceFilter(),
-                new SketchFilter()
+                new SketchFilter(),
+                new HighlightFilter(),
+                new GammaFilter(),
+                new SephiaFilter(),
+
         };
 
         for(final ImageFilterI f : filters) {
@@ -66,5 +70,4 @@ public class FilterActivity extends ActionBarActivity {
             filter_list.addView(b);
         }
     }
-
 }

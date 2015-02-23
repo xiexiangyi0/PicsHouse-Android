@@ -41,13 +41,16 @@ public class MainActivity extends Activity {
     private static final int TAB_CAMERA = 2;
     private static final int TAB_NOTIFY = 3;
     private static final int TAB_USER = 4;
-    private static final int TAB_COUNT = 5;
+
+    private static final int COUNT_TAB = 5;
+
+
 
     private static final int INTENT_CAMERA = 0;
     private static final int INTENT_FILTER = 1;
 
-    public static final int MEDIA_TYPE_IMAGE = 1;
-    public static final int MEDIA_TYPE_VIDEO = 2;
+    public static final int MEDIA_TYPE_IMAGE = 0;
+    public static final int MEDIA_TYPE_VIDEO = 1;
 
     public static final String IMAGE_PATH = "IMAGE_PATH";
 
@@ -77,11 +80,15 @@ public class MainActivity extends Activity {
         instance = this;
 
 
+
+
         mTabPager = (MyViewPager_notSwiping)findViewById(R.id.tabpager);
         mTabPager.setPagingEnabled(false);                                   //setting not swiping!
         mTabPager.setOnPageChangeListener(new MyOnPageChangeListener());
 
-        mTab = new View[TAB_COUNT];
+
+        mTab = new View[COUNT_TAB];
+
 
         mTab[TAB_HOUSE] = (View) findViewById(R.id.bottom_house);
         mTab[TAB_DISCOVER] = (View) findViewById(R.id.bottom_discover);
@@ -89,7 +96,10 @@ public class MainActivity extends Activity {
         mTab[TAB_NOTIFY] = (View) findViewById(R.id.bottom_notification);
         mTab[TAB_USER] = (View) findViewById(R.id.bottom_user);
 
-        for(int i=0; i<TAB_COUNT; ++i) {
+        mTab[TAB_HOUSE].setBackgroundColor(getResources().getColor(R.color.yellow));
+
+
+        for(int i=0; i<COUNT_TAB; ++i) {
             if(i != TAB_CAMERA) {
                 mTab[i].setOnClickListener(new MyOnClickListener(i));
             }
@@ -143,7 +153,10 @@ public class MainActivity extends Activity {
         mTabPager.setAdapter(mPagerAdapter);
     }
 
-    //MyOnClickListener for 'mTab1'-'mTab5'
+
+
+
+    //MyOnClickListener for 'mTab1' - 'mTab5'
     public class MyOnClickListener implements View.OnClickListener {
 
         private int index = 0;
@@ -154,12 +167,44 @@ public class MainActivity extends Activity {
 
         @Override
         public void onClick(View v) {
-
-
             mTabPager.setCurrentItem(index);      //important!Use this to control 'mTabPager' index!
 
         }
     };
+
+
+    //for 'mTabPager' change page
+    public class MyOnPageChangeListener implements OnPageChangeListener {
+
+        @Override
+        public void onPageSelected(int arg0) {
+            if(curIndex != TAB_CAMERA) {
+                if(0 <=curIndex && curIndex <= 4) {
+                    mTab[curIndex].setBackgroundColor(getResources().getColor(R.color.transparent));
+                }
+            }
+
+            if(arg0 != TAB_CAMERA) {
+                mTab[arg0].setBackgroundColor(getResources().getColor(R.color.yellow));
+            }
+
+            curIndex = arg0;
+        }
+
+
+        @Override
+        public void onPageScrolled(int arg0, float arg1, int arg2) {
+        }
+
+
+        @Override
+        public void onPageScrollStateChanged(int arg0) {
+        }
+    }
+
+
+
+
 
     /** Check if this device has a camera */
     private boolean checkCameraHardware(Context context) {
@@ -250,34 +295,6 @@ public class MainActivity extends Activity {
 
     }
 
-
-
-    //for 'mTabPager' change page
-    public class MyOnPageChangeListener implements OnPageChangeListener {
-
-        @Override
-        public void onPageSelected(int arg0) {
-            if(curIndex != TAB_CAMERA) {
-                mTab[curIndex].setBackgroundColor(getResources().getColor(R.color.transparent));
-            }
-
-            if(arg0 != TAB_CAMERA) {
-                mTab[arg0].setBackgroundColor(getResources().getColor(R.color.yellow));
-            }
-
-            curIndex = arg0;
-        }
-
-
-        @Override
-        public void onPageScrolled(int arg0, float arg1, int arg2) {
-        }
-
-
-        @Override
-        public void onPageScrollStateChanged(int arg0) {
-        }
-    }
 }
 
 
