@@ -1,6 +1,11 @@
 package com.xiangyixie.picshouse;
 
+import android.app.DialogFragment;
 import android.content.Context;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.app.Activity;
@@ -23,23 +28,41 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.Toast;
 
+import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-
-
+import java.util.Date;
 
 
 public class MainActivity extends Activity {
 
+    private static final int TAB_HOUSE = 0;
+    private static final int TAB_DISCOVER= 1;
+    private static final int TAB_CAMERA = 2;
+    private static final int TAB_NOTIFY = 3;
+    private static final int TAB_USER = 4;
+    private static final int TAB_COUNT = 5;
+
+    private static final int INTENT_CAMERA = 0;
+    private static final int INTENT_FILTER = 1;
+
+    public static final int MEDIA_TYPE_IMAGE = 1;
+    public static final int MEDIA_TYPE_VIDEO = 2;
+
+    public static final String IMAGE_PATH = "IMAGE_PATH";
+
+
     public static MainActivity instance = null;
 
     private MyViewPager_notSwiping mTabPager;
-    private View mTab1,mTab2,mTab3,mTab4,mTab5;
+    private View [] mTab;// mTab1,mTab2,mTab3,mTab4,mTab5;
 
     private int curIndex = 0;     //current page tab index for 'mTabPager': 0--4
 
 
 
     private LayoutInflater inflater;
+    private Uri mImageUri = null;
 
 
 
@@ -58,21 +81,20 @@ public class MainActivity extends Activity {
         mTabPager.setPagingEnabled(false);                                   //setting not swiping!
         mTabPager.setOnPageChangeListener(new MyOnPageChangeListener());
 
-        mTab1 = (View) findViewById(R.id.bottom_house);
-        mTab2 = (View) findViewById(R.id.bottom_discover);
-        mTab3 = (View) findViewById(R.id.bottom_camera);
-        mTab4 = (View) findViewById(R.id.bottom_notification);
-        mTab5 = (View) findViewById(R.id.bottom_user);
+        mTab = new View[TAB_COUNT];
 
-        mTab1.setOnClickListener(new MyOnClickListener(0));       //control tab pager index
-        mTab2.setOnClickListener(new MyOnClickListener(1));
-        mTab3.setOnClickListener(new MyOnClickListener(2));
-        mTab4.setOnClickListener(new MyOnClickListener(3));
-        mTab5.setOnClickListener(new MyOnClickListener(4));
+        mTab[TAB_HOUSE] = (View) findViewById(R.id.bottom_house);
+        mTab[TAB_DISCOVER] = (View) findViewById(R.id.bottom_discover);
+        mTab[TAB_CAMERA] = (View) findViewById(R.id.bottom_camera);
+        mTab[TAB_NOTIFY] = (View) findViewById(R.id.bottom_notification);
+        mTab[TAB_USER] = (View) findViewById(R.id.bottom_user);
 
-        
-        
-        
+        for(int i=0; i<TAB_COUNT; ++i) {
+            if(i != TAB_CAMERA) {
+                mTab[i].setOnClickListener(new MyOnClickListener(i));
+            }
+        }
+        mTab[TAB_CAMERA].setOnClickListener(new TabCameraClickListener());
 
         //InitImageView();
         LayoutInflater mLi = LayoutInflater.from(this);
@@ -121,47 +143,6 @@ public class MainActivity extends Activity {
         mTabPager.setAdapter(mPagerAdapter);
     }
 
-
-
-
-
-
-/*
-    //'MyViewPager_notSwiping' class for tab pager
-    public class MyViewPager_notSwiping extends ViewPager {
-
-        private boolean enabled;
-
-        public MyViewPager_notSwiping(Context context, AttributeSet attrs) {
-            super(context, attrs);
-            this.enabled = true;
-        }
-
-        @Override
-        public boolean onTouchEvent(MotionEvent event) {
-            if (this.enabled) {
-                return super.onTouchEvent(event);
-            }
-            return false;
-        }
-
-        @Override
-        public boolean onInterceptTouchEvent(MotionEvent event) {
-            if (this.enabled) {
-                return super.onInterceptTouchEvent(event);
-            }
-            return false;
-        }
-
-        public void setPagingEnabled(boolean enabled) {
-            this.enabled = enabled;
-        }
-    }
-
-*/
-
-
-
     //MyOnClickListener for 'mTab1'-'mTab5'
     public class MyOnClickListener implements View.OnClickListener {
 
@@ -174,11 +155,100 @@ public class MainActivity extends Activity {
         @Override
         public void onClick(View v) {
 
+
             mTabPager.setCurrentItem(index);      //important!Use this to control 'mTabPager' index!
 
         }
     };
 
+    /** Check if this device has a camera */
+    private boolean checkCameraHardware(Context context) {
+        // this device has a camera
+        // no camera on this device
+        return context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA);
+    }
+
+    private static Uri getOutputImageFileUri(){
+        return Uri.fromFile(getOutputMediaFile(MEDIA_TYPE_IMAGE));
+    }
+
+    /** Create a File for saving an image or video */
+    private static File getOutputMediaFile(int type) {
+        // To be safe, you should check that the SDCard is mounted
+        // using Environment.getExternalStorageState() before doing this.
+
+        File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES), "MyCameraApp");
+        // This location works best if you want the created images to be shared
+        // between applications and persist after your app has been uninstalled.
+
+        // Create the storage directory if it does not exist
+        if (!mediaStorageDir.exists()) {
+            if (!mediaStorageDir.mkdirs()) {
+                Log.d("MyCameraApp", "failed to create directory");
+                return null;
+            }
+        }
+
+        // Create a media file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        File mediaFile;
+        if (type == MEDIA_TYPE_IMAGE) {
+            mediaFile = new File(mediaStorageDir.getPath() + File.separator +
+                    "IMG_" + timeStamp + ".jpg");
+        } else if (type == MEDIA_TYPE_VIDEO) {
+            mediaFile = new File(mediaStorageDir.getPath() + File.separator +
+                    "VID_" + timeStamp + ".mp4");
+        } else {
+            return null;
+        }
+
+        return mediaFile;
+    }
+
+
+    public class TabCameraClickListener implements View.OnClickListener {
+
+        @Override
+        public void onClick(View v) {
+            //mTabPager.setCurrentItem(TAB_CAMERA);
+            /*if(checkCameraHardware(MainActivity.this)) {
+                Intent intent = new Intent(MainActivity.this, CameraActivity.class);
+                startActivityForResult(intent, INTENT_CAMERA);
+            }*/
+            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+            mImageUri = getOutputImageFileUri();
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, mImageUri);
+
+            MainActivity.this.startActivityForResult(intent, INTENT_CAMERA);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int req_code, int res_code, Intent data) {
+        switch(req_code) {
+            case INTENT_CAMERA: {
+                //mTab[TAB_HOUSE].setBackgroundColor(getResources().getColor(R.color.blue));
+
+                if(res_code == RESULT_OK) {
+                    Intent intent = new Intent(MainActivity.this, FilterActivity.class);
+                    intent.putExtra(IMAGE_PATH, mImageUri.toString());
+                    mImageUri = null;
+                    startActivityForResult(intent, INTENT_FILTER);
+                }
+
+                break;
+            }
+            case INTENT_FILTER : {
+                mTab[TAB_HOUSE].setBackgroundColor(getResources().getColor(R.color.yellow));
+                break;
+            }
+
+            default : break;
+        }
+
+    }
 
 
 
@@ -187,115 +257,15 @@ public class MainActivity extends Activity {
 
         @Override
         public void onPageSelected(int arg0) {
-
-            switch (arg0) {
-
-                case 0:
-                    mTab1.setBackgroundColor(getResources().getColor(R.color.yellow));
-
-                    if (curIndex == 1) {
-
-                        mTab2.setBackgroundColor(getResources().getColor(R.color.transparent));
-                    }
-                    else if(curIndex == 2){
-
-                    }
-                    else if (curIndex == 3) {
-                        
-                        mTab4.setBackgroundColor(getResources().getColor(R.color.transparent));
-                    }
-                    else if (curIndex == 4) {
-                        
-                        mTab5.setBackgroundColor(getResources().getColor(R.color.transparent));
-                    }
-                    break;
-
-                case 1:
-                    mTab2.setBackgroundColor(getResources().getColor(R.color.yellow));
-
-                    if (curIndex == 0) {
-                        
-                        mTab1.setBackgroundColor(getResources().getColor(R.color.transparent));
-                    }
-                    else if(curIndex == 2){
-
-                    }
-                    else if (curIndex == 3) {
-                        
-                        mTab4.setBackgroundColor(getResources().getColor(R.color.transparent));
-                    }
-                    else if (curIndex == 4) {
-                        
-                        mTab5.setBackgroundColor(getResources().getColor(R.color.transparent));
-                    }
-                    break;
-
-                case 2:
-
-                    if (curIndex == 0) {
-                        
-                        mTab1.setBackgroundColor(getResources().getColor(R.color.transparent));
-                    }
-                    else if (curIndex == 1) {
-                        
-                        mTab2.setBackgroundColor(getResources().getColor(R.color.transparent));
-                    }
-                    else if(curIndex == 2){
-
-                    }
-                    else if (curIndex == 3) {
-                        
-                        mTab4.setBackgroundColor(getResources().getColor(R.color.transparent));
-                    }
-                    else if (curIndex == 4) {
-                        
-                        mTab5.setBackgroundColor(getResources().getColor(R.color.transparent));
-                    }
-                    break;
-
-                case 3:
-                    mTab4.setBackgroundColor(getResources().getColor(R.color.yellow));
-
-                    if (curIndex == 0) {
-                        
-                        mTab1.setBackgroundColor(getResources().getColor(R.color.transparent));
-                    }
-                    else if (curIndex == 1) {
-                        
-                        mTab2.setBackgroundColor(getResources().getColor(R.color.transparent));
-                    }
-                    else if(curIndex == 2){
-
-                    }
-                    else if (curIndex == 4) {
-                        
-                        mTab5.setBackgroundColor(getResources().getColor(R.color.transparent));
-                    }
-                    break;
-
-                case 4:
-                    mTab5.setBackgroundColor(getResources().getColor(R.color.yellow));
-
-                    if (curIndex == 0) {
-                        
-                        mTab1.setBackgroundColor(getResources().getColor(R.color.transparent));
-                    }
-                    else if (curIndex == 1) {
-                        
-                        mTab2.setBackgroundColor(getResources().getColor(R.color.transparent));
-                    }
-                    else if(curIndex == 2){
-
-                    }
-                    else if (curIndex == 3) {
-                        
-                        mTab4.setBackgroundColor(getResources().getColor(R.color.transparent));
-                    }
-                    break;
+            if(curIndex != TAB_CAMERA) {
+                mTab[curIndex].setBackgroundColor(getResources().getColor(R.color.transparent));
             }
 
-            curIndex = arg0;    //update curIndex.
+            if(arg0 != TAB_CAMERA) {
+                mTab[arg0].setBackgroundColor(getResources().getColor(R.color.yellow));
+            }
 
+            curIndex = arg0;
         }
 
 
