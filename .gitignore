@@ -2,3 +2,5 @@
 .idea/*
 build/*
 app/app-release.apk
+
+.gradle/2.2.1/taskArtifacts/cache.properties.lock
