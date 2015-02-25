@@ -1,12 +1,10 @@
 package com.xiangyixie.picshouse.imagefilter;
 
-import android.graphics.Bitmap;
+import jp.co.cyberagent.android.gpuimage.GPUImageFilter;
 
 /**
- * Created by xiangyixie on 2/21/15.
+ * Created by xiangyixie on 2/25/15.
  */
-
-
 public class IdenticalFilter implements ImageFilterI {
     @Override
     public String getName() {
@@ -14,7 +12,7 @@ public class IdenticalFilter implements ImageFilterI {
     }
 
     @Override
-    public Bitmap processImage(Bitmap src) {
-        return src;
+    public GPUImageFilter getFilter() {
+        return new GPUImageFilter();
     }
 }

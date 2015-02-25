@@ -139,24 +139,15 @@ android:background="#eee" >
     android:layout_above="@id/main_bottom"
     android:orientation="vertical" >
 
-    <com.xiangyixie.picshouse.MyViewPager_notSwiping
+    <com.xiangyixie.picshouse.view.MyViewPager_notSwiping
         android:id="@+id/tabpager"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center" >
-    </com.xiangyixie.picshouse.MyViewPager_notSwiping>
+    </com.xiangyixie.picshouse.view.MyViewPager_notSwiping>
 </LinearLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="New Text"
-        android:id="@+id/textView"
-        android:layout_centerVertical="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginLeft="157dp"
-        android:layout_marginStart="157dp" />
+
 
 
 </RelativeLayout>

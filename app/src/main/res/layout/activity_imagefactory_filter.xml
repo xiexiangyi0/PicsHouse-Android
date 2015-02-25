@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/imagefactory_body"
+        android:layout_width="fill_parent"
+        android:layout_height = "0dp"
+        android:layout_weight="5"
+        android:orientation="vertical" >
+
+        <jp.co.cyberagent.android.gpuimage.GPUImageView
+            android:id="@+id/imagefactory_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="fitCenter"
+            android:layout_gravity="center"/>
+
+        <!--com.xiangyixie.picshouse.view.RotateImageView
+            android:id="@+id/imagefactory_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="fitCenter"
+            android:layout_gravity="center">
+        </com.xiangyixie.picshouse.view.RotateImageView-->
+    </LinearLayout>
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height = "0dp"
+    android:layout_weight="2"
+    android:paddingTop="35dp"
+    android:paddingBottom="12dp"
+    android:id="@+id/imagefactory_bottom">
+
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:id="@+id/imagefactory_filter_list">
+
+        </LinearLayout>
+    </HorizontalScrollView>
+</LinearLayout>
+
+
+
+</LinearLayout>
+
+
+
