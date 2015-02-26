@@ -86,7 +86,7 @@
 <color name="msg_short_line_normal">#ffafafaf</color>
 <color name="msg_short_line_selected">#ff5cbde3</color>
 <color name="gender_male">#ff65b1ea</color>
-<color name="gender_famal">#ffffaed8</color>
+<color name="gender_female">#ffffaed8</color>
 <color name="friend_tab_bg">#ffe8e8e8</color>
 <color name="friend_tab_end_line">#ffd5d5d5</color>
 <color name="profile_photo_bg">#ffd8d4c5</color>

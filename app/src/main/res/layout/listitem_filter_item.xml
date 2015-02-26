@@ -10,7 +10,7 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_margin="3dip"
-        android:background="@drawable/round_corner_filter_gray"
+        android:background="@drawable/imagefactory_filter_item_normal"
         android:clickable="false"
         android:focusable="false"
         android:padding="1dip" />
