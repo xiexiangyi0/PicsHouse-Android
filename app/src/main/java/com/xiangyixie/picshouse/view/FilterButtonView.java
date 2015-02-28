@@ -5,6 +5,7 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.xiangyixie.picshouse.R;
@@ -46,5 +47,15 @@ public class FilterButtonView extends FrameLayout {
         super.setOnClickListener(l);
         View v = m_view.findViewById(R.id.filter_item_cover);
         v.setOnClickListener(l);
+    }
+
+    public void highlight() {
+        ImageView cover = (ImageView) m_view.findViewById(R.id.filter_item_cover);
+        cover.setImageResource(R.drawable.imagefactory_filter_item_pressed);
+    }
+
+    public void dim() {
+        ImageView cover = (ImageView) m_view.findViewById(R.id.filter_item_cover);
+        cover.setImageResource(R.drawable.imagefactory_filter_item_normal);
     }
 }

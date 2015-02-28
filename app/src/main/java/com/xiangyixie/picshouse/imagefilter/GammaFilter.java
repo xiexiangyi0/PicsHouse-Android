@@ -1,20 +1,14 @@
 package com.xiangyixie.picshouse.imagefilter;
 
-import jp.co.cyberagent.android.gpuimage.GPUImageFilter;
 import jp.co.cyberagent.android.gpuimage.GPUImageGammaFilter;
 
 /**
  * Created by xiangyixie on 2/23/15.
  */
-public class GammaFilter implements ImageFilterI {
+public class GammaFilter extends ImageFilter {
 
-    @Override
-    public String getName() {
-        return "Gamma";
+    public GammaFilter() {
+        super("Gamma", new GPUImageGammaFilter());
     }
 
-    @Override
-    public GPUImageFilter getFilter() {
-        return new GPUImageGammaFilter();
-    }
 }
