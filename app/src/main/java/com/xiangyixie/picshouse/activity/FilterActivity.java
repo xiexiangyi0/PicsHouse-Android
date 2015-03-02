@@ -21,7 +21,23 @@ import com.xiangyixie.picshouse.view.FilterButtonView;
 import java.io.IOException;
 
 import jp.co.cyberagent.android.gpuimage.GPUImageView;
-import jp.co.cyberagent.android.gpuimage.sample.filter.*;
+import jp.co.cyberagent.android.gpuimage.sample.filter.IF1977Filter;
+import jp.co.cyberagent.android.gpuimage.sample.filter.IFAmaroFilter;
+import jp.co.cyberagent.android.gpuimage.sample.filter.IFBrannanFilter;
+import jp.co.cyberagent.android.gpuimage.sample.filter.IFEarlybirdFilter;
+import jp.co.cyberagent.android.gpuimage.sample.filter.IFHefeFilter;
+import jp.co.cyberagent.android.gpuimage.sample.filter.IFHudsonFilter;
+import jp.co.cyberagent.android.gpuimage.sample.filter.IFInkwellFilter;
+import jp.co.cyberagent.android.gpuimage.sample.filter.IFLomoFilter;
+import jp.co.cyberagent.android.gpuimage.sample.filter.IFLordKelvinFilter;
+import jp.co.cyberagent.android.gpuimage.sample.filter.IFNashvilleFilter;
+import jp.co.cyberagent.android.gpuimage.sample.filter.IFRiseFilter;
+import jp.co.cyberagent.android.gpuimage.sample.filter.IFSierraFilter;
+import jp.co.cyberagent.android.gpuimage.sample.filter.IFSutroFilter;
+import jp.co.cyberagent.android.gpuimage.sample.filter.IFToasterFilter;
+import jp.co.cyberagent.android.gpuimage.sample.filter.IFValenciaFilter;
+import jp.co.cyberagent.android.gpuimage.sample.filter.IFWaldenFilter;
+import jp.co.cyberagent.android.gpuimage.sample.filter.IFXprollFilter;
 
 
 public class FilterActivity extends ActionBarActivity {
@@ -41,7 +57,7 @@ public class FilterActivity extends ActionBarActivity {
         Uri img = Uri.parse(intent.getStringExtra(MainActivity.IMAGE_PATH));
 
         final GPUImageView image_view = (GPUImageView) findViewById(R.id.imagefactory_image);
-        image_view.setImage(img);
+
 
         Bitmap bitmap = null;
 
@@ -54,6 +70,8 @@ public class FilterActivity extends ActionBarActivity {
         catch (IOException e) {
             return;
         }
+
+        image_view.setImage(bitmap);
 
 
 
