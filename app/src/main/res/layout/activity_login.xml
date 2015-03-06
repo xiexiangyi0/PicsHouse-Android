@@ -1,0 +1,159 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
+    android:background="@drawable/wallp1"
+    tools:context="com.xiangyixie.picshouse.register.LoginActivity">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="3">
+
+       <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="80dp"
+        android:text="@string/app_name"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        android:textColor="@color/white"/>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="5"
+        android:paddingLeft="26dp"
+        android:paddingRight="26dp"
+        android:orientation="vertical">
+
+       <EditText
+            android:id="@+id/input_email"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/email"
+            android:textColorHint="@color/white"
+            android:textSize="16sp"
+            android:singleLine="true"
+            android:maxLength="25"
+            android:ems="10"
+            android:textColor="@color/white"
+            android:background="@null"
+            android:layout_marginBottom="3dp">
+            <requestFocus />
+       </EditText>
+        <View
+            android:background="@color/white"
+            android:layout_height="1dp"
+            android:layout_width="fill_parent"/>
+
+
+        <EditText
+            android:id="@+id/input_password"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            android:password="true"
+            android:hint="@string/password"
+            android:textColorHint="@color/white"
+            android:textSize="16sp"
+            android:singleLine="true"
+            android:maxLength="25"
+            android:ems="10"
+            android:inputType="textPassword"
+            android:textColor="@color/white"
+            android:background="@null"
+            android:layout_marginBottom="3dp">
+            <requestFocus />
+        </EditText>
+
+        <View
+            android:background="@color/white"
+            android:layout_height="1dp"
+            android:layout_width="fill_parent"/>
+
+
+        <Button
+            android:id="@+id/btn_login"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+           android:layout_marginTop="15dp"
+            android:onClick="login"
+            android:background="@color/blue_transparent_btn"
+            android:text="@string/login"
+            android:textColor="@color/white"
+            android:textAllCaps="false"/>
+
+        <Button
+            android:id="@+id/btn_signup"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:onClick="signup"
+            android:background="@color/blue_transparent_btn"
+            android:text="@string/signup"
+            android:textColor="@color/white"
+            android:textAllCaps="false"/>
+
+
+        <!--<Button
+            android:id="@+id/btn_facebook_login"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:onClick="signup"
+            android:background="@color/transparent_background"
+            android:text="@string/facebook_login"
+            android:textColor="@color/white"
+            android:textAllCaps="false"/>
+            -->
+        <com.facebook.widget.LoginButton
+            android:id="@+id/authButton"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp"
+            android:text="@string/facebook_login"
+            android:textColor="@color/white"
+            android:textAllCaps="false"
+            />
+
+    </LinearLayout>
+
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:paddingLeft="26dp"
+        android:paddingRight="26dp"
+        android:paddingBottom="12dp"
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
+
+        <TextView
+            android:id ="@+id/forget_pwd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="@string/forget_password"
+            android:textSize="13sp"
+            android:textColor="@color/white"
+            android:clickable="true"
+            android:textAllCaps="false"/>
+    </LinearLayout>
+
+
+
+</LinearLayout>

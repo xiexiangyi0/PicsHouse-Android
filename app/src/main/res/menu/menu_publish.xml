@@ -1,0 +1,10 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.xiangyixie.picshouse.activity.PublishActivity">
+
+    <item android:id="@+id/filter_publish"
+        android:title="@string/action_publish"
+        android:color="@color/yellow"
+        app:showAsAction="ifRoom|withText"/>
+</menu>

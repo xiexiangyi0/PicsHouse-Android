@@ -2,6 +2,27 @@
 <items version="2" >
 
     <item
+        jar="/Users/xiangyixie/AndroidStudioProjects/PicsHouse-Android/app/build/intermediates/exploded-aar/com.android.support/support-v4/21.0.3/libs/internal_impl-21.0.3.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="01ec05bfbafcc07646ba813000bf2ef11742dd03">
+        <dex dex="/Users/xiangyixie/AndroidStudioProjects/PicsHouse-Android/app/build/intermediates/pre-dexed/debug/internal_impl-21.0.3-bbeb6b4da71f58eb1e3faf2070fded7cf5990197.jar" />
+    </item>
+    <item
+        jar="/Users/xiangyixie/.gradle/caches/modules-2/files-2.1/com.parse.bolts/bolts-android/1.1.2/91c20388c9a45f62b5ed8fe0502bb76ff6251fc7/bolts-android-1.1.2.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="91c20388c9a45f62b5ed8fe0502bb76ff6251fc7">
+        <dex dex="/Users/xiangyixie/AndroidStudioProjects/PicsHouse-Android/app/build/intermediates/pre-dexed/debug/bolts-android-1.1.2-b0f175999d436908c4de48bdf6dd0abc4357217e.jar" />
+    </item>
+    <item
+        jar="/Users/xiangyixie/AndroidStudioProjects/PicsHouse-Android/app/build/intermediates/exploded-aar/com.facebook.android/facebook-android-sdk/3.21.1/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="0285ad8da812e92dda76ed5d0dcba05724c7911d">
+        <dex dex="/Users/xiangyixie/AndroidStudioProjects/PicsHouse-Android/app/build/intermediates/pre-dexed/debug/classes-db72228e8385f59f760b159fef5968340ed7b18a.jar" />
+    </item>
+    <item
         jar="/Users/xiangyixie/AndroidStudioProjects/PicsHouse/app/build/intermediates/exploded-aar/com.android.support/support-v4/21.0.3/libs/internal_impl-21.0.3.jar"
         jumboMode="false"
         revision="21.1.2"
@@ -28,13 +49,6 @@
         revision="21.1.2"
         sha1="81d42bf983a8741f4888a6e333e454e4a5e0eeb7">
         <dex dex="/Users/xiangyixie/AndroidStudioProjects/PicsHouse-Android/app/build/intermediates/pre-dexed/debug/classes-6a309197796c37d23cfce2a6e1ab3511e3d27527.jar" />
-    </item>
-    <item
-        jar="/Users/xiangyixie/AndroidStudioProjects/PicsHouse-Android/app/build/intermediates/exploded-aar/com.android.support/support-v4/21.0.3/libs/internal_impl-21.0.3.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="01ec05bfbafcc07646ba813000bf2ef11742dd03">
-        <dex dex="/Users/xiangyixie/AndroidStudioProjects/PicsHouse-Android/app/build/intermediates/pre-dexed/debug/internal_impl-21.0.3-bbeb6b4da71f58eb1e3faf2070fded7cf5990197.jar" />
     </item>
     <item
         jar="/Users/xiangyixie/AndroidStudioProjects/PicsHouse-Android/app/build/intermediates/exploded-aar/com.android.support/support-v4/21.0.3/classes.jar"

@@ -1,9 +1,29 @@
 <resources>
     <string name="app_name">PicsHouse</string>
 
+    <!--camera related-->
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="filter_image_desc">Picture from camera</string>
     <string name="title_activity_camera">Camera</string>
-    <string name="title_activity_filter">Filter</string>
+    <string name="title_activity_filter">Edit Photo</string>
+    <string name="action_nextstep">Next</string>
+    <string name="action_publish">Publish</string>
+    <string name="title_activity_publish">Share To</string>
+    <string name="input_addtext">Say Something...</string>
+    <string name="publish_share_text">Share</string>
+    <string name="title_activity_login">Login</string>
+
+    <!--login related-->
+    <string name="email">Username/Email</string>
+    <string name="password">Password</string>
+    <string name="login">Log in</string>
+    <string name="signup">Sign up</string>
+    <string name="facebook_login">Log in with Facebook</string>
+    <string name="forget_password">Forgot Password</string>
+
+    <string name="facebook_app_id">821745201206709</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
