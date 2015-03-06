@@ -5,7 +5,6 @@ import com.xiangyixie.picshouse.httpService.URLEntity;
 import org.apache.http.entity.StringEntity;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * Created by xiangyixie on 3/5/15.
@@ -19,7 +18,7 @@ public class User {
     private String mFirstName, mLastName;
     private String mDescription;
 
-    private URLEntity[] mUrlEntities;
+    private ArrayList<URLEntity> mUrlEntities;
 
     private int mFollowersCount;
     private int mFollowingCount;
@@ -41,45 +40,6 @@ public class User {
     }
 
 
-
-    public User(User user) {
-        mId = user.getId();
-        mScreenName = user.getScreenName();
-        mName = user.getName();
-        mDescription = user.getDescription();
-        ArrayList<URLEntity> urlEntityArrayList = new ArrayList<URLEntity>();
-        if (user.getDescriptionURLEntities() != null) {
-            urlEntityArrayList = new ArrayList<URLEntity>(Arrays.asList(user.getDescriptionURLEntities()));
-        }
-
-        if (user.getURL() != null) {
-            mUrl = user.getURL();
-            urlEntityArrayList.add(user.getURLEntity());
-        }
-
-        mUrlEntities = urlEntityArrayList.toArray(new URLEntity[urlEntityArrayList.size()]);
-
-        if (user.getLocation() != null
-                && !user.getLocation().equals("")) {
-            mLocation = user.getLocation();
-        }
-
-        if (user.getOriginalProfileImageURLHttps() != null) {
-            mProfileImageUrlOriginal = user.getOriginalProfileImageURLHttps();
-        }
-
-        if (user.getBiggerProfileImageURLHttps() != null) {
-            mProfileImageUrlBigger = user.getBiggerProfileImageURLHttps();
-        }
-
-        if (user.getProfileImageURLHttps() != null) {
-            mProfileImageUrlNormal = user.getProfileImageURLHttps();
-        }
-
-        if (user.getMiniProfileImageURLHttps() != null) {
-            mProfileImageUrlMini = user.getMiniProfileImageURLHttps();
-        }
-    }
 
     /*
     public User(User user) {
@@ -150,7 +110,7 @@ public class User {
     }
 
 
-    public URLEntity[] getUrlEntities() {
+    public ArrayList<URLEntity> getUrlEntities() {
         return mUrlEntities;
     }
     public int getFollowersCount() {
