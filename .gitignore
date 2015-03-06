@@ -2,3 +2,6 @@
 .idea/*
 build/*
 app/app-release.apk
+
+server/.idea/*
+server/node_modules/*

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+
+<h1>Login</h1>
+<form action="/user/login/" method="post">
+    <p>username: <input type="text" name="username"/></p>
+    <p>passwrod: <input type="password" name="password"/></p>
+    <input type="submit"/>
+</form>
+
+<h1>Register</h1>
+<form action="/user/create/" method="post">
+    <p>username: <input type="text" name="username"/></p>
+    <p>email: <input type="email" name="email"/></p>
+    <p>passwrod: <input type="password" name="password"/></p>
+    <input type="submit"/>
+</form>
+
+<h1>Update Password</h1>
+<form action="/user/update/" method="post">
+    <p>old password: <input type="password" name="old_password"/></p>
+    <p>new password: <input type="password" name="new_password"/></p>
+    <input type="submit"/>
+</form>
+
+<h1>Logout</h1>
+<form action="/user/logout/" method="post">
+    <input type="submit"/>
+</form>
+</body>
+</html>
