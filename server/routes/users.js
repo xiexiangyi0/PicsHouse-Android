@@ -61,13 +61,23 @@ router.post("/update", auth.authToken(), function(req, res) {
     var post = req.body;
     var user = req.user;
 
-    res.send("update");
+    if(post.password) {
+        user.password = password;
+    }
+
+    auth.login(user, function(err, u) {
+        if(err) {
+            throw err;
+        }
+
+        res.send({ecode : "OK", token : u.token});
+    });
 
 });
 
-router.get("/read", auth.authToken(), function(req, res) {
+router.get("/get", auth.authToken(), function(req, res) {
     console.log(req.user.username);
-    res.send("read");
+    res.send({username : req.user.username, email : req.user.email});
 });
 
 router.post("/login", auth.authLocal(), function(req, res) {
