@@ -2,13 +2,19 @@ package com.xiangyixie.picshouse.register;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.facebook.AppEventsLogger;
 import com.xiangyixie.picshouse.R;
 import com.xiangyixie.picshouse.fragment.FbLoginFragment;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 
 public class LoginActivity extends FragmentActivity {
@@ -25,7 +31,6 @@ public class LoginActivity extends FragmentActivity {
 
 
     private FbLoginFragment m_fbLoginFragment;
-
 
 
 
@@ -47,7 +52,77 @@ public class LoginActivity extends FragmentActivity {
         forget_pwd = (TextView)findViewById(R.id.forget_pwd);
 
 
+        
 
+
+        login_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FinalHttp fh = new FinalHttp();
+                fh.get("http://172.27.35.1:8080/login/index.jsp?userName=miquan", new AjaxCallBack<Object>() {
+                    @Override
+                    public void onSuccess(Object t) {
+                        //获取返回来的json
+                        String str = t.toString();
+                        str = str.trim();
+                        try {
+                            JSONObject obj = new JSONObject(str);
+                            boolean success = obj.getBoolean("success");
+                            //登录成功
+                            if (success) {
+                                //app = (MyApplication) this.getApplication();
+                                //MyApplication添加了属性sessionId和isLogin
+                                app.setLogin(true);
+                                app.setSessionId(obj.getString("sessionId"));
+                                Toast.makeText(app, "登录成功", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(app, "登录失败", Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        super.onSuccess(t);
+                    }
+
+                    @Override
+                    public void onFailure(Throwable t, int errorNo,
+                                          String strMsg) {
+                        Log.e("miquan", "failure  " + strMsg);
+                        super.onFailure(t, errorNo, strMsg);
+                    }
+                });
+            }
+        });
+
+
+        signup_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FinalHttp fh = new FinalHttp();
+                //添加session，连请求一起发送，这里服务器用的是java开发的
+                fh.addHeader("Cookie", "JSESSIONID=" + app.getSessionId());
+                fh.get("http://172.27.35.1:8080/login/session.jsp", new AjaxCallBack<Object>() {
+                    @Override
+                    public void onSuccess(Object t) {
+                        Log.e("miquan", t.toString());
+                        super.onSuccess(t);
+                    }
+
+                    @Override
+                    public void onFailure(Throwable t, int errorNo,
+                                          String strMsg) {
+                        Log.e("miquan", "failure  " + strMsg);
+                        super.onFailure(t, errorNo, strMsg);
+                    }
+                });
+            }
+        });
+
+
+
+
+
+        //for 3rd facebook login!
         if (savedInstanceState == null) {
                   // Add the fragment on initial activity setup
             m_fbLoginFragment = new FbLoginFragment();
@@ -62,6 +137,8 @@ public class LoginActivity extends FragmentActivity {
             m_fbLoginFragment = (FbLoginFragment) getSupportFragmentManager()
                     .findFragmentById(android.R.id.content);
         }
+        //
+
     }
 
 
@@ -73,6 +150,7 @@ public class LoginActivity extends FragmentActivity {
         // Logs 'install' and 'app activate' App Events.
         AppEventsLogger.activateApp(this);
     }
+
 
 
     @Override
