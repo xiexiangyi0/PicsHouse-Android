@@ -80,3 +80,16 @@ function onClickLogout() {
 
 
 }
+
+function onClickFBTest() {
+    $.ajax({
+        url : "/user/facebook/"
+        , type : "GET"
+        , access_token : "abcdef"
+
+    }).done(function() {
+
+    }).fail(function() {
+        console.log("Fail");
+    });
+}

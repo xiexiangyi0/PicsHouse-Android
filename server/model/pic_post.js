@@ -3,12 +3,13 @@
  */
 var mongoose = require("mongoose")
     , Schema = mongoose.Schema
-    , ObjId = mongoose.Types.ObjectId
+    , ObjId = Schema.Types.ObjectId
 ;
 
 var schema = new Schema({
     pic : String
     , user : ObjId
+    , desc : String
     , comments : [ObjId]
     , pub_date : Date
 });

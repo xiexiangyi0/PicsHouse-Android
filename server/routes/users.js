@@ -47,7 +47,7 @@ router.post("/create", function(req, res) {
                         throw err;
                     }
 
-                    res.send({ecode:"OK", token: u.token});
+                    res.send({token: u.token});
                 });
 
             });
@@ -70,7 +70,7 @@ router.post("/update", auth.authToken(), function(req, res) {
             throw err;
         }
 
-        res.send({ecode : "OK", token : u.token});
+        res.send({token : u.token});
     });
 
 });
@@ -87,7 +87,7 @@ router.post("/login", auth.authLocal(), function(req, res) {
             throw err;
         }
 
-        res.send({ecode:"OK", token: u.token});
+        res.send({token: u.token});
     });
 
 });
@@ -104,6 +104,11 @@ router.post("/logout", auth.authToken(), function(req, res) {
         res.send("logout");
 
     });
+});
+
+router.get("/facebook", auth.authFB(), function(req, res) {
+    console.log(req.user);
+    res.send("OK");
 });
 
 module.exports = router;
