@@ -1,25 +1,21 @@
 package com.xiangyixie.picshouse.register;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.net.Uri;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
-import com.facebook.widget.LoginButton;
 import com.xiangyixie.picshouse.R;
-
-import java.util.Arrays;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
  * {@link SignupFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link SignupFragment#newInstance} factory method to
+ * Use the {@link SignupFragment} factory method to
  * create an instance of this fragment.
  */
 public class SignupFragment extends Fragment {
@@ -43,12 +39,8 @@ public class SignupFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
         View view = inflater.inflate(R.layout.fragment_signup, container, false);
-
-        Button btn_signup = (Button) getActivity().findViewById(R.id.btn_signup);
-
-        //btn_signup.setFragment(this);
 
         return view;
     }
