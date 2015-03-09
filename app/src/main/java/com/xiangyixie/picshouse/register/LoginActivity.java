@@ -10,14 +10,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.facebook.AppEventsLogger;
-import com.xiangyixie.picshouse.AppConfig;
 import com.xiangyixie.picshouse.R;
 import com.xiangyixie.picshouse.fragment.FbLoginFragment;
 import com.xiangyixie.picshouse.httpService.PHHttpClient;

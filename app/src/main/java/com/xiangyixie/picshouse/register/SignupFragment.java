@@ -2,11 +2,12 @@ package com.xiangyixie.picshouse.register;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 
 import com.xiangyixie.picshouse.R;
 
@@ -42,8 +43,44 @@ public class SignupFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_signup, container, false);
 
+
+        //set male/female checkbox.
+        final CheckBox checkBox_male = (CheckBox) view.findViewById(R.id.checkbox_male);
+        final CheckBox checkBox_female = (CheckBox)view.findViewById(R.id.checkbox_female);
+
+        if (checkBox_male.isChecked()) {
+            checkBox_male.setChecked(false);
+        }
+        if (checkBox_female.isChecked()) {
+            checkBox_female.setChecked(false);
+        }
+
+
+        checkBox_male.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    checkBox_female.setChecked(false);
+                }
+            }
+        });
+
+        checkBox_female.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    checkBox_male.setChecked(false);
+                }
+            }
+        });
+
+
         return view;
     }
+
+
 
 
     @Override
@@ -58,25 +95,13 @@ public class SignupFragment extends Fragment {
         }*/
     }
 
+    
+
+
     @Override
     public void onDetach() {
         super.onDetach();
         //mListener = null;
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        public void onFragmentInteraction(Uri uri);
     }
 
 }
