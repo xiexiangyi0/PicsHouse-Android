@@ -4,6 +4,8 @@
     <!--camera related-->
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+
+    <!--camera and edit photo-->
     <string name="filter_image_desc">Picture from camera</string>
     <string name="title_activity_camera">Camera</string>
     <string name="title_activity_filter">Edit Photo</string>
@@ -12,17 +14,29 @@
     <string name="title_activity_publish">Share To</string>
     <string name="input_addtext">Say Something...</string>
     <string name="publish_share_text">Share</string>
-    <string name="title_activity_login">Login</string>
 
-    <!--login related-->
-    <string name="email">Username/Email</string>
+    <!--login-->
+    <string name="title_activity_login">Login</string>
+    <string name="add_profile_pic">Add profile pic</string>
+    <string name="username">Username</string>
+    <string name="username2">username</string>
     <string name="password">Password</string>
+    <string name="password2">password</string>
+    <string name="re_password">Re-Password</string>
+    <string name="re_password2">password verify</string>
+    <string name="email">Email</string>
+    <string name="email2">email</string>
+    <string name="gender">Gender</string>
     <string name="login">Log in</string>
     <string name="signup">Sign up</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
     <string name="facebook_login">Log in with Facebook</string>
     <string name="forget_password">Forgot Password</string>
 
     <string name="facebook_app_id">821745201206709</string>
+
+
 
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

@@ -1,14 +1,13 @@
 package com.xiangyixie.picshouse.register;
 
-
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -45,13 +44,13 @@ public class LoginActivity extends FragmentActivity {
 
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_login);
+
 
 
         email = (EditText)findViewById(R.id.input_email);
@@ -63,9 +62,6 @@ public class LoginActivity extends FragmentActivity {
         forget_pwd = (TextView)findViewById(R.id.forget_pwd);
 
         final TextView debug_text = (TextView) findViewById(R.id.debug_text);
-
-
-        
 
 
         login_btn.setOnClickListener(new View.OnClickListener() {
@@ -117,51 +113,40 @@ public class LoginActivity extends FragmentActivity {
         });
 
 
-        signup_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                /*
-                FinalHttp fh = new FinalHttp();
-                //添加session，连请求一起发送，这里服务器用的是java开发的
-                fh.addHeader("Cookie", "JSESSIONID=" + app.getSessionId());
-                fh.get("http://172.27.35.1:8080/login/session.jsp", new AjaxCallBack<Object>() {
-                    @Override
-                    public void onSuccess(Object t) {
-                        Log.e("miquan", t.toString());
-                        super.onSuccess(t);
-                    }
-
-                    @Override
-                    public void onFailure(Throwable t, int errorNo,
-                                          String strMsg) {
-                        Log.e("miquan", "failure  " + strMsg);
-                        super.onFailure(t, errorNo, strMsg);
-                    }
-                });
-                */
-            }
-        });
-
-
-
-
-
         //for 3rd facebook login!
         if (savedInstanceState == null) {
                   // Add the fragment on initial activity setup
             m_fbLoginFragment = new FbLoginFragment();
 
+
             getSupportFragmentManager()
                     .beginTransaction()
                     .add(android.R.id.content, m_fbLoginFragment)
                     .commit();
+
+
         }
         else {
                     // Or set the fragment from restored state info
             m_fbLoginFragment = (FbLoginFragment) getSupportFragmentManager()
                     .findFragmentById(android.R.id.content);
         }
-        //
+
+
+
+
+        signup_btn.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View v) {
+
+                FragmentManager fragmentManager = getFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+                SignupFragment m_signupFragment = new SignupFragment();
+                fragmentTransaction.add(android.R.id.content, m_signupFragment);
+                fragmentTransaction.commit();
+            }
+        });
 
     }
 
@@ -202,7 +187,6 @@ public class LoginActivity extends FragmentActivity {
 
         }
 
-    }
     */
 
 }
