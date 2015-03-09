@@ -6,6 +6,12 @@ var schema = new Schema({
     username : {type : String, required : true, index : {unique : true}}
     , email : {type : String, required : true, index : {unique : true}}
     , token : {type : String, required : true, index : {unique : true}}
+
+    , avatar : String
+
+    , join_date : Date
+    , last_login : Date
+
 });
 
 schema.plugin(user_plugin);

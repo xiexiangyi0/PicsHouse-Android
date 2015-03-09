@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var user = require("./users");
+var post = require("./posts");
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -8,5 +9,6 @@ router.get('/', function(req, res, next) {
 });
 
 router.use('/user', user);
+router.use("/post", post);
 
 module.exports = router;

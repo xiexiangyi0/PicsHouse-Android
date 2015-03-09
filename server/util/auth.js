@@ -5,6 +5,7 @@ var bcrypt = require("bcrypt")
     , LocalStrategy = require("passport-local").Strategy
     , jwt = require("jsonwebtoken")
     , JWT_SECRET = "sEcReT"
+    , FBTokenStrategy = require("passport-facebook-token").Strategy
 ;
 
 
@@ -51,6 +52,16 @@ passport.use(new BearerStrategy(function(token, done) {
         });
     })
 );
+
+passport.use(
+    new FBTokenStrategy({
+        clientID : "abcd"
+        , clientSecret : "123456"
+    }
+    , function(accessToken, refreshToken, profile, done) {
+        return done(null, false, {message : "test"});
+    }
+));
 
 //middleware
 var router = require("express").Router();
@@ -146,6 +157,10 @@ function authToken() {
     return passport.authenticate("bearer", {session:false});
 }
 
+function authFB() {
+    return passport.authenticate("facebook-token", {session:false});
+}
+
 module.exports = {
     register : register
     , login : login
@@ -153,4 +168,5 @@ module.exports = {
     , mongoose_user_plugin : userPlugin
     , authLocal : authLocal
     , authToken : authToken
+    , authFB : authFB
 };
