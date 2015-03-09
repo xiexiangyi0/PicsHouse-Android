@@ -1,6 +1,6 @@
 package com.xiangyixie.picshouse.register;
 
-import android.app.DownloadManager;
+
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -10,14 +10,19 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.facebook.AppEventsLogger;
+import com.xiangyixie.picshouse.AppConfig;
 import com.xiangyixie.picshouse.R;
 import com.xiangyixie.picshouse.fragment.FbLoginFragment;
+import com.xiangyixie.picshouse.httpService.PHHttpClient;
+import com.xiangyixie.picshouse.httpService.PHJsonRequest;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -57,6 +62,8 @@ public class LoginActivity extends FragmentActivity {
         facebook_login_btn = (Button)findViewById(R.id.authButton);
         forget_pwd = (TextView)findViewById(R.id.forget_pwd);
 
+        final TextView debug_text = (TextView) findViewById(R.id.debug_text);
+
 
         
 
@@ -65,60 +72,47 @@ public class LoginActivity extends FragmentActivity {
             @Override
             public void onClick(View v) {
                 // Instantiate the RequestQueue.
-                RequestQueue queue = Volley.newRequestQueue(this);
-                String url ="http://www.google.com";
+                PHHttpClient client = PHHttpClient.getInstance(LoginActivity.this);
+
+                String username_str = email.getText().toString();
+                String password_str = password.getText().toString();
+
+                JSONObject jdata = new JSONObject();
+                try {
+                    jdata.put("username", username_str);
+                    jdata.put("password", password_str);
+                } catch(JSONException e) {
+
+                    jdata = null;
+
+                }
 
                 // Request a string response from the provided URL.
-                StringRequest stringRequest = new StringRequest(DownloadManager.Request.Method.GET, url,
-                        new Response.Listener<String>() {
+                PHJsonRequest req = new PHJsonRequest(Request.Method.POST, "/user/login/", jdata,
+                        new Response.Listener<JSONObject>() {
                             @Override
-                            public void onResponse(String response) {
-                                // Display the first 500 characters of the response string.
-                                mTextView.setText("Response is: "+ response.substring(0,500));
+                            public void onResponse(JSONObject response) {
+                                String tk = null;
+                                try {
+                                    tk = response.getString("token");
+                                } catch(JSONException e) {
+                                    tk = "parse error";
+                                }
+                                debug_text.setText("Login Success, token is " + tk);
                             }
-                        }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        mTextView.setText("That didn't work!");
-                    }
-                });
-                // Add the request to the RequestQueue.
-                queue.add(stringRequest);
-                /*
-                FinalHttp fh = new FinalHttp();
-                fh.get("http://172.27.35.1:8080/login/index.jsp?userName=miquan", new AjaxCallBack<Object>() {
-                    @Override
-                    public void onSuccess(Object t) {
-                        //获取返回来的json
-                        String str = t.toString();
-                        str = str.trim();
-                        try {
-                            JSONObject obj = new JSONObject(str);
-                            boolean success = obj.getBoolean("success");
-                            //登录成功
-                            if (success) {
-                                //app = (MyApplication) this.getApplication();
-                                //MyApplication添加了属性sessionId和isLogin
-                                app.setLogin(true);
-                                app.setSessionId(obj.getString("sessionId"));
-                                Toast.makeText(app, "登录成功", Toast.LENGTH_SHORT).show();
-                            } else {
-                                Toast.makeText(app, "登录失败", Toast.LENGTH_SHORT).show();
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        super.onSuccess(t);
-                    }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                debug_text.setText("Fail");
 
-                    @Override
-                    public void onFailure(Throwable t, int errorNo,
-                                          String strMsg) {
-                        Log.e("miquan", "failure  " + strMsg);
-                        super.onFailure(t, errorNo, strMsg);
-                    }
-                });
-                */
+                            }
+                        }
+                );
+
+                // Add the request to the RequestQueue.
+                client.send(req);
+
             }
         });
 
