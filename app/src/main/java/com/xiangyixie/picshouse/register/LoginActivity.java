@@ -1,5 +1,6 @@
 package com.xiangyixie.picshouse.register;
 
+import android.app.DownloadManager;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -9,6 +10,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.facebook.AppEventsLogger;
 import com.xiangyixie.picshouse.R;
 import com.xiangyixie.picshouse.fragment.FbLoginFragment;
@@ -58,6 +64,27 @@ public class LoginActivity extends FragmentActivity {
         login_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Instantiate the RequestQueue.
+                RequestQueue queue = Volley.newRequestQueue(this);
+                String url ="http://www.google.com";
+
+                // Request a string response from the provided URL.
+                StringRequest stringRequest = new StringRequest(DownloadManager.Request.Method.GET, url,
+                        new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                // Display the first 500 characters of the response string.
+                                mTextView.setText("Response is: "+ response.substring(0,500));
+                            }
+                        }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        mTextView.setText("That didn't work!");
+                    }
+                });
+                // Add the request to the RequestQueue.
+                queue.add(stringRequest);
+                /*
                 FinalHttp fh = new FinalHttp();
                 fh.get("http://172.27.35.1:8080/login/index.jsp?userName=miquan", new AjaxCallBack<Object>() {
                     @Override
@@ -91,6 +118,7 @@ public class LoginActivity extends FragmentActivity {
                         super.onFailure(t, errorNo, strMsg);
                     }
                 });
+                */
             }
         });
 
@@ -98,6 +126,7 @@ public class LoginActivity extends FragmentActivity {
         signup_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                /*
                 FinalHttp fh = new FinalHttp();
                 //添加session，连请求一起发送，这里服务器用的是java开发的
                 fh.addHeader("Cookie", "JSESSIONID=" + app.getSessionId());
@@ -115,6 +144,7 @@ public class LoginActivity extends FragmentActivity {
                         super.onFailure(t, errorNo, strMsg);
                     }
                 });
+                */
             }
         });
 

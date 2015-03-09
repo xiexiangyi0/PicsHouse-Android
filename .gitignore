@@ -3,5 +3,10 @@
 build/*
 app/app-release.apk
 
+facebook/build/*
+volley/build/*
+
 server/.idea/*
 server/node_modules/*
+
+.DS_Store
