@@ -33,9 +33,10 @@ public class PublishActivity extends ActionBarActivity {
 
         final ImageView image_view = (ImageView) findViewById(R.id.Edited_image);
 
-        try {
 
+        try {
             image_view.setImageURI(img_load_uri);
+
         } catch (Exception e) {
             return;
         }

@@ -10,14 +10,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.facebook.AppEventsLogger;
-import com.xiangyixie.picshouse.AppConfig;
 import com.xiangyixie.picshouse.R;
 import com.xiangyixie.picshouse.fragment.FbLoginFragment;
 import com.xiangyixie.picshouse.httpService.PHHttpClient;
@@ -170,23 +165,5 @@ public class LoginActivity extends FragmentActivity {
         AppEventsLogger.deactivateApp(this);
     }
 
-
-
-    /*
-    public void login(View view){
-        if(email.getText().toString().equals("admin") &&
-                password.getText().toString().equals("admin")){
-            Toast.makeText(getApplicationContext(), "Redirecting...",
-                    Toast.LENGTH_SHORT).show();
-        }
-        else{
-            Toast.makeText(getApplicationContext(), "Wrong Credentials",
-                    Toast.LENGTH_SHORT).show();
-
-
-
-        }
-
-    */
 
 }

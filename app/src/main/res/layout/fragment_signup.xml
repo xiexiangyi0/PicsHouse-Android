@@ -82,8 +82,8 @@
             android:paddingBottom="2dp"
             android:paddingLeft="16dp"
             android:paddingRight="10dp"
-            android:layout_marginBottom="6dp"
-            android:layout_marginTop="6dp"
+            android:layout_marginBottom="0dp"
+            android:layout_marginTop="10dp"
             android:orientation="horizontal">
 
             <TextView
@@ -100,12 +100,12 @@
                 android:layout_width="0dp"
                 android:layout_weight="5"
                 android:layout_height="wrap_content"
-                android:paddingLeft="10dp"
+                android:paddingLeft="2dp"
                 android:hint="@string/username2"
                 android:textColorHint="@color/gray"
                 android:textSize="16sp"
                 android:singleLine="true"
-                android:maxLength="25"
+                android:maxLength="32"
                 android:ems="10"
                 android:inputType="textCapCharacters"
                 android:textColor="@color/black"
@@ -129,8 +129,8 @@
             android:paddingBottom="2dp"
             android:paddingLeft="16dp"
             android:paddingRight="10dp"
-            android:layout_marginBottom="6dp"
-            android:layout_marginTop="6dp"
+            android:layout_marginBottom="0dp"
+            android:layout_marginTop="10dp"
             android:orientation="horizontal">
 
             <TextView
@@ -147,12 +147,12 @@
                 android:layout_width="0dp"
                 android:layout_weight="5"
                 android:layout_height="wrap_content"
-                android:paddingLeft="10dp"
+                android:paddingLeft="2dp"
                 android:hint="@string/email2"
                 android:textColorHint="@color/gray"
                 android:textSize="16sp"
                 android:singleLine="true"
-                android:maxLength="25"
+                android:maxLength="32"
                 android:ems="10"
                 android:inputType="textEmailAddress"
                 android:textColor="@color/black"
@@ -173,8 +173,8 @@
             android:paddingBottom="10dp"
             android:paddingLeft="16dp"
             android:paddingRight="10dp"
-            android:layout_marginBottom="6dp"
-            android:layout_marginTop="6dp"
+            android:layout_marginBottom="0dp"
+            android:layout_marginTop="10dp"
             android:orientation="horizontal">
 
             <TextView
@@ -195,23 +195,46 @@
                 android:paddingBottom="5dp"
                 android:orientation="horizontal">
 
-                <RadioButton
+                <CheckBox
                     android:layout_width="0dp"
                     android:layout_height="fill_parent"
                     android:layout_weight="1"
                     android:text="@string/male"
                     android:textSize = "16sp"
-                    android:id="@+id/radioButton_male" />
+                    android:id="@+id/checkbox_male" />
 
-                <RadioButton
+                <CheckBox
                     android:layout_width="0dp"
                     android:layout_height="fill_parent"
                     android:layout_weight="1"
                     android:text="@string/female"
                     android:textSize = "16sp"
-                    android:id="@+id/radioButton_female" />
+                    android:id="@+id/checkbox_female" />
             </LinearLayout>
         </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="8dp"
+            android:paddingBottom="2dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="10dp"
+            android:layout_marginBottom="0dp"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/debug_signup"
+                android:layout_height="30dp"
+                android:layout_width="wrap_content"
+                android:textSize="16sp"
+                android:text="debug"
+                android:textColor= "@color/black">
+            </TextView>
+        </LinearLayout>
+
     </LinearLayout>
 
 </LinearLayout>
