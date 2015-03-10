@@ -111,4 +111,44 @@ router.get("/facebook", auth.authFB(), function(req, res) {
     res.send("OK");
 });
 
+//check existance
+router.post("/exist", function(req, res) {
+
+    var q_arr = [];
+
+    if(req.body.username) {
+        q_arr.push({username : req.body.username});
+    }
+
+    if(req.body.email) {
+        q_arr.push({email : req.body.email});
+    }
+
+    console.log(q_arr);
+
+    User.findOne({$or:q_arr}, function(err, user) {
+
+        username = req.body.username || "";
+        email = req.body.email || "";
+
+        console.log(username);
+        console.log(email);
+        console.log(user);
+
+        if(user) {
+            if(user.username == username) {
+                res.send({ecode : "username_exist"});
+            } else if(user.email == email) {
+                res.send({ecode : "email_exist"})
+            } else {
+                throw "db error";
+            }
+        } else {
+            res.send({ecode : "OK"});
+        }
+
+    });
+
+});
+
 module.exports = router;
