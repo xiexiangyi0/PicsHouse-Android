@@ -2,28 +2,37 @@ package com.xiangyixie.picshouse.register;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.xiangyixie.picshouse.R;
+import com.xiangyixie.picshouse.httpService.PHHttpClient;
+import com.xiangyixie.picshouse.httpService.PHJsonRequest;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link SignupFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link SignupFragment} factory method to
- * create an instance of this fragment.
- */
+
+
 public class SignupFragment extends Fragment {
 
     private static final String TAG = "SignupFragment";
 
-    //private OnFragmentInteractionListener mListener;
+
+    private EditText signup_username = null;
+    private EditText signup_email = null;
+    private CheckBox signup_gender_female = null;
+    private CheckBox signup_gender_male = null;
 
 
 
@@ -42,7 +51,7 @@ public class SignupFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_signup, container, false);
-
+        final Context thisContext = container.getContext();
 
         //set male/female checkbox.
         final CheckBox checkBox_male = (CheckBox) view.findViewById(R.id.checkbox_male);
@@ -55,7 +64,6 @@ public class SignupFragment extends Fragment {
             checkBox_female.setChecked(false);
         }
 
-
         checkBox_male.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
             @Override
@@ -65,7 +73,6 @@ public class SignupFragment extends Fragment {
                 }
             }
         });
-
         checkBox_female.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
             @Override
@@ -73,6 +80,83 @@ public class SignupFragment extends Fragment {
                 if(isChecked){
                     checkBox_male.setChecked(false);
                 }
+            }
+        });
+
+
+
+
+        //signup http related
+        signup_email = (EditText)view.findViewById(R.id.signup_email);
+        signup_username = (EditText)view.findViewById(R.id.signup_username);
+        signup_gender_female = (CheckBox)view.findViewById(R.id.checkbox_female);
+        signup_gender_male = (CheckBox)view.findViewById(R.id.checkbox_male);
+
+        final TextView debug_text = (TextView) view.findViewById(R.id.debug_text);
+
+
+        next_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                // Instantiate the RequestQueue.
+                PHHttpClient client = PHHttpClient.getInstance(thisContext);
+
+                String username_str = signup_email.getText().toString();
+                String email_str = signup_username.getText().toString();
+
+                //gender:true--male, false--female
+                Boolean gender_male = signup_gender_male.isSelected();
+                Boolean gender_female = signup_gender_female.isSelected();
+                Boolean gender_selected = gender_male;
+
+                if(gender_male || gender_female == false){
+                    Toast.makeText(thisContext, "must select gender!",
+                            Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+                JSONObject jdata = new JSONObject();
+
+                try {
+                    jdata.put("username", username_str);
+                    jdata.put("email", email_str);
+                    jdata.put("gender", gender_selected);
+
+                } catch(JSONException e) {
+
+                    jdata = null;
+
+                }
+
+                // Request a string response(token) from the provided URL.
+                PHJsonRequest req = new PHJsonRequest(Request.Method.POST, "/user/signup/", jdata,
+                        new Response.Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                String tk = null;
+
+                                try {
+                                    tk = response.getString("token");
+                                } catch(JSONException e) {
+                                    tk = "parse error";
+                                }
+                                debug_text.setText("Signup Success, token is " + tk);
+                            }
+                        },
+
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                debug_text.setText("Fail");
+
+                            }
+                        }
+                );
+
+                // Add the request to the RequestQueue.
+                client.send(req);
+
             }
         });
 
@@ -86,13 +170,7 @@ public class SignupFragment extends Fragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        /*
-        try {
-            mListener = (OnFragmentInteractionListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }*/
+
     }
 
     
@@ -101,7 +179,7 @@ public class SignupFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        //mListener = null;
+
     }
 
 }
