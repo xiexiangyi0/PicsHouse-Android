@@ -36,6 +36,14 @@
 
     <string name="facebook_app_id">821745201206709</string>
 
+    <string name="warn_password_empty">Please input password</string>
+    <string name="warn_password2_empty">Please input password for verify</string>
+    <string name="password_verify_no_match">Password verify failed</string>
+
+
+    <string name="http_response_syntax_error">Syntax Error</string>
+    <string name="http_response_error">Server Error</string>
+
 
 
 <!-- TODO: Remove or change this placeholder text -->

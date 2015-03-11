@@ -1,20 +1,20 @@
 package com.xiangyixie.picshouse.register;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -22,6 +22,7 @@ import com.android.volley.VolleyError;
 import com.xiangyixie.picshouse.R;
 import com.xiangyixie.picshouse.httpService.PHHttpClient;
 import com.xiangyixie.picshouse.httpService.PHJsonRequest;
+import com.xiangyixie.picshouse.util.UserWarning;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -32,14 +33,19 @@ public class SignupFragment extends Fragment {
 
     private static final String TAG = "SignupFragment";
 
+    public interface SignupStep1NextListener {
+        public void onSignupStep1Next(String username, String email, boolean is_male);
+    }
+
     private Context thisContext= null;
 
     private EditText signup_username = null;
     private EditText signup_email = null;
-    private CheckBox signup_gender_female = null;
-    private CheckBox signup_gender_male = null;
-    private CheckBox signup_gender_selected = null;
+    private RadioGroup signup_gender = null;
+    //private CheckBox signup_gender_selected = null;
     private TextView debug_signup = null;
+
+    private SignupStep1NextListener m_step1_next = null;
 
 
 
@@ -47,7 +53,7 @@ public class SignupFragment extends Fragment {
 
 
     public SignupFragment() {
-        // Required empty public constructor
+
     }
 
     @Override
@@ -56,6 +62,7 @@ public class SignupFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         setMenuVisibility(true);
+
     }
 
 
@@ -70,47 +77,16 @@ public class SignupFragment extends Fragment {
 
         thisContext = container.getContext();
 
-        //set male/female checkbox.
-        final CheckBox checkBox_male = (CheckBox) view.findViewById(R.id.checkbox_male);
-        final CheckBox checkBox_female = (CheckBox)view.findViewById(R.id.checkbox_female);
-
-        if (checkBox_male.isChecked()) {
-            checkBox_male.setChecked(false);
-        }
-        if (checkBox_female.isChecked()) {
-            checkBox_female.setChecked(false);
-        }
-
-        checkBox_male.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
-                    checkBox_female.setChecked(false);
-                }
-            }
-        });
-
-        checkBox_female.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
-                    checkBox_male.setChecked(false);
-                }
-            }
-        });
 
 
         //signup http related
         signup_email = (EditText)view.findViewById(R.id.signup_email);
         signup_username = (EditText)view.findViewById(R.id.signup_username);
-        signup_gender_female = (CheckBox)view.findViewById(R.id.checkbox_female);
-        signup_gender_male = (CheckBox)view.findViewById(R.id.checkbox_male);
+        signup_gender = (RadioGroup)view.findViewById(R.id.radio_group_gender);
         debug_signup = (TextView) view.findViewById(R.id.debug_signup);
 
-        setHasOptionsMenu(true);
-        setMenuVisibility(true);
+
+
         return view;
 
     }
@@ -119,9 +95,14 @@ public class SignupFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 
+        menu.clear();
+
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_signup1, menu);
+
     }
+
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -133,60 +114,92 @@ public class SignupFragment extends Fragment {
                         // Instantiate the RequestQueue.
                         PHHttpClient client = PHHttpClient.getInstance(thisContext);
 
-                        String username_str = signup_email.getText().toString();
-                        String email_str = signup_username.getText().toString();
+                        final String email_str = signup_email.getText().toString();
+                        final String username_str = signup_username.getText().toString();
 
-                        //gender:true--male, false--female
-                        Boolean gender_male = signup_gender_male.isSelected();
-                        Boolean gender_female = signup_gender_female.isSelected();
-                        Boolean gender_selected = gender_male;
+                        final int selected_gender = signup_gender.getCheckedRadioButtonId();
 
-                        if(gender_male || gender_female == false){
-                            Toast.makeText(thisContext, "must select gender!",
-                                    Toast.LENGTH_LONG).show();
+                        if(username_str == "") {
+                            toastWarning("Please input username");
                             return true;
                         }
+
+                        if(email_str == "") {
+                            toastWarning("Please input email");
+                            return true;
+                        }
+
+
+
+
+                        if(selected_gender != R.id.radiobutton_male
+                                && selected_gender != R.id.radiobutton_female){
+                            toastWarning("must select gender");
+                            return true;
+                        }
+
 
                         JSONObject jdata = new JSONObject();
 
                         try {
                             jdata.put("username", username_str);
                             jdata.put("email", email_str);
-                            jdata.put("gender", gender_selected);
+
+                            Log.d("DEBUG", "username = " + username_str);
 
                         } catch(JSONException e) {
 
                             jdata = null;
+                            Log.d("DEBUG", "email = " + email_str);
 
                         }
 
                         // Request a string response(token) from the provided URL.
-                        PHJsonRequest req = new PHJsonRequest(Request.Method.POST, "/user/signup/", jdata,
+                        PHJsonRequest req = new PHJsonRequest(Request.Method.POST,
+                                "/user/exist/", jdata,
                                 new Response.Listener<JSONObject>() {
                                     @Override
                                     public void onResponse(JSONObject response) {
                                         String tk = null;
 
                                         try {
-                                            tk = response.getString("token");
+                                            tk = response.getString("ecode");
                                         } catch(JSONException e) {
-                                            tk = "parse error";
+                                            toastWarning(R.string.http_response_syntax_error);
+                                            return;
                                         }
-                                        debug_signup.setText("Signup Success, token is " + tk);
+
+
+                                        if(tk.equals("username_exist")) {
+                                            toastWarning("user name exists");
+
+                                        } else if(tk.equals("email_exist")) {
+                                            toastWarning("email exists");
+
+                                        } else  {
+
+                                            m_step1_next.onSignupStep1Next(
+                                                    username_str, email_str,
+                                                    selected_gender == R.id.radiobutton_male);
+
+
+                                        }
+
+
                                     }
                                 },
 
                                 new Response.ErrorListener() {
                                     @Override
                                     public void onErrorResponse(VolleyError error) {
-                                        debug_signup.setText("Fail");
-
+                                        toastWarning(R.string.http_response_error);
                                     }
                                 }
                         );
 
                         // Add the request to the RequestQueue.
                         client.send(req);
+
 
             return true;
 
@@ -199,18 +212,25 @@ public class SignupFragment extends Fragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        setHasOptionsMenu(true);
-        setMenuVisibility(true);
+
+        //register call back
+        m_step1_next = (SignupStep1NextListener) activity;
+        ((ActionBarActivity)activity).getSupportActionBar().show();
 
     }
-
-
-
 
     @Override
     public void onDetach() {
         super.onDetach();
+        ((ActionBarActivity)getActivity()).getSupportActionBar().hide();
+    }
 
+    private void toastWarning(String txt) {
+        UserWarning.warn(getActivity(), txt);
+    }
+
+    private void toastWarning(int id) {
+        UserWarning.warn(getActivity(), id);
     }
 
 }

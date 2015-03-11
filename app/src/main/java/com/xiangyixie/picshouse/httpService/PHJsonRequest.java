@@ -11,7 +11,7 @@ import org.json.JSONObject;
  */
 public class PHJsonRequest extends JsonObjectRequest {
 
-    private static String s_base_url = "http://" + AppConfig.server_ip + ":" + AppConfig.server_port;
+    private static String s_base_url = "http://" + AppConfig.SERVER_IP + ":" + AppConfig.SERVER_PORT;
 
     public PHJsonRequest(int method, String url, JSONObject jsonRequest,
                          Response.Listener<JSONObject> listener,
