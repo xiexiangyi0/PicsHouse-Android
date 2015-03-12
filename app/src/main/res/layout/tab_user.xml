@@ -1,11 +1,287 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
 
-    <ImageView
+
+    <LinearLayout
+        android:id="@+id/layout_top"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="fitXY"
-        android:src="@drawable/img5" />
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:orientation="vertical"
+        android:baselineAligned="true">
+
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:layout_gravity="center_horizontal">
+                <ImageView
+                    android:id="@+id/user_profile_img"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/img4"
+                    android:contentDescription="@string/filter_image_desc" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="2"
+                android:paddingLeft="6dp"
+                android:paddingTop="10dp"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1">
+                        <TextView
+                            android:layout_height="fill_parent"
+                            android:layout_width="fill_parent"
+                            android:textSize="13sp"
+                            android:text="Female, United States"
+                            android:gravity="center_vertical"
+                            android:textColor="@color/black">
+                        </TextView>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1">
+                        <TextView
+                            android:layout_height="fill_parent"
+                            android:layout_width="fill_parent"
+                            android:textSize="13sp"
+                            android:text="56 likes"
+                            android:textColor="@color/black">
+                        </TextView>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:paddingTop="2dp"
+                    android:paddingRight="6dp"
+                    android:paddingBottom="2dp"
+                    android:clickable="true">
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:background="@color/yellow">
+                        <TextView
+                            android:layout_height="fill_parent"
+                            android:layout_width="fill_parent"
+                            android:textSize="16sp"
+                            android:text="@string/edit_your_profile"
+                            android:gravity="center_vertical|center_horizontal"
+                            android:textColor="@color/black">
+                        </TextView>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_height="fill_parent"
+                android:layout_width="fill_parent"
+                android:textColor="@color/black"
+                android:layout_margin="10dp"
+                android:lines="1"
+                android:textSize="18sp"
+                android:text="@string/Xiangyi"
+                android:clickable="false"/>
+        </LinearLayout>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/layout_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:orientation="vertical">
+
+        <View android:background="@color/light_notes_color"
+            android:layout_height="1dp"
+            android:layout_width="fill_parent"/>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="60dp"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="2">
+                    <TextView
+                        android:id="@+id/photos_number"
+                        android:layout_height="fill_parent"
+                        android:layout_width="fill_parent"
+                        android:textSize="16sp"
+                        android:text="18"
+                        android:gravity="center_horizontal|center_vertical"
+                        android:textColor="@color/black"
+                        android:clickable="true">
+                    </TextView>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:paddingTop="0dp"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_height="fill_parent"
+                        android:layout_width="fill_parent"
+                        android:textSize="10sp"
+                        android:text="Photos"
+                        android:gravity="center_horizontal|top"
+                        android:layout_marginTop="0dp"
+                        android:paddingTop="0dp"
+                        android:clickable="false">
+                    </TextView>
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/imageView" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="2">
+                    <TextView
+                        android:id="@+id/following_number"
+                        android:layout_height="fill_parent"
+                        android:layout_width="fill_parent"
+                        android:textSize="16sp"
+                        android:text="52"
+                        android:gravity="center_horizontal|center_vertical"
+                        android:textColor="@color/black"
+                        android:clickable="true">
+                    </TextView>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:paddingTop="0dp">
+                    <TextView
+                        android:layout_height="fill_parent"
+                        android:layout_width="fill_parent"
+                        android:textSize="10sp"
+                        android:text="Following"
+                        android:gravity="center_horizontal|top"
+                        android:layout_marginTop="0dp"
+                        android:paddingTop="0dp"
+                        android:clickable="false">
+                    </TextView>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="2">
+                    <TextView
+                        android:id="@+id/followers_number"
+                        android:layout_height="fill_parent"
+                        android:layout_width="fill_parent"
+                        android:textSize="16sp"
+                        android:text="36"
+                        android:gravity="center_horizontal|center_vertical"
+                        android:textColor="@color/black"
+                        android:clickable="true">
+                    </TextView>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:paddingTop="0dp">
+                    <TextView
+                        android:layout_height="fill_parent"
+                        android:layout_width="fill_parent"
+                        android:textSize="10sp"
+                        android:text="Followers"
+                        android:gravity="center_horizontal|top"
+                        android:layout_marginTop="0dp"
+                        android:paddingTop="0dp"
+                        android:clickable="false">
+                    </TextView>
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+        <View android:background="@color/light_notes_color"
+            android:layout_height="1dp"
+            android:layout_width="fill_parent"/>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+            <GridView
+                android:id="@+id/gridView_userphotos"
+                android:layout_width="fill_parent"
+                android:layout_height="200dp"
+                android:padding="0dp"
+                android:background="@color/transparent_background"
+                android:horizontalSpacing="2dp"
+                android:verticalSpacing="2dp"
+                android:numColumns="3"
+                android:stretchMode="columnWidth"
+                android:gravity="center">
+            </GridView>
+        </LinearLayout>
+
+    </LinearLayout>
 
 </LinearLayout>

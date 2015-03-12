@@ -15,9 +15,9 @@
     <string name="input_addtext">Say Something...</string>
     <string name="publish_share_text">Share</string>
 
-    <!--login-->
+    <!--login and signup-->
     <string name="title_activity_login">Login</string>
-    <string name="add_profile_pic">Add profile pic</string>
+    <string name="add_profile_pic">Add profile picture</string>
     <string name="username">Username</string>
     <string name="username2">username</string>
     <string name="password">Password</string>
@@ -43,6 +43,16 @@
 
     <string name="http_response_syntax_error">Syntax Error</string>
     <string name="http_response_error">Server Error</string>
+
+
+
+    <!--for 'user' tab-->
+    <string name="Xiangyi">Xiangyi</string>
+    <string name="Xie">Xie</string>
+    <string name="edit_your_profile">Edit your profile</string>
+    <string name="followers">Followers</string>
+    <string name="following">Following</string>
+    <string name="posts">Posts</string>
 
 
 
