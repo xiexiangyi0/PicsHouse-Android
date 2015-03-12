@@ -8,7 +8,7 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context="com.xiangyixie.picshouse.activity.PublishActivity"
     android:orientation="vertical"
-    android:background="#eee" >
+    android:background="@color/signup_background_color" >
 
 
     <LinearLayout
@@ -188,7 +188,7 @@
 
 
 
-            <LinearLayout
+            <!--LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="fill_parent"
                 android:layout_weight="5"
@@ -210,7 +210,33 @@
                     android:text="@string/female"
                     android:textSize = "16sp"
                     android:id="@+id/checkbox_female" />
-            </LinearLayout>
+            </LinearLayout-->
+
+            <RadioGroup
+                android:id="@+id/radio_group_gender"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="5"
+                android:paddingBottom="5dp"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:layout_width="0dp"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="1"
+                    android:text="@string/male"
+                    android:textSize = "16sp"
+                    android:id="@+id/radiobutton_male"/>
+
+                <RadioButton
+                    android:layout_width="0dp"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="1"
+                    android:text="@string/female"
+                    android:textSize = "16sp"
+                    android:id="@+id/radiobutton_female"/>
+            </RadioGroup>
+
         </LinearLayout>
 
 
