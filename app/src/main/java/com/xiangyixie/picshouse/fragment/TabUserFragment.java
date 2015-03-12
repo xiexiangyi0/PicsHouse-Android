@@ -1,8 +1,8 @@
 package com.xiangyixie.picshouse.fragment;
 
 import android.app.Activity;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -61,21 +61,29 @@ public class TabUserFragment extends Fragment {
 
         //share gridview
         GridView gridView_userphotos = (GridView) view.findViewById(R.id.gridView_userphotos);
+        View gridView_item = (View)view.findViewById(R.id.gridView_userphotos);
 
+        //int widthn = gridView_item.getLayoutParams().width;
+        //gridView_item.getLayoutParams().height = widthn;
+        //int size = gridView_userphotos.getRequestedColumnWidth();
+        //gridView_item.setLayoutParams(new LinearLayout.LayoutParams(size, size));
 
-        //定义适配器SimpleAdapter
+        //SimpleAdapter for gridView
         ArrayList<HashMap<String, Object>> data = new ArrayList<HashMap<String, Object>>();
 
-        int[] imageint = new int[6];
+        int[] imageint = new int[9];
         imageint[0] = R.drawable.img1;
         imageint[1] = R.drawable.img2;
         imageint[2] = R.drawable.img3;
         imageint[3] = R.drawable.img4;
         imageint[4] = R.drawable.img5;
         imageint[5] = R.drawable.img6;
+        imageint[6] = R.drawable.img7;
+        imageint[7] = R.drawable.img8;
+        imageint[8] = R.drawable.img9;
 
 
-        for (int i = 0; i <= 5; ++i) {
+        for (int i = 0; i < 9; ++i) {
             HashMap<String, Object> hash = new HashMap<String, Object>();
             hash.put("photo", imageint[i]);
             data.add(hash);
@@ -85,7 +93,7 @@ public class TabUserFragment extends Fragment {
         int[] to = new int[1];
         to[0] = R.id.griditem_user_photo;
 
-        // attach each user photo cell xml
+        // attach each user photo cell xml with adapter
         SimpleAdapter simpleadapter = new SimpleAdapter(getActivity(), data, R.layout.griditem_user_photos, from, to);
 
         gridView_userphotos.setAdapter(simpleadapter);
