@@ -8,5 +8,7 @@ volley/build/*
 
 server/.idea/*
 server/node_modules/*
+server/public/image/*
+server/public/tmp/*
 
 .DS_Store
