@@ -1,11 +1,13 @@
 var express = require('express');
-//var express_session =require("express-session");
+
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var fileParser = require("multer");
 
+var app_config = require("./config");
 var auth = require("./util/auth");
 
 var routes = require('./routes/index');
@@ -14,7 +16,8 @@ var app = express();
 
 //database setup
 var mongoose = require("mongoose");
-var conn = "mongodb://localhost:27017/mydb";
+var conn = app_config.MONGODB_ADDR; //
+
 mongoose.connect(conn, function(err) {
     if(err) {
         console.log("Fail to connect db");
@@ -33,6 +36,11 @@ app.set('view engine', 'jade');
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(fileParser({
+    dest : app_config.TMP_DIR
+    , putSingleFilesInArray : true
+}));
+
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(auth.middleware);
