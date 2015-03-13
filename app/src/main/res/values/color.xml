@@ -6,6 +6,7 @@
     <color name="blue_transparent_btn">#b33df0ff</color>
     <color name="transparent">#00000000</color>
     <color name="signup_background_color">#eee</color>
+    <color name="gray_line_color">#ffd9dcee</color>
 
 <color name="white">#ffffffff</color>
 <color name="accent">#ffffffff</color>

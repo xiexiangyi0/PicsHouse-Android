@@ -1,21 +1,25 @@
 package com.xiangyixie.picshouse.activity;
 
-import android.content.Context;
-import android.content.pm.PackageManager;
+import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.os.Bundle;
-import android.app.Activity;
-import android.content.Intent;
-import android.support.v4.view.PagerAdapter;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 
 import com.xiangyixie.picshouse.R;
+import com.xiangyixie.picshouse.fragment.FragPagerAdapter;
+import com.xiangyixie.picshouse.fragment.TabCameraFragment;
+import com.xiangyixie.picshouse.fragment.TabDiscoverFragment;
+import com.xiangyixie.picshouse.fragment.TabHouseFragment;
+import com.xiangyixie.picshouse.fragment.TabNotificationFragment;
+import com.xiangyixie.picshouse.fragment.TabUserFragment;
 import com.xiangyixie.picshouse.view.MyViewPager_notSwiping;
 
 import java.io.File;
@@ -23,8 +27,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+//import android.app.FragmentManager;
 
-public class MainActivity extends Activity {
+
+public class MainActivity extends ActionBarActivity {
 
     private static final int TAB_HOUSE = 0;
     private static final int TAB_DISCOVER= 1;
@@ -48,7 +54,20 @@ public class MainActivity extends Activity {
     public static MainActivity instance = null;
 
     private MyViewPager_notSwiping mTabPager;
-    private View [] mTab;// mTab1,mTab2,mTab3,mTab4,mTab5;
+    private View[] mTab;    // mTab1,mTab2,mTab3,mTab4,mTab5;
+    private FragPagerAdapter mFragPagerAdapter;
+
+
+    private ArrayList<Fragment> mFragmentList = null;
+
+
+    private TabHouseFragment mTabHouseFrag = null;
+    private TabDiscoverFragment mTabDiscoverFrag = null;
+    private TabCameraFragment mTabCameraFrag = null;
+    private TabNotificationFragment mTabNotificationFrag = null;
+    private TabUserFragment mTabUserFrag = null;
+
+
 
     private int curIndex = 0;     //current page tab index for 'mTabPager': 0--4
 
@@ -59,21 +78,48 @@ public class MainActivity extends Activity {
 
 
 
-    @Override
+
+
+
+
+
+
+
+
+        @Override
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
         //启动activity时不自动弹出软键盘
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         instance = this;
 
 
+        mFragmentList = new ArrayList<Fragment>();
+        mTabHouseFrag = new TabHouseFragment();
+        mTabDiscoverFrag = new TabDiscoverFragment();
+        mTabCameraFrag = new TabCameraFragment();
+        mTabNotificationFrag = new TabNotificationFragment();
+        mTabUserFrag = new TabUserFragment();
+
+        mFragmentList.add(mTabHouseFrag);
+        mFragmentList.add(mTabDiscoverFrag);
+        mFragmentList.add(mTabCameraFrag);
+        mFragmentList.add(mTabNotificationFrag);
+        mFragmentList.add(mTabUserFrag);
 
 
+        //set viewPager view <-> fragmentPagerAdapter
         mTabPager = (MyViewPager_notSwiping)findViewById(R.id.tabpager);
         mTabPager.setPagingEnabled(false);                                   //setting not swiping!
+
+            Log.d("DEBUG", "debug + ");
+
+        mFragPagerAdapter =  new FragPagerAdapter(getSupportFragmentManager(),mFragmentList);
+        mTabPager.setAdapter(mFragPagerAdapter);
         mTabPager.setOnPageChangeListener(new MyOnPageChangeListener());
 
 
@@ -86,6 +132,8 @@ public class MainActivity extends Activity {
         mTab[TAB_NOTIFY] = (View) findViewById(R.id.bottom_notification);
         mTab[TAB_USER] = (View) findViewById(R.id.bottom_user);
 
+
+        //Initial tab yellow color selected state
         mTab[TAB_HOUSE].setBackgroundColor(getResources().getColor(R.color.yellow));
 
 
@@ -94,8 +142,11 @@ public class MainActivity extends Activity {
                 mTab[i].setOnClickListener(new MyOnClickListener(i));
             }
         }
+
+        //set TabCamera onClickListener
         mTab[TAB_CAMERA].setOnClickListener(new TabCameraClickListener());
 
+        /*
         //InitImageView();
         LayoutInflater mLi = LayoutInflater.from(this);
         View view1 = mLi.inflate(R.layout.tab_house, null);
@@ -141,6 +192,9 @@ public class MainActivity extends Activity {
         };
 
         mTabPager.setAdapter(mPagerAdapter);
+            */
+
+
     }
 
 
@@ -157,7 +211,9 @@ public class MainActivity extends Activity {
 
         @Override
         public void onClick(View v) {
-            mTabPager.setCurrentItem(index);      //important!Use this to control 'mTabPager' index!
+
+            mTabPager.setCurrentItem(index);
+            //important!Use this to control 'mTabPager' visible fragment index!
 
         }
     };
@@ -168,6 +224,7 @@ public class MainActivity extends Activity {
 
         @Override
         public void onPageSelected(int arg0) {
+
             if(curIndex != TAB_CAMERA) {
                 if(0 <=curIndex && curIndex <= 4) {
                     mTab[curIndex].setBackgroundColor(getResources().getColor(R.color.transparent));
@@ -194,14 +251,6 @@ public class MainActivity extends Activity {
 
 
 
-
-
-    /** Check if this device has a camera */
-    private boolean checkCameraHardware(Context context) {
-        // this device has a camera
-        // no camera on this device
-        return context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA);
-    }
 
     private static Uri getOutputImageFileUri(){
         return Uri.fromFile(getOutputMediaFile(MEDIA_TYPE_IMAGE));
