@@ -138,6 +138,7 @@ public class MainActivity extends ActionBarActivity {
 
 
         for(int i=0; i<COUNT_TAB; ++i) {
+
             if(i != TAB_CAMERA) {
                 mTab[i].setOnClickListener(new MyOnClickListener(i));
             }
@@ -145,59 +146,7 @@ public class MainActivity extends ActionBarActivity {
 
         //set TabCamera onClickListener
         mTab[TAB_CAMERA].setOnClickListener(new TabCameraClickListener());
-
-        /*
-        //InitImageView();
-        LayoutInflater mLi = LayoutInflater.from(this);
-        View view1 = mLi.inflate(R.layout.tab_house, null);
-        View view2 = mLi.inflate(R.layout.tab_discover, null);
-        View view3 = mLi.inflate(R.layout.tab_camera, null);
-        View view4 = mLi.inflate(R.layout.tab_notification, null);
-        View view5 = mLi.inflate(R.layout.tab_user, null);
-
-
-        final ArrayList<View> views = new ArrayList<View>();
-        views.add(view1);
-        views.add(view2);
-        views.add(view3);
-        views.add(view4);
-        views.add(view5);
-
-
-        //PagerAdapter for 'mTabPager'
-        PagerAdapter mPagerAdapter = new PagerAdapter() {
-
-            @Override
-            public boolean isViewFromObject(View arg0, Object arg1) {
-
-                return arg0 == arg1;
-            }
-
-            @Override
-            public int getCount() {
-
-                return views.size();
-            }
-
-            @Override
-            public void destroyItem(View container, int position, Object object) {
-                ((MyViewPager_notSwiping)container).removeView(views.get(position));
-            }
-
-            @Override
-            public Object instantiateItem(View container, int position) {
-                ((MyViewPager_notSwiping)container).addView(views.get(position));
-                return views.get(position);
-            }
-        };
-
-        mTabPager.setAdapter(mPagerAdapter);
-            */
-
-
     }
-
-
 
 
     //MyOnClickListener for 'mTab1' - 'mTab5'
@@ -238,11 +187,9 @@ public class MainActivity extends ActionBarActivity {
             curIndex = arg0;
         }
 
-
         @Override
         public void onPageScrolled(int arg0, float arg1, int arg2) {
         }
-
 
         @Override
         public void onPageScrollStateChanged(int arg0) {
@@ -253,6 +200,7 @@ public class MainActivity extends ActionBarActivity {
 
 
     private static Uri getOutputImageFileUri(){
+
         return Uri.fromFile(getOutputMediaFile(MEDIA_TYPE_IMAGE));
     }
 
@@ -291,6 +239,9 @@ public class MainActivity extends ActionBarActivity {
     }
 
 
+
+
+    //TabCamera onClickListener
     public class TabCameraClickListener implements View.OnClickListener {
 
         @Override
@@ -328,10 +279,8 @@ public class MainActivity extends ActionBarActivity {
                 mTab[TAB_HOUSE].setBackgroundColor(getResources().getColor(R.color.yellow));
                 break;
             }
-
             default : break;
         }
-
     }
 
 }

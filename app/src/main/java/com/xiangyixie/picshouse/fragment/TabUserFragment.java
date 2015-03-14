@@ -4,29 +4,27 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.GridView;
-import android.widget.ImageView;
+import android.view.WindowManager;
 import android.widget.SimpleAdapter;
 
+import com.android.photos.views.HeaderGridView;
 import com.xiangyixie.picshouse.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link TabUserFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link TabUserFragment#} factory method to
- * create an instance of this fragment.
- */
+
+
+
 public class TabUserFragment extends Fragment {
 
     private final static String TAG="TabUserFragment";
+
+
 
     public TabUserFragment() {
 
@@ -42,13 +40,17 @@ public class TabUserFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.tab_user, container, false);
+        View view = inflater.inflate(R.layout.tab_user_new, container, false);
+        View header = inflater.inflate(R.layout.tab_user_header, container, false);
+
+
+
 
         //Intent intent = getIntent();
         //load the edited image from FilterActivity!
         //Uri img_load_uri = intent.getParcelableExtra(FilterActivity.IMAGE_Edited_Uri);
 
-        final ImageView image_view = (ImageView) view.findViewById(R.id.user_profile_img);
+        //final ImageView image_view = (ImageView) view.findViewById(R.id.user_profile_img);
 
         /*
         try {
@@ -60,8 +62,9 @@ public class TabUserFragment extends Fragment {
         */
 
         //share gridview
-        GridView gridView_userphotos = (GridView) view.findViewById(R.id.gridView_userphotos);
-        View gridView_item = (View)view.findViewById(R.id.gridView_userphotos);
+        HeaderGridView gridView_userphotos = (HeaderGridView) view.findViewById(R.id.gridView_userphotos);
+        gridView_userphotos.addHeaderView(header);
+        //View gridView_item = (View)view.findViewById(R.id.gridView_userphotos);
 
         //int widthn = gridView_item.getLayoutParams().width;
         //gridView_item.getLayoutParams().height = widthn;
@@ -99,6 +102,7 @@ public class TabUserFragment extends Fragment {
         gridView_userphotos.setAdapter(simpleadapter);
 
         Log.d(TAG,"gridView_userphotos simple adaptor has been created.");
+        Log.d(TAG, "" + gridView_userphotos.getHeaderViewCount());
 
         return view;
 

@@ -41,31 +41,6 @@ public class User {
 
 
 
-    /*
-    public User(User user) {
-
-        mId = user.mId;
-        mUserName = user.mUserName;
-        mFirstName = user.mFirstName;
-        mLastName = user.mLastName;
-        mDescription = user.mDescription;
-
-        mFollowersCount = user.mFollowersCount;
-        mFollowingCount = user.mFollowingCount;
-        mPhotosCount = user.mPhotosCount;
-        mBeLikedCount = user.mBeLikedCount;
-
-        mCurrentUserFollowed = user.mCurrentUserFollowed;
-        mFollowingCurrentUsers = user.mFollowingCurrentUsers;
-
-
-        mProfileImageUrlMini = "https://alpha-api.app.net/stream/0/users/@" + user.mUserName + "/avatar?w=32";
-        mProfileImageUrlNormal = "https://alpha-api.app.net/stream/0/users/@" + user.mUserName + "/avatar?w=48";
-        mProfileImageUrlOriginal = "https://alpha-api.app.net/stream/0/users/@" + user.mUserName + "/avatar";
-
-    }
-    */
-
 
     public User(User user) {
 

@@ -14,7 +14,7 @@
         android:paddingBottom="10dp"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
-        android:layout_marginBottom="5dp"
+        android:layout_marginBottom="0dp"
         android:orientation="vertical"
         android:baselineAligned="true">
 
@@ -108,7 +108,9 @@
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="0dp"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:paddingLeft="3dp"
+            android:layout_marginTop="3dp">
 
             <TextView
                 android:layout_height="fill_parent"
@@ -277,7 +279,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content">
             <!--user grid photos-->
-            <GridView
+            <com.android.photos.views.HeaderGridView
                 android:id="@+id/gridView_userphotos"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -286,8 +288,9 @@
                 android:verticalSpacing="2dp"
                 android:numColumns="3"
                 android:stretchMode="columnWidth"
-                android:gravity="center">
-            </GridView>
+                android:gravity="center"
+                >
+            </com.android.photos.views.HeaderGridView>
         </LinearLayout>
 
     </LinearLayout>
