@@ -16,4 +16,11 @@ var schema = new Schema({
 
 schema.plugin(user_plugin);
 
+schema.method("getJsonPublic", function() {
+    return {
+        id : this._id
+        , username : this.username
+    }
+});
+
 module.exports = mongoose.model("User", schema);
