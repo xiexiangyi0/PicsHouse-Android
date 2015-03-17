@@ -14,14 +14,21 @@ router.get("/get", function(req, res) {
         cond._id = req.query.id;
     }
 
-    PicPost.find(cond).populate("user comments")
+    PicPost.find(cond).populate("user_id comments")
         .exec(function(err, posts) {
             if(err) {
                 throw err;
             }
 
-            console.log(posts);
-            res.send("OK");
+            var jarr = [];
+
+            posts.forEach(function(p, idx, arr) {
+                var jdata = p.getJsonPublic(p.user_id.getJsonPublic());
+                jarr.push(jdata);
+            });
+
+            console.log(jarr);
+            res.send({"posts" : jarr});
         });
 });
 
@@ -44,29 +51,25 @@ router.post("/create", auth.authToken(), function(req, res) {
         return;
     }
 
-    //console.log(image_file);
+//    console.log(image_file);
 
 
     var pic_post = new PicPost({
-        user : user._id
+        user_id : user._id
         , desc : desc
-        //, image : image_file
         , comments : []
     });
 
-    pic_post.image.file = image_file;
+    pic_post.setFile(image_file, function(err, pp) {
+        pp.save(function(err, p){
+            if(err) {
+                throw err;
+            }
 
-    console.log(pic_post);
+            //console.log(p);
 
-    pic_post.save(function(err, p) {
-        if(err) {
-            throw err;
-        }
-
-        console.log(p);
-
-        res.send({"post" : p});
-
+            res.send({"post" : p.getJsonPublic(req.user.getJsonPublic())});
+        });
     });
 
 });

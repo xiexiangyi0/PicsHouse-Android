@@ -120,7 +120,9 @@ function onClickUploadImage() {
         , processData : false
         , data : form_data
 
-    }).done(function() {
+    }).done(function(data) {
+
+        $("#upload_image img").attr("src", data.post.image.src);
 
     }).fail(function() {
         console.log("fail");

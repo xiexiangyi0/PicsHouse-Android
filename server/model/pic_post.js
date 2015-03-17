@@ -1,56 +1,42 @@
 /**
  * Created by imlyc on 3/6/15.
  */
+
 var mongoose = require("mongoose")
     , Schema = mongoose.Schema
     , ObjId = Schema.Types.ObjectId
-    , file_plugin = require("mongoose-file").filePlugin
     , app_config = require("../config")
     , path = require("path")
+    , image_plugin = require("../util/image").imagePlugin
 ;
 
 var schema = new Schema({
-    user : ObjId
+    user_id : {type : ObjId, ref : "User"}
     , desc : String
     , comments : [ObjId]
     , pub_date : Date
 });
 
-schema.plugin(file_plugin, {
+schema.plugin(image_plugin, {
     name : "image"
-    , upload_to : function (file) {
-        var p =  path.join(app_config.IMAGE_DIR, this.user.toString());
-        p = path.join(p, file.name);
-
-        return p;
+    , upload_to : function(file) {
+        return path.join(app_config.IMAGE_DIR, this.user_id.toString(), file.name);
     }
     , relative_to : function(file) {
-        return app_config.IMAGE_DIR;
-
+        return "/image/" + this.user_id.toString() + "/" + file.name;
     }
-    /*
-    , change_cb : function(field_name, new_path, old_path) {
-
-        console.log("file-plugin");
-        console.log(field_name);
-        console.log(new_path);
-        console.log(old_path);
-
-    }*/
 });
 
-
-schema.pre("save", function(next) {
-
-    console.log("pre save");
-
-//    this.image.file = this.image;
-
-    console.log(this.image);
-
-    return next();
-
+schema.method("getJsonPublic", function(user_json) {
+    return {
+        id : this._id
+        , user : user_json
+        , desc : this.desc
+        , image : {
+            src : this.image.rel
+        }
+        , comments : this.comments
+    };
 });
-
 
 module.exports = mongoose.model("PicPost", schema);
