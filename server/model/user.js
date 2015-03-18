@@ -7,6 +7,8 @@ var schema = new Schema({
     , email : {type : String, required : true, index : {unique : true}}
     , token : {type : String, required : true, index : {unique : true}}
 
+    , gender : {type : Number, min : 0, max : 1} // male 1, femail 0
+
     , avatar : String
 
     , join_date : Date
@@ -20,6 +22,7 @@ schema.method("getJsonPublic", function() {
     return {
         id : this._id
         , username : this.username
+        , gender : this.gender
     }
 });
 

@@ -10,6 +10,7 @@ import com.android.volley.toolbox.Volley;
  * Created by imlyc on 3/9/15.
  */
 public class PHHttpClient {
+
     private static PHHttpClient s_instance = null;
     private static Context s_context = null;
 

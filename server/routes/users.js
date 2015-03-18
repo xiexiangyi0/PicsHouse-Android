@@ -15,6 +15,10 @@ router.post("/create", function(req, res) {
     var username = post.username;
     var password = post.password;
     var email = post.email;
+    var gender = post.gender;
+
+
+    console.log(post);
 
     User.findOne({$or : [{username : username}, {email : email}]}, function(err, user) {
         if(err) {
@@ -22,9 +26,12 @@ router.post("/create", function(req, res) {
         }
 
         if(user) {
+            res.status(403);
             if(user.username == username) {
+
                 res.send({ecode : "username_exist"});
             } else {
+
                 res.send({ecode : "email_exist"});
             }
         } else {
@@ -33,6 +40,7 @@ router.post("/create", function(req, res) {
                 username : username
                 , password : password
                 , email : email
+                , gender : gender
             });
 
             auth.register(new_user, function(err, user) {
@@ -77,7 +85,7 @@ router.post("/update", auth.authToken(), function(req, res) {
 
 router.get("/get", auth.authToken(), function(req, res) {
     console.log(req.user.username);
-    res.send({username : req.user.username, email : req.user.email});
+    res.send({user : req.user.getJsonPublic()});
 });
 
 router.post("/login", auth.authLocal(), function(req, res) {

@@ -40,7 +40,7 @@
             android:id="@+id/input_email"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/email"
+            android:hint="@string/username"
             android:textColorHint="@color/white"
             android:textSize="16sp"
             android:singleLine="true"

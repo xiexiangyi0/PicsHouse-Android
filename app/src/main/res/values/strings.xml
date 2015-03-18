@@ -42,6 +42,8 @@
 
 
     <string name="http_response_syntax_error">Syntax Error</string>
+    <string name="http_response_auth_error">Please login first</string>
+    <string name="http_response_login_fail">Incorrect username or password</string>
     <string name="http_response_error">Server Error</string>
 
 

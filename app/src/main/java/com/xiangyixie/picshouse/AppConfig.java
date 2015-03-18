@@ -12,4 +12,5 @@ public class AppConfig {
     public static final String KEY_EMAIL = "email";
     public static final String KEY_GENDER = "gender";
     public static final String KEY_PASSWORD = "password";
+    public static final String KEY_ECODE = "ecode";
 }

@@ -1,5 +1,6 @@
 package com.xiangyixie.picshouse.register;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -11,12 +12,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.facebook.AppEventsLogger;
 import com.xiangyixie.picshouse.AppConfig;
 import com.xiangyixie.picshouse.R;
+import com.xiangyixie.picshouse.activity.MainActivity;
 import com.xiangyixie.picshouse.fragment.FbLoginFragment;
 import com.xiangyixie.picshouse.httpService.PHHttpClient;
 import com.xiangyixie.picshouse.httpService.PHJsonRequest;
@@ -114,15 +117,23 @@ public class LoginActivity extends ActionBarActivity
                                 try {
                                     tk = response.getString("token");
                                 } catch(JSONException e) {
-                                    tk = "parse error";
+                                    UserWarning.warn(LoginActivity.this, R.string.http_response_syntax_error);
+                                    return;
                                 }
-                                debug_text.setText("Login Success, token is " + tk);
+
+                                //login successfully, switch to main
+                                LoginActivity.this.gotoMain();
                             }
                         },
                         new Response.ErrorListener() {
                             @Override
                             public void onErrorResponse(VolleyError error) {
-                                debug_text.setText("Fail");
+
+                                LoginActivity.this.showHttpError(error);
+
+
+
+
 
                             }
                         }
@@ -232,7 +243,7 @@ public class LoginActivity extends ActionBarActivity
             jdata.put(AppConfig.KEY_USERNAME, m_user_info.username);
             jdata.put(AppConfig.KEY_EMAIL, m_user_info.email);
             jdata.put(AppConfig.KEY_PASSWORD, password);
-            jdata.put(AppConfig.KEY_GENDER, m_user_info.is_male);
+            jdata.put(AppConfig.KEY_GENDER, m_user_info.is_male ? 1 : 0);
             m_user_info = null;
         } catch(JSONException e) {
             return;
@@ -246,19 +257,25 @@ public class LoginActivity extends ActionBarActivity
                         try {
                             tk = response.getString("token");
                         } catch (JSONException e) {
-                            tk = null;
+                            UserWarning.warn(LoginActivity.this, R.string.http_response_syntax_error);
+                            return;
                         }
 
                         getSupportFragmentManager()
                                 .popBackStackImmediate(
                                         null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+
+                        LoginActivity.this.gotoMain();
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        UserWarning.warn(LoginActivity.this, R.string.http_response_error);
-                    }
+
+
+                            LoginActivity.this.showHttpError(error);
+                        }
+
                 });
 
 
@@ -266,5 +283,33 @@ public class LoginActivity extends ActionBarActivity
 
 
 
+    }
+
+    private void gotoMain() {
+
+        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+        startActivity(intent);
+        finish();
+
+    }
+
+    private void showHttpError(VolleyError error) {
+        if(error instanceof AuthFailureError) {
+            String str = null;
+            try {
+                str = new String(error.networkResponse.data, "UTF8");
+                JSONObject jerror = new JSONObject(str);
+
+                if(jerror.has(AppConfig.KEY_ECODE)) {
+                    UserWarning.warn(this, jerror.getString(AppConfig.KEY_ECODE));
+                } else {
+                    UserWarning.warn(this, R.string.http_response_login_fail);
+                }
+            } catch (Exception e) {
+                UserWarning.warn(this, R.string.http_response_syntax_error);
+            }
+        } else {
+            UserWarning.warn(this, R.string.http_response_error);
+        }
     }
 }
