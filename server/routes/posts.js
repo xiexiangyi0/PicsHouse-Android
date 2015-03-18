@@ -27,7 +27,7 @@ router.get("/get", function(req, res) {
                 jarr.push(jdata);
             });
 
-            console.log(jarr);
+            //console.log(jarr);
             res.send({"posts" : jarr});
         });
 });
