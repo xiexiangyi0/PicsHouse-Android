@@ -2,7 +2,9 @@ package com.xiangyixie.picshouse.fragment;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.SimpleAdapter;
 
 import com.android.photos.views.HeaderGridView;
-
 import com.xiangyixie.picshouse.R;
 
 import java.util.ArrayList;
@@ -41,6 +42,22 @@ public class TabUserFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.tab_user_new, container, false);
         View header = inflater.inflate(R.layout.tab_user_header, container, false);
+
+        //pull to refresh
+        final SwipeRefreshLayout refresh = (SwipeRefreshLayout) view.findViewById(R.id.tab_user_refresh);
+
+        refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        refresh.setRefreshing(false);
+                    }
+                }, 3000);
+
+            }
+        });
 
 
         //'gridView_userphotos' using Google open source code: HeaderGridView.java
