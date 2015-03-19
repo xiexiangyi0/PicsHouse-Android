@@ -6,6 +6,7 @@ var bcrypt = require("bcrypt")
     , jwt = require("jsonwebtoken")
     , JWT_SECRET = "sEcReT"
     , FBTokenStrategy = require("passport-facebook-token").Strategy
+    , app_config = require("../config")
 ;
 
 
@@ -55,8 +56,8 @@ passport.use(new BearerStrategy(function(token, done) {
 
 passport.use(
     new FBTokenStrategy({
-        clientID : "abcd"
-        , clientSecret : "123456"
+        clientID : app_config.FB_CLIENT_ID
+        , clientSecret : app_config.FB_CLIENT_SECRET
     }
     , function(accessToken, refreshToken, profile, done) {
         return done(null, false, {message : "test"});

@@ -13,4 +13,6 @@ module.exports = {
     , TMP_DIR : _tmp_dir
     , IMAGE_DIR : _image_dir
     , MONGODB_ADDR : "mongodb://localhost:27017/mydb"
+    , FB_CLIENT_ID : "1033035743390927"
+    , FB_CLIENT_SECRET : "a588aa09830734bf9f1d6f206d8ad62d"
 };
