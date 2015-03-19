@@ -4,14 +4,13 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.SimpleAdapter;
 
 import com.android.photos.views.HeaderGridView;
+
 import com.xiangyixie.picshouse.R;
 
 import java.util.ArrayList;
@@ -39,37 +38,19 @@ public class TabUserFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
         View view = inflater.inflate(R.layout.tab_user_new, container, false);
         View header = inflater.inflate(R.layout.tab_user_header, container, false);
 
 
 
 
-        //Intent intent = getIntent();
-        //load the edited image from FilterActivity!
-        //Uri img_load_uri = intent.getParcelableExtra(FilterActivity.IMAGE_Edited_Uri);
 
-        //final ImageView image_view = (ImageView) view.findViewById(R.id.user_profile_img);
+        //'gridView_userphotos' using Google open source code: HeaderGridView.java
 
-        /*
-        try {
-            image_view.setImageURI(img_load_uri);
-
-        } catch (Exception e) {
-            return view;
-        }
-        */
-
-        //share gridview
         HeaderGridView gridView_userphotos = (HeaderGridView) view.findViewById(R.id.gridView_userphotos);
+        //add headerView
         gridView_userphotos.addHeaderView(header);
-        //View gridView_item = (View)view.findViewById(R.id.gridView_userphotos);
-
-        //int widthn = gridView_item.getLayoutParams().width;
-        //gridView_item.getLayoutParams().height = widthn;
-        //int size = gridView_userphotos.getRequestedColumnWidth();
-        //gridView_item.setLayoutParams(new LinearLayout.LayoutParams(size, size));
 
         //SimpleAdapter for gridView
         ArrayList<HashMap<String, Object>> data = new ArrayList<HashMap<String, Object>>();

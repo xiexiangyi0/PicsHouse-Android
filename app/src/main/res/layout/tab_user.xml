@@ -288,8 +288,7 @@
                 android:verticalSpacing="2dp"
                 android:numColumns="3"
                 android:stretchMode="columnWidth"
-                android:gravity="center"
-                >
+                android:gravity="center">
             </com.android.photos.views.HeaderGridView>
         </LinearLayout>
 
