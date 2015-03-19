@@ -43,17 +43,16 @@ public class TabUserFragment extends Fragment {
         View header = inflater.inflate(R.layout.tab_user_header, container, false);
 
 
-
-
-
         //'gridView_userphotos' using Google open source code: HeaderGridView.java
-
         HeaderGridView gridView_userphotos = (HeaderGridView) view.findViewById(R.id.gridView_userphotos);
         //add headerView
         gridView_userphotos.addHeaderView(header);
 
+
+
         //SimpleAdapter for gridView
         ArrayList<HashMap<String, Object>> data = new ArrayList<HashMap<String, Object>>();
+
 
         int[] imageint = new int[9];
         imageint[0] = R.drawable.img1;

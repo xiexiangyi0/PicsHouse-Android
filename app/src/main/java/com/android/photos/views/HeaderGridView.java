@@ -125,6 +125,7 @@ public class HeaderGridView extends GridView {
         }
     }
 
+
     /**
      * Add a fixed view to appear at the top of the grid. If addHeaderView is
      * called more than once, the views will appear in the order they were
