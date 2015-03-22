@@ -13,6 +13,7 @@ import android.widget.SimpleAdapter;
 
 import com.android.photos.views.HeaderGridView;
 import com.xiangyixie.picshouse.R;
+import com.xiangyixie.picshouse.view.SwipeRefreshChildFollowLayout;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -43,8 +44,18 @@ public class TabUserFragment extends Fragment {
         View view = inflater.inflate(R.layout.tab_user_new, container, false);
         View header = inflater.inflate(R.layout.tab_user_header, container, false);
 
-        //pull to refresh
-        final SwipeRefreshLayout refresh = (SwipeRefreshLayout) view.findViewById(R.id.tab_user_refresh);
+
+
+
+        //'gridView_userphotos' using Google open source code: HeaderGridView.java
+        HeaderGridView gridView_userphotos = (HeaderGridView) view.findViewById(R.id.gridView_userphotos);
+        //add headerView
+        gridView_userphotos.addHeaderView(header);
+
+//pull to refresh
+        final SwipeRefreshChildFollowLayout refresh = (SwipeRefreshChildFollowLayout) view.findViewById(R.id.tab_user_refresh);
+
+        refresh.setTargetView(gridView_userphotos);
 
         refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -58,14 +69,6 @@ public class TabUserFragment extends Fragment {
 
             }
         });
-
-
-        //'gridView_userphotos' using Google open source code: HeaderGridView.java
-        HeaderGridView gridView_userphotos = (HeaderGridView) view.findViewById(R.id.gridView_userphotos);
-        //add headerView
-        gridView_userphotos.addHeaderView(header);
-
-
 
         //SimpleAdapter for gridView
         ArrayList<HashMap<String, Object>> data = new ArrayList<HashMap<String, Object>>();

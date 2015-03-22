@@ -1,9 +1,16 @@
 package com.xiangyixie.picshouse.view;
 
 import android.content.Context;
+import android.support.v4.view.MotionEventCompat;
+import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.AttributeSet;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.GridView;
+
+import com.xiangyixie.picshouse.util.UserWarning;
 
 /**
  * Created by xiangyixie on 3/19/15.
@@ -12,11 +19,11 @@ public class SwipeRefreshChildFollowLayout extends SwipeRefreshLayout {
 
     private static final String TAG = "SwipeRefreshChildFollow";
 
-    private int m_last_y = -1;
+    private float m_y_begin = 0;
+    private boolean m_scroll_mode = false;
 
-    private int m_orig_top_padding = 0;
-
-    View m_child = null;
+    private View m_child = null;
+    private View m_circle = null;
 
     public SwipeRefreshChildFollowLayout(Context context) {
         super(context);
@@ -30,73 +37,123 @@ public class SwipeRefreshChildFollowLayout extends SwipeRefreshLayout {
 
     private void init() {
 
-        m_child = getChildAt(0);
-        m_orig_top_padding = m_child.getPaddingTop();
+        m_child = null;
+
+        //m_orig_top_padding = m_child.getPaddingTop();
+        //setEnabled(false);
     }
-/*
+
+    public void setTargetView(View v) {
+        m_child = v;
+        int count = getChildCount();
+        for(int i=0; i<count; ++i) {
+            View c = getChildAt(i);
+            if(c != m_child) {
+                m_circle = c;
+                break;
+            }
+        }
+
+    }
+
+    @Override
+    public void setRefreshing(boolean v) {
+        if(!v) {
+            m_child.scrollTo(0, 0);
+        }
+
+        super.setRefreshing(v);
+    }
+
+    private boolean canChildScrollDown() {
+        View v = m_child;
+        return ViewCompat.canScrollVertically(v, 1);
+    }
+
+
+    @Override
+    public boolean onInterceptTouchEvent(MotionEvent ev) {
+
+        final int action = MotionEventCompat.getActionMasked(ev);
+
+        switch(action) {
+            case MotionEvent.ACTION_DOWN:
+
+                m_y_begin = ev.getY();
+
+                if(canChildScrollUp()) {
+                    m_scroll_mode = m_child.onTouchEvent(ev);
+                    return m_scroll_mode;
+                } else {
+                    
+                }
+
+        }
+
+
+
+        return super.onInterceptTouchEvent(ev);
+    }
+
+
     @Override
     public boolean onTouchEvent(MotionEvent e) {
 
-        Log.d(TAG, "Num of Child " + getChildCount());
+        final int action = MotionEventCompat.getActionMasked(e);
 
+        switch(action) {
+            case MotionEvent.ACTION_DOWN:
+                if(m_scroll_mode) {
 
-        int cur_y = -1;
+                    Log.d(TAG, "on touch, action down");
 
+                    return true;
 
+                    //return m_child.onTouchEvent(e);
+                } else {
+                    
+                    m_y_begin = e.getY();
+                }
 
-        switch(e.getAction()) {
-            case MotionEvent.ACTION_DOWN :
-                m_last_y = (int)e.getY();
-                Log.d(TAG, "ACTION_DOWN");
-
-                //break;
-                return true;
-
-            case MotionEvent.ACTION_MOVE :
-                Log.d(TAG, "ACTION_MOVE");
-                cur_y = (int)e.getY();
-                int delta = (cur_y - m_last_y);
-
-                Log.d(TAG, ""+delta);
-
-                m_child.setPadding(
-                        m_child.getPaddingLeft(),
-                        m_orig_top_padding + delta,
-                        m_child.getPaddingRight(),
-                        m_child.getPaddingBottom()
-                );
                 break;
 
-            case MotionEvent.ACTION_UP :
-                Log.d(TAG, "ACTION_UP");
-                m_child.setPadding(
-                        m_child.getPaddingLeft(),
-                        m_orig_top_padding,
-                        m_child.getPaddingRight(),
-                        m_child.getPaddingBottom()
-                );
-                m_last_y = -1;
+            case MotionEvent.ACTION_MOVE:
+                if(m_scroll_mode) {
+
+                    return m_child.onTouchEvent(e);
+
+                } else {
+                    float y = e.getY();
+                    float delta = y - m_y_begin;
+
+                    m_child.scrollTo(0, (int) (-delta));
+                }
                 break;
 
-            default :
-                break;
+            case MotionEvent.ACTION_UP:
+                if(m_scroll_mode) {
+
+                    m_scroll_mode = false;
+                    return m_child.onTouchEvent(e);
+                } else {
+
+                    boolean consumed = super.onTouchEvent(e);
+
+                    if(isRefreshing()) {
+                        m_child.scrollTo(0, -300);
+                    } else {
+                        m_child.scrollTo(0, 0);
+                    }
+
+                    return consumed;
+
+                }
+
+
+
         }
 
         return super.onTouchEvent(e);
     }
 
-
-    @Override
-    public boolean onInterceptTouchEvent(MotionEvent e) {
-        switch(e.getAction()) {
-            case MotionEvent.ACTION_DOWN :
-                m_last_y = (int)e.getY();
-                break;
-
-            default:
-                break;
-        }
-
-        return super.onInterceptTouchEvent(e);
-    }*/
 }
