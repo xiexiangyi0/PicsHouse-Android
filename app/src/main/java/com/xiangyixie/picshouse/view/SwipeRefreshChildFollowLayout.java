@@ -15,6 +15,8 @@ import com.xiangyixie.picshouse.util.UserWarning;
 /**
  * Created by xiangyixie on 3/19/15.
  */
+
+
 public class SwipeRefreshChildFollowLayout extends SwipeRefreshLayout {
 
     private static final String TAG = "SwipeRefreshChildFollow";
@@ -53,7 +55,6 @@ public class SwipeRefreshChildFollowLayout extends SwipeRefreshLayout {
                 break;
             }
         }
-
     }
 
     @Override
@@ -155,5 +156,4 @@ public class SwipeRefreshChildFollowLayout extends SwipeRefreshLayout {
 
         return super.onTouchEvent(e);
     }
-
 }
