@@ -122,6 +122,28 @@ function _getJWTByUser(user) {
     return jwt.sign(info, JWT_SECRET);
 }
 
+function _passportAuthWrapper(name, option) {
+    return function(req, res, next) {
+        (passport.authenticate(name, option, function (err, user, info) {
+            if (err) {
+                return next(err);
+            }
+
+            if(user) {
+                req.user = user;
+                return next(null, user);
+            } else {
+                res.status(401);
+                if(info && info.message) {
+                    res.send({"ecode": info.message});
+                } else {
+                    res.send({"ecode" : "unauthorized"});
+                }
+            }
+        }))(req, res, next);
+    }
+}
+
 //public
 //User -> (err -> User -> void) -> void
 function register(user, cb) {
@@ -151,15 +173,15 @@ function login(user, cb) {
 }
 
 function authLocal() {
-    return passport.authenticate("local", {session:false});
+    return _passportAuthWrapper("local", {session: false});
 }
 
 function authToken() {
-    return passport.authenticate("bearer", {session:false});
+    return _passportAuthWrapper("bearer", {session:false});
 }
 
 function authFB() {
-    return passport.authenticate("facebook-token", {session:false});
+    return _passportAuthWrapper("facebook-token", {session:false});
 }
 
 module.exports = {

@@ -22,6 +22,7 @@ schema.method("getJsonPublic", function() {
     return {
         id : this._id
         , username : this.username
+        , email : this.email
         , gender : this.gender
     }
 });

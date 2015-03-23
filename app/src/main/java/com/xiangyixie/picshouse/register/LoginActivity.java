@@ -30,7 +30,8 @@ import org.json.JSONObject;
 
 
 public class LoginActivity extends ActionBarActivity
-    implements SignupFragment.SignupStep1NextListener, PasswordFragment.SignupStep2NextListener {
+    implements SignupFragment.SignupStep1NextListener, PasswordFragment.SignupStep2NextListener,
+        FbLoginFragment.FbLoginListener {
 
     private EditText  email = null;
     private EditText  password = null;
@@ -46,6 +47,8 @@ public class LoginActivity extends ActionBarActivity
     private FbLoginFragment m_fbLoginFragment;
 
     private PHHttpClient m_http_client = null;
+
+
 
     //for internal data store
     class UserSignupInfo {
@@ -311,5 +314,17 @@ public class LoginActivity extends ActionBarActivity
         } else {
             UserWarning.warn(this, R.string.http_response_error);
         }
+    }
+
+    @Override
+    public void onSuccess() {
+
+        gotoMain();
+
+    }
+
+    @Override
+    public void onFail() {
+        
     }
 }

@@ -28,6 +28,7 @@ function onClickSignup() {
             username : username
             , email : email
             , password : password
+            , gender : 0
         }
     }).done(function(data) {
         console.log(data);
@@ -45,7 +46,7 @@ function onClickGetProfile() {
             , headers : {"Authorization": "Bearer " + token}
         }).done(function(data) {
 
-            $("#profile .screen").html("user name = " + data.username + " email = " + data.email);
+            $("#profile .screen").html("user name = " + data.user.username + " email = " + data.user.email);
 
         }).fail(function() {
             console.log("fail");
@@ -69,8 +70,11 @@ function onClickLogin() {
     }).done(function(data) {
         localStorage.setItem("token", data.token);
         console.log("Success");
-    }).fail(function() {
+    }).fail(function(xhr) {
+
+
         console.log("Fail");
+        console.log(xhr);
     })
 }
 

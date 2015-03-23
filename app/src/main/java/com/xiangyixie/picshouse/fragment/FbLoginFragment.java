@@ -1,5 +1,6 @@
 package com.xiangyixie.picshouse.fragment;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,6 +11,7 @@ import android.view.ViewGroup;
 
 import com.facebook.Session;
 import com.facebook.SessionState;
+import com.facebook.Settings;
 import com.facebook.UiLifecycleHelper;
 import com.facebook.widget.LoginButton;
 import com.xiangyixie.picshouse.R;
@@ -23,6 +25,13 @@ public class FbLoginFragment extends Fragment {
 
     private static final String TAG = "FbLoginFragment";
 
+    public interface FbLoginListener {
+        public void onSuccess();
+        public void onFail();
+    }
+
+    private FbLoginListener m_login_callback;
+
 
     private Session.StatusCallback m_stcallback = new Session.StatusCallback() {
         @Override
@@ -33,11 +42,19 @@ public class FbLoginFragment extends Fragment {
 
     private UiLifecycleHelper uiHelper;
 
+    private boolean m_is_resumed = false;
+
 
 
 
     public FbLoginFragment() {
 
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        m_login_callback = (FbLoginListener) activity;
     }
 
 
@@ -68,6 +85,8 @@ public class FbLoginFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
+        m_is_resumed = true;
+
         // Main activity is launched and user session is not null,
         // but the session state change notification not be triggered.
         Session session = Session.getActiveSession();
@@ -76,6 +95,8 @@ public class FbLoginFragment extends Fragment {
             onSessionStateChange(session, session.getState(), null);
         }
         uiHelper.onResume();
+
+
     }
 
     @Override
@@ -87,6 +108,7 @@ public class FbLoginFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
+        m_is_resumed = false;
         uiHelper.onPause();
     }
 
@@ -116,10 +138,15 @@ public class FbLoginFragment extends Fragment {
 
 
     private void onSessionStateChange(Session session, SessionState state, Exception exception) {
-        if (state.isOpened()) {
-            Log.i(TAG, "Logged in...");
-        } else if (state.isClosed()) {
-            Log.i(TAG, "Logged out...");
+
+        if(m_is_resumed) {
+            if (state.isOpened()) {
+                Log.i(TAG, "Logged in...");
+                m_login_callback.onSuccess();
+            } else if (state.isClosed()) {
+                Log.i(TAG, "Logged out...");
+                m_login_callback.onFail();
+            }
         }
     }
 

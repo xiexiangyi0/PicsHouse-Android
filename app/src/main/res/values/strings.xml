@@ -35,6 +35,7 @@
     <string name="forget_password">Forgot Password</string>
 
     <string name="facebook_app_id">821745201206709</string>
+    <string name="facebook_app_id_test">1036438616383973</string>
 
     <string name="warn_password_empty">Please input password</string>
     <string name="warn_password2_empty">Please input password for verify</string>
