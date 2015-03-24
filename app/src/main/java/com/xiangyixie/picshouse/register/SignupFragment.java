@@ -129,9 +129,6 @@ public class SignupFragment extends Fragment {
                             return true;
                         }
 
-
-
-
                         if(selected_gender != R.id.radiobutton_male
                                 && selected_gender != R.id.radiobutton_female){
                             toastWarning("must select gender");

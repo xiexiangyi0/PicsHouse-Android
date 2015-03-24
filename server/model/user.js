@@ -5,11 +5,14 @@ var mongoose = require("mongoose")
 var schema = new Schema({
     username : {type : String, required : true, index : {unique : true}}
     , email : {type : String, required : true, index : {unique : true}}
+    , password : {type : String, required : true}
     , token : {type : String, required : true, index : {unique : true}}
 
     , gender : {type : Number, min : 0, max : 1} // male 1, femail 0
 
     , avatar : String
+
+    , facebook : {id:String, first_name : String, last_name : String}
 
     , join_date : Date
     , last_login : Date

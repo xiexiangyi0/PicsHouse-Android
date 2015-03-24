@@ -98,6 +98,14 @@ router.post("/login", auth.authLocal(), function(req, res) {
 
 });
 
+router.post("/fblogin", auth.authFB(), function(req, res, next) {
+    console.log(req.body);
+
+    console.log(req.user);
+
+    res.send({});
+});
+
 router.post("/logout", auth.authToken(), function(req, res) {
 
     //update token to invalidate client token

@@ -26,8 +26,8 @@ public class FbLoginFragment extends Fragment {
     private static final String TAG = "FbLoginFragment";
 
     public interface FbLoginListener {
-        public void onSuccess();
-        public void onFail();
+        public void onLoginSuccess(String token);
+        public void onLoginFail();
     }
 
     private FbLoginListener m_login_callback;
@@ -92,6 +92,7 @@ public class FbLoginFragment extends Fragment {
         Session session = Session.getActiveSession();
         if (session != null &&
                 (session.isOpened() || session.isClosed())) {
+            Log.d(TAG, "onResume");
             onSessionStateChange(session, session.getState(), null);
         }
         uiHelper.onResume();
@@ -124,7 +125,7 @@ public class FbLoginFragment extends Fragment {
         uiHelper.onSaveInstanceState(outState);
     }
 
-
+/*
     private void onClickLogin() {
         Session session = Session.getActiveSession();
         if (!session.isOpened() && !session.isClosed()) {
@@ -135,17 +136,17 @@ public class FbLoginFragment extends Fragment {
             Session.openActiveSession(getActivity(), this, true, m_stcallback);
         }
     }
-
+*/
 
     private void onSessionStateChange(Session session, SessionState state, Exception exception) {
 
         if(m_is_resumed) {
             if (state.isOpened()) {
                 Log.i(TAG, "Logged in...");
-                m_login_callback.onSuccess();
+                m_login_callback.onLoginSuccess(session.getAccessToken());
             } else if (state.isClosed()) {
                 Log.i(TAG, "Logged out...");
-                m_login_callback.onFail();
+                m_login_callback.onLoginFail();
             }
         }
     }

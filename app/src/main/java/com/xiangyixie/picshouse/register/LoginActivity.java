@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
@@ -32,6 +33,8 @@ import org.json.JSONObject;
 public class LoginActivity extends ActionBarActivity
     implements SignupFragment.SignupStep1NextListener, PasswordFragment.SignupStep2NextListener,
         FbLoginFragment.FbLoginListener {
+
+    private static final String TAG = "LoginActivity";
 
     private EditText  email = null;
     private EditText  password = null;
@@ -152,6 +155,7 @@ public class LoginActivity extends ActionBarActivity
         //for 3rd facebook login!
         if (savedInstanceState == null) {
                   // Add the fragment on initial activity setup
+            Log.d(TAG, "create new fragment");
             m_fbLoginFragment = new FbLoginFragment();
 
 
@@ -164,6 +168,7 @@ public class LoginActivity extends ActionBarActivity
         }
         else {
                     // Or set the fragment from restored state info
+            Log.d(TAG, "restore fragment");
             m_fbLoginFragment = (FbLoginFragment) getSupportFragmentManager()
                     .findFragmentById(android.R.id.content);
         }
@@ -317,14 +322,49 @@ public class LoginActivity extends ActionBarActivity
     }
 
     @Override
-    public void onSuccess() {
+    public void onLoginSuccess(String token) {
 
-        gotoMain();
+        Log.d(TAG, token);
+
+        JSONObject jdata = new JSONObject();
+
+        try {
+            jdata.put(AppConfig.KEY_FB_TOKEN, token);
+        } catch (Exception e) {
+            UserWarning.warn(this, "Facebook invalid token");
+            return;
+        }
+
+        PHJsonRequest req = new PHJsonRequest(Request.Method.POST, "/user/fblogin/", jdata,
+                new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        UserWarning.warn(LoginActivity.this, "Success");
+                        gotoMain();
+                    }
+
+                },
+                new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                        //we need to logout facebook here, but how?
+
+                        UserWarning.warn(LoginActivity.this, "FAIL");
+
+                    }
+                });
+
+        m_http_client.send(req);
+
+
 
     }
 
     @Override
-    public void onFail() {
-        
+    public void onLoginFail() {
+
     }
 }

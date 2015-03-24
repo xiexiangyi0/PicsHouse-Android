@@ -60,7 +60,41 @@ passport.use(
         , clientSecret : app_config.FB_CLIENT_SECRET
     }
     , function(accessToken, refreshToken, profile, done) {
-        return done(null, false, {message : "test"});
+            var User = require("../model/user");
+            //console.log(profile);
+            User.findOne({"facebook.id" : profile.id}, function(err, user) {
+
+                if(err) {
+                    return done(err);
+                }
+
+                if(user) {
+                    user.token = accessToken;
+                } else {
+
+                    var username = profile.username || profile.displayName.replace(" ", "_");
+                    var password = profile.id + (new Date()).getTime();
+                    var email = profile.emails[0].value || (username + "@" + profile.provider);
+                    user = new User({
+                        username : username
+                        , password : password
+                        , email : email
+                        , token : accessToken
+                        , facebook : {
+                            id : profile.id
+                            , first_name : profile.name.givenName
+                            , last_name : profile.name.familyName
+                        }
+                    });
+
+
+                }
+
+                user.save(function(err, u) {
+                    return done(null, u);
+                });
+
+            });
     }
 ));
 
@@ -76,11 +110,13 @@ router.all("/", function(req, res, next) {
 
 //schema plugin
 function userPlugin (schema, options) {
+    /*
     schema.add({
         username : {type : String, required : true, index : {unique : true}}
         , password : {type : String, required : true}
         , token : {type : String, required : true, index : {unique : true}}
     });
+    */
 
     //hash password
     schema.pre('save', function(next) {

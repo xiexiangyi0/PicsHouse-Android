@@ -13,4 +13,6 @@ public class AppConfig {
     public static final String KEY_GENDER = "gender";
     public static final String KEY_PASSWORD = "password";
     public static final String KEY_ECODE = "ecode";
+
+    public static final String KEY_FB_TOKEN = "access_token";
 }
