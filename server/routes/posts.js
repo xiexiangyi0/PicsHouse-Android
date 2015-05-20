@@ -5,6 +5,7 @@
 var router = require("express").Router();
 var auth = require("../util/auth");
 var PicPost = require("../model/pic_post");
+var Comment = require("../model/comment");
 
 //get list of all the posts
 router.get("/get", function(req, res) {
@@ -72,6 +73,39 @@ router.post("/create", auth.authToken(), function(req, res) {
         });
     });
 
+});
+
+//comment a post
+router.post("comment/create", auth.authToken(), function(req, res) {
+    var post = req.body;
+    var user = req.user;
+
+    var pic_post = post.post;
+    var content = post.content;
+    var reply_to = post.reply_to;
+
+    var comment = new Comment({
+        user_id : user.id
+        , content : content
+        , pub_date : Date.now()
+        , reply_to : reply_to
+        , post : pic_post
+    });
+
+
+    PicPost.findOne({id:pic_post}, function(err, p) {
+        if(err) {
+            throw err;
+        }
+
+        if(p) {
+            //TODO: save comment to db, then append to pic_post
+
+        } else {
+            //TODO: return no post
+
+        }
+    })
 });
 
 module.exports = router;

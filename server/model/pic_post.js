@@ -13,7 +13,7 @@ var mongoose = require("mongoose")
 var schema = new Schema({
     user_id : {type : ObjId, ref : "User"}
     , desc : String
-    , comments : [ObjId]
+    , comments : [{type: ObjId, ref : "Comment"}]
     , pub_date : Date
 });
 

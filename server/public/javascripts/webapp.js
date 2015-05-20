@@ -127,6 +127,7 @@ function onClickUploadImage() {
     }).done(function(data) {
 
         $("#upload_image img").attr("src", data.post.image.src);
+        console.log(data);
 
     }).fail(function() {
         console.log("fail");
