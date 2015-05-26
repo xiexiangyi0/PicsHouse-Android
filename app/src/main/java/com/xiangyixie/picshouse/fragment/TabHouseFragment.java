@@ -36,14 +36,21 @@ public class TabHouseFragment extends Fragment {
 
         ImageView user_imgView = (ImageView)view.findViewById(R.id.tab_house_user_image);
         //set to rounded image view.
-        //Bitmap src = BitmapFactory.decodeResource(getResources(), R.id.tab_house_user_image);
+        //Bitmap src = BitmapFactory.decodeResource(getResources(), R.drawable.img5);
         Bitmap src = ((BitmapDrawable)user_imgView.getDrawable()).getBitmap();
-        RoundedBitmapDrawable dr = RoundedBitmapDrawableFactory.create(getResources(), src);
-        //set corner radius.
-        float cornerRd = Math.max(src.getWidth(), src.getHeight()) / 2.0f;
-        dr.setCornerRadius(cornerRd);
+        int len = Math.max(src.getHeight(), src.getWidth());
+        Bitmap dst = Bitmap.createScaledBitmap(src, len, len, true);
 
-        //user_imgView.setImageDrawable(dr);
+
+        RoundedBitmapDrawable dr = RoundedBitmapDrawableFactory.create(getResources(), dst);
+        //set corner radius.
+        float cornerRd = dst.getWidth() / 2.0f;
+
+        //UserWarning.warn(getActivity(), "" + cornerRd);
+        dr.setCornerRadius(cornerRd);
+        dr.setAntiAlias(true);
+
+        user_imgView.setImageDrawable(dr);
 
         return view;
 
