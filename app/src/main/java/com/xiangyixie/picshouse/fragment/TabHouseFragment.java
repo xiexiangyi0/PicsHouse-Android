@@ -26,7 +26,7 @@ public class TabHouseFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.tab_house, container, false);
+        View view = inflater.inflate(R.layout.tab_house_listview_item, container, false);
 
         return view;
 
