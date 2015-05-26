@@ -3,7 +3,7 @@
     android:shape="rectangle" 
     android:padding="10dp">
 
-  	<soild android:color="@color/transparent"/>
+  	<soild android:color="@color/blue"/>
   	<!-- 设置圆角的弧度，radius半径越大，editView的边角越圆 -->
    	<corners 
    	    android:radius="35dp"
