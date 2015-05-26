@@ -132,8 +132,6 @@
 
 
 
-
-
     <LinearLayout
         android:id="@+id/user_following_info"
         android:layout_width="match_parent"
@@ -262,6 +260,5 @@
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
-
 
 </LinearLayout>
