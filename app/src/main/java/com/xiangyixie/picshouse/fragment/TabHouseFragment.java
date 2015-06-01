@@ -33,27 +33,22 @@ public class TabHouseFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.tab_house_listview_item, container, false);
 
+        ImageView user_imgView = (ImageView)view.findViewById(R.id.user_image);
 
-        ImageView user_imgView = (ImageView)view.findViewById(R.id.tab_house_user_image);
         //set to rounded image view.
-        //Bitmap src = BitmapFactory.decodeResource(getResources(), R.drawable.img5);
         Bitmap src = ((BitmapDrawable)user_imgView.getDrawable()).getBitmap();
+
         int len = Math.max(src.getHeight(), src.getWidth());
         Bitmap dst = Bitmap.createScaledBitmap(src, len, len, true);
-
-
         RoundedBitmapDrawable dr = RoundedBitmapDrawableFactory.create(getResources(), dst);
+
         //set corner radius.
         float cornerRd = dst.getWidth() / 2.0f;
-
-        //UserWarning.warn(getActivity(), "" + cornerRd);
         dr.setCornerRadius(cornerRd);
-        dr.setAntiAlias(true);
-
+        //dr.setAntiAlias(true);
         user_imgView.setImageDrawable(dr);
 
         return view;
-
     }
 
 
