@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.xiangyixie.picshouse.R;
+import com.xiangyixie.picshouse.activity.MainActivity;
 
 
 public class TabHouseFragment extends Fragment {
@@ -24,13 +25,15 @@ public class TabHouseFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getActivity().getActionBar().hide();
+
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+        ((MainActivity)getActivity()).getSupportActionBar().hide();
         View view = inflater.inflate(R.layout.tab_house_listview_item, container, false);
 
         ImageView user_imgView = (ImageView)view.findViewById(R.id.user_image);

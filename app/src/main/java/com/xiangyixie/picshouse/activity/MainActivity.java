@@ -90,7 +90,9 @@ public class MainActivity extends ActionBarActivity {
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+
+            //getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
+            setContentView(R.layout.activity_main);
 
 
         //启动activity时不自动弹出软键盘
@@ -145,7 +147,8 @@ public class MainActivity extends ActionBarActivity {
         }
 
         //set TabCamera onClickListener
-        mTab[TAB_CAMERA].setOnClickListener(new TabCameraClickListener());
+            mTab[TAB_CAMERA].setOnClickListener(new TabCameraClickListener());
+
     }
 
 

@@ -7,14 +7,36 @@
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="60dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
         <ImageView
             android:id="@+id/user_image"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:src="@drawable/img5"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="14dp"
             android:layout_gravity="center_vertical" />
+
+        <TextView
+            android:id="@+id/username"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginLeft="10dp"
+            android:text="Diana_S"
+            android:textSize="13sp"
+            android:textColor="@color/dark_blue_like_text"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/time"
+            android:layout_width="25dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="1h"
+            android:textSize="13sp"
+            android:textColor="@color/gray"
+            android:textStyle="bold" />
     </LinearLayout>
 
 
@@ -39,13 +61,13 @@
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="40dp"
+        android:paddingLeft="14dp"
         android:orientation="horizontal"
         android:gravity="center_vertical">
         <TextView
             android:id="@+id/likes_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
             android:text="35426 likes"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textSize="13sp"
@@ -58,7 +80,8 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingLeft="10dp"
+        android:paddingLeft="14dp"
+        android:paddingRight="14dp"
         android:gravity="left">
 
         <TextView
@@ -74,18 +97,26 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="I like your concert and your songs very much. I have listened your songs for 10 years, starting from my 14 year old youth, to now. I listened every song of yours,actually whole of them just recorded the youth days of my generation. Love you and your spirit, it's so wonderful and have lived with me for 10 years."
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="3dp"
             android:ellipsize="end"
-            android:lines="3"
             android:textColor="@color/black"
             android:textSize="13sp" />
 
         <TextView
-            android:id="@+id/commet3"
+            android:id="@+id/comment3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Like you!"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="3dp"
+            android:textColor="@color/black"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/comment4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Cute!"
+            android:layout_marginTop="3dp"
             android:textColor="@color/black"
             android:textSize="13sp" />
 
