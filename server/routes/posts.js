@@ -76,14 +76,15 @@ router.post("/create", auth.authToken(), function(req, res) {
 });
 
 //comment a post
-router.post("comment/create", auth.authToken(), function(req, res) {
+router.post("/comment/create", auth.authToken(), function(req, res) {
     var post = req.body;
     var user = req.user;
 
-    var pic_post = post.post;
-    var content = post.content;
+    var pic_post = post.post || -1;
+    var content = post.content || "";
+    //TODO: check reply_to. undefined value means commenting on post
     var reply_to = post.reply_to;
-
+    
     var comment = new Comment({
         user_id : user.id
         , content : content
@@ -92,20 +93,32 @@ router.post("comment/create", auth.authToken(), function(req, res) {
         , post : pic_post
     });
 
-
-    PicPost.findOne({id:pic_post}, function(err, p) {
+    PicPost.findById(pic_post, function(err, p) {
         if(err) {
             throw err;
         }
 
         if(p) {
-            //TODO: save comment to db, then append to pic_post
+            comment.save(function(err, c) {
+                if (err) {
+                    throw err;
+                }
+                p.comments.push(c);
+                p.save(function(err, post_ret) {
+                    if (err) {
+                        throw err;
+                    }
 
+                    res.send({comment: c});
+
+                });
+            });
         } else {
-            //TODO: return no post
+            res.status(403);
+            res.send({ecode: "invalid_object"});
 
         }
-    })
+    });
 });
 
 module.exports = router;

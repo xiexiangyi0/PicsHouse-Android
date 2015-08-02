@@ -133,3 +133,46 @@ function onClickUploadImage() {
         console.log("fail");
     });
 }
+
+function onClickGetImage() {
+    webappAjax({
+        url : "/post/get/"
+        , type : "GET"
+    }).done(function(data) {
+        var posts = data.posts;
+        var image_list = $("#get_image div");
+
+        for (var i=0; i<posts.length; i++) {
+            console.log(posts[i]);
+            var html = "<p>Image " + i + ": " + posts[i].desc + "</p>" +
+                       "<img src=" + posts[i].image.src + ">" +
+                       "<p>Comments: </p>";
+
+            for (var j=0; j<posts[i].comments.length; j++) {
+                html += "<p>" + j + ". " + posts[i].comments[j].content + "</p>";
+            }
+
+            html += "<button onclick='onClickAddComment(\"" + posts[i].id + "\")'>Add comment</button>";
+
+            image_list[0].innerHTML += html;
+        }
+    }).fail(function() {
+       console.log("fail");
+    });
+}
+
+function onClickAddComment(post) {
+    console.log("add comment");
+    webappAjax({
+        url: "/post/comment/create/"
+        , type: "POST"
+        , data: {
+            post: post
+            , content: "this is a comment"
+        }
+    }).done(function(data) {
+        onClickGetImage();
+    }).fail(function() {
+      console.log("Oops")
+    });
+}
