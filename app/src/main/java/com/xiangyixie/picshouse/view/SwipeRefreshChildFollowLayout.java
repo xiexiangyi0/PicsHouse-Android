@@ -1,12 +1,9 @@
 package com.xiangyixie.picshouse.view;
 
 import android.content.Context;
-import android.support.v4.view.MotionEventCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.AttributeSet;
-import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 
 /**
@@ -53,7 +50,7 @@ public class SwipeRefreshChildFollowLayout extends SwipeRefreshLayout {
             }
         }
     }
-
+/*
     @Override
     public void setRefreshing(boolean v) {
         if(!v) {
@@ -62,13 +59,13 @@ public class SwipeRefreshChildFollowLayout extends SwipeRefreshLayout {
 
         super.setRefreshing(v);
     }
-
+*/
     private boolean canChildScrollDown() {
         View v = m_child;
         return ViewCompat.canScrollVertically(v, 1);
     }
 
-
+/*
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
 
@@ -151,4 +148,5 @@ public class SwipeRefreshChildFollowLayout extends SwipeRefreshLayout {
 
         return super.onTouchEvent(e);
     }
+    */
 }

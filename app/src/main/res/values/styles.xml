@@ -1,11 +1,15 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorAccent">@color/white</item>
         <item name="android:editTextStyle">@style/MyEditTextStyle</item>
         <item name="android:actionMenuTextAppearance">@style/MyMenuTextStyle</item>
+        <item name="android:windowActionBarOverlay">true</item>
+
+        <!-- Support library compatibility -->
+        <!--item name="windowActionBarOverlay">true</item-->
     </style>
 
     <style name="MyMenuTextStyle" parent="TextAppearance.AppCompat.Widget.ActionBar.Menu">

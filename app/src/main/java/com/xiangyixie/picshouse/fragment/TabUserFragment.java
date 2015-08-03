@@ -19,13 +19,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 
-
-
-
 public class TabUserFragment extends Fragment {
 
-    private final static String TAG="TabUserFragment";
-
+    private final static String TAG = "TabUserFragment";
 
 
     public TabUserFragment() {
@@ -44,8 +40,6 @@ public class TabUserFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.tab_user_new, container, false);
         View header = inflater.inflate(R.layout.tab_user_header, container, false);
-
-
 
 
         //'gridView_userphotos' using Google open source code: HeaderGridView.java
@@ -102,13 +96,12 @@ public class TabUserFragment extends Fragment {
 
         gridView_userphotos.setAdapter(simpleadapter);
 
-        Log.d(TAG,"gridView_userphotos simple adaptor has been created.");
+        Log.d(TAG, "gridView_userphotos simple adaptor has been created.");
         Log.d(TAG, "" + gridView_userphotos.getHeaderViewCount());
 
         return view;
 
     }
-
 
 
     @Override
