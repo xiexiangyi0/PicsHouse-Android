@@ -38,11 +38,12 @@ public class TabHouseFragment extends Fragment {
 
         //((MainActivity)getActivity()).getSupportActionBar().hide();
         //root view for tab 'house'.
-        final View view = inflater.inflate(R.layout.tab_house_listview_item, container, false);
+        final View view = inflater.inflate(R.layout.tab_house, container, false);
 
         ImageView user_imgView = (ImageView) view.findViewById(R.id.user_image);
         //set rounded user_image.
         Bitmap src = ((BitmapDrawable) user_imgView.getDrawable()).getBitmap();
+
         int len = Math.max(src.getHeight(), src.getWidth());
         Bitmap dst = Bitmap.createScaledBitmap(src, len, len, true);
         RoundedBitmapDrawable dr = RoundedBitmapDrawableFactory.create(getResources(), dst);
@@ -53,13 +54,13 @@ public class TabHouseFragment extends Fragment {
 
 
         //set PinnedHeaderListView.
-        adapter = new TestAdapter(getLayoutInflater());
+        adapter = new TestAdapter(inflater);
 
         listView = (PinnedHeaderListView) view.findViewById(R.id.tab_house_listview);
         listView.setAdapter(adapter);
         listView.setOnScrollListener(adapter);
-        listView.setPinnedHeaderView(getLayoutInflater().inflate(
-                R.layout.list_section, listView, false));
+        listView.setPinnedHeaderView(inflater.inflate(
+                R.layout.tab_house, listView, false));
 
 
         return view;
