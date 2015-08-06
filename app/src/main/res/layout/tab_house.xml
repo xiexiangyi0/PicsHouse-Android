@@ -2,10 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent">
 
-    <ListView
+    <com.xiangyixie.picshouse.view.pinnedHeaderListView.PinnedHeaderListView
         android:id="@+id/tab_house_listview"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" >
-    </ListView>
+    </com.xiangyixie.picshouse.view.pinnedHeaderListView.PinnedHeaderListView>
 
 </LinearLayout>
