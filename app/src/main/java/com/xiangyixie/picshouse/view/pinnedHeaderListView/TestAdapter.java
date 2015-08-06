@@ -14,7 +14,7 @@ public class TestAdapter extends BaseAdapter implements PinnedHeaderListView.Pin
 
     private LayoutInflater inflater;
 
-    private ArrayList<Person> datas;
+    private ArrayList<Post> datas;
     private int lastItem = 0;
 
     public TestAdapter(final LayoutInflater inflater) {
