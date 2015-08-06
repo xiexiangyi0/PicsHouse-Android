@@ -13,9 +13,14 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.xiangyixie.picshouse.R;
+import com.xiangyixie.picshouse.view.pinnedHeaderListView.PinnedHeaderListView;
+import com.xiangyixie.picshouse.view.pinnedHeaderListView.TestAdapter;
 
 
 public class TabHouseFragment extends Fragment {
+
+    private TestAdapter adapter;
+    private PinnedHeaderListView listView;
 
     public TabHouseFragment() {
     }
@@ -23,6 +28,7 @@ public class TabHouseFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
     }
 
@@ -37,7 +43,6 @@ public class TabHouseFragment extends Fragment {
         ImageView user_imgView = (ImageView) view.findViewById(R.id.user_image);
         //set rounded user_image.
         Bitmap src = ((BitmapDrawable) user_imgView.getDrawable()).getBitmap();
-
         int len = Math.max(src.getHeight(), src.getWidth());
         Bitmap dst = Bitmap.createScaledBitmap(src, len, len, true);
         RoundedBitmapDrawable dr = RoundedBitmapDrawableFactory.create(getResources(), dst);
@@ -45,6 +50,16 @@ public class TabHouseFragment extends Fragment {
         float cornerRd = dst.getWidth() / 2.0f;
         dr.setCornerRadius(cornerRd);
         user_imgView.setImageDrawable(dr);
+
+
+        //set PinnedHeaderListView.
+        adapter = new TestAdapter(getLayoutInflater());
+
+        listView = (PinnedHeaderListView) view.findViewById(R.id.tab_house_listview);
+        listView.setAdapter(adapter);
+        listView.setOnScrollListener(adapter);
+        listView.setPinnedHeaderView(getLayoutInflater().inflate(
+                R.layout.list_section, listView, false));
 
 
         return view;
