@@ -8,6 +8,9 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.xiangyixie.picshouse.R;
+import com.xiangyixie.picshouse.model.Post;
+
+import java.util.ArrayList;
 
 public class TestAdapter extends BaseAdapter implements PinnedHeaderListView.PinnedHeaderAdapter,
         AbsListView.OnScrollListener {
@@ -25,13 +28,13 @@ public class TestAdapter extends BaseAdapter implements PinnedHeaderListView.Pin
     @Override
     public int getCount() {
         // TODO Auto-generated method stub
-        return datas.size();
+        return 1;//datas.size();
     }
 
     @Override
     public Object getItem(int position) {
         // TODO Auto-generated method stub
-        return null;
+        return "lalala";
     }
 
     @Override
@@ -45,20 +48,16 @@ public class TestAdapter extends BaseAdapter implements PinnedHeaderListView.Pin
         // TODO Auto-generated method stub
         View view = convertView;
         if (view == null) {
-            view = inflater.inflate(R.layout.section_list_item, null);
+            view = inflater.inflate(R.layout.tab_house_listview_item, null);
         }
-        final Person person = datas.get(position);
-        final TextView header = (TextView) view.findViewById(R.id.header);
-        final TextView textView = (TextView) view
-                .findViewById(R.id.example_text_view);
-        textView.setText(person.getNumber());
-        header.setText(person.getName());
 
-        if (lastItem == position) {
-            header.setVisibility(View.INVISIBLE);
-        } else {
-            header.setVisibility(View.VISIBLE);
-        }
+        TextView view_name = (TextView) view.findViewById(R.id.username);
+        view_name.setText("AnonymousUser");
+
+        TextView view_time = (TextView) view.findViewById(R.id.time);
+        view_time.setText("1h");
+
+
         return view;
     }
 
@@ -74,12 +73,14 @@ public class TestAdapter extends BaseAdapter implements PinnedHeaderListView.Pin
         if (lastItem != position) {
             notifyDataSetChanged();
         }
+        /*
         ((TextView) header.findViewById(R.id.header_text)).setText(datas.get(
-                position).getName());
+                position).getName());*/
         lastItem = position;
     }
 
     private void loadData() {
+        /*
         datas = new ArrayList<Person>();
         for (int i = 0; i < 50; i++) {
             Person p = new Person();
@@ -87,6 +88,7 @@ public class TestAdapter extends BaseAdapter implements PinnedHeaderListView.Pin
             p.setNumber("100" + i);
             datas.add(p);
         }
+        */
     }
 
     @Override
