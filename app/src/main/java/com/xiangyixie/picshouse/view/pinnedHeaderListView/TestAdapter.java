@@ -1,10 +1,12 @@
 package com.xiangyixie.picshouse.view.pinnedHeaderListView;
 
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.xiangyixie.picshouse.R;
@@ -56,6 +58,11 @@ public class TestAdapter extends BaseAdapter implements PinnedHeaderListView.Pin
 
         TextView view_time = (TextView) view.findViewById(R.id.time);
         view_time.setText("1h");
+
+        ImageView user_image_view = (ImageView) view.findViewById(R.id.user_image);
+
+        ImageView pic_view = (ImageView) view.findViewById(R.id.pic_image);
+        pic_view.setImageBitmap(BitmapFactory.decodeFile("/sdcard/Download/download_20140523_182150.jpeg"));
 
 
         return view;
