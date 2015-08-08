@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.xiangyixie.picshouse.R;
@@ -64,6 +65,13 @@ public class TestAdapter extends BaseAdapter implements PinnedHeaderListView.Pin
         ImageView pic_view = (ImageView) view.findViewById(R.id.pic_image);
         pic_view.setImageBitmap(BitmapFactory.decodeFile("/sdcard/Download/download_20140523_182150.jpeg"));
 
+        LinearLayout comment_list = (LinearLayout) view.findViewById(R.id.comment_list);
+
+        for (int i=0; i<10; ++i) {
+            TextView comment = new TextView(view.getContext());
+            comment.setText("This is a comment X from XXXXXX " + i);
+            comment_list.addView(comment);
+        }
 
         return view;
     }
