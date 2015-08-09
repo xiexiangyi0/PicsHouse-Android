@@ -9,12 +9,12 @@ import android.view.ViewGroup;
 
 import com.xiangyixie.picshouse.R;
 import com.xiangyixie.picshouse.view.pinnedHeaderListView.PinnedHeaderListView;
-import com.xiangyixie.picshouse.view.pinnedHeaderListView.TestAdapter;
+import com.xiangyixie.picshouse.view.pinnedHeaderListView.HeaderListViewAdapter;
 
 
 public class TabHouseFragment extends Fragment {
 
-    private TestAdapter adapter;
+    private HeaderListViewAdapter adapter;
     private PinnedHeaderListView listView;
 
     public TabHouseFragment() {
@@ -49,7 +49,7 @@ public class TabHouseFragment extends Fragment {
 */
 
         //set PinnedHeaderListView.
-        adapter = new TestAdapter(inflater);
+        adapter = new HeaderListViewAdapter(inflater);
 
         listView = (PinnedHeaderListView) view.findViewById(R.id.tab_house_listview);
         listView.setAdapter(adapter);

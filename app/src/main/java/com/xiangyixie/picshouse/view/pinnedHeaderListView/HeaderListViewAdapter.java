@@ -15,7 +15,13 @@ import com.xiangyixie.picshouse.model.Post;
 
 import java.util.ArrayList;
 
-public class TestAdapter extends BaseAdapter implements PinnedHeaderListView.PinnedHeaderAdapter,
+/**
+ * Created by xiangyixie on 8/8/15.
+ */
+
+
+
+public class HeaderListViewAdapter extends BaseAdapter implements PinnedHeaderListView.PinnedHeaderAdapter,
         AbsListView.OnScrollListener {
 
     private LayoutInflater inflater;
@@ -23,7 +29,7 @@ public class TestAdapter extends BaseAdapter implements PinnedHeaderListView.Pin
     private ArrayList<Post> datas;
     private int lastItem = 0;
 
-    public TestAdapter(final LayoutInflater inflater) {
+    public HeaderListViewAdapter(final LayoutInflater inflater) {
         this.inflater = inflater;
         loadData();
     }
@@ -120,4 +126,5 @@ public class TestAdapter extends BaseAdapter implements PinnedHeaderListView.Pin
     }
 
 }
+
 
