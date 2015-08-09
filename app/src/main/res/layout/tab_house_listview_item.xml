@@ -98,6 +98,7 @@
                 android:paddingLeft="14dp"
                 android:paddingRight="14dp">
 
+                <!--
                 <TextView
                     android:id="@+id/comment1"
                     android:layout_width="match_parent"
@@ -133,6 +134,7 @@
                     android:text="Cute!"
                     android:textColor="@color/black"
                     android:textSize="13sp" />
+                    -->
             </LinearLayout>
 
         </LinearLayout>

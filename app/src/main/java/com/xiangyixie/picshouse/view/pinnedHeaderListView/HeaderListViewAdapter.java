@@ -1,5 +1,9 @@
 package com.xiangyixie.picshouse.view.pinnedHeaderListView;
 
+/**
+ * Created by xiangyixie on 8/8/15.
+ */
+
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -16,12 +20,9 @@ import android.widget.TextView;
 
 import com.xiangyixie.picshouse.R;
 import com.xiangyixie.picshouse.model.Post;
+import com.xiangyixie.picshouse.model.PostFeedData;
 
 import java.util.ArrayList;
-
-/**
- * Created by xiangyixie on 8/8/15.
- */
 
 
 public class HeaderListViewAdapter extends BaseAdapter implements PinnedHeaderListView.PinnedHeaderAdapter,
@@ -29,8 +30,8 @@ public class HeaderListViewAdapter extends BaseAdapter implements PinnedHeaderLi
 
     private LayoutInflater inflater;
 
-    private ArrayList<Post> data;
-    private int lastItem = 0;
+    private ArrayList<Post> datas;
+    private int lastItem = datas.size()-1;
 
     public HeaderListViewAdapter(final LayoutInflater inflater) {
         this.inflater = inflater;
@@ -40,7 +41,7 @@ public class HeaderListViewAdapter extends BaseAdapter implements PinnedHeaderLi
     @Override
     public int getCount() {
         // TODO Auto-generated method stub
-        return 1;//datas.size();
+        return datas.size();
     }
 
     @Override
@@ -63,9 +64,10 @@ public class HeaderListViewAdapter extends BaseAdapter implements PinnedHeaderLi
             view = inflater.inflate(R.layout.tab_house_listview_item, null);
         }
 
-        ImageView user_img_view = (ImageView) view.findViewById(R.id.post_user_image);
-        user_img_view.setImageResource(R.drawable.img5);
+        Post post = datas.get(position);
 
+        ImageView user_img_view = (ImageView) view.findViewById(R.id.post_user_image);
+        user_img_view.setImageBitmap(BitmapFactory.decodeFile(post.getUser_img_uri()));
         //set user_img_view to be rounded.
         Bitmap src = ((BitmapDrawable) user_img_view.getDrawable()).getBitmap();
         int len = Math.max(src.getHeight(), src.getWidth());
@@ -78,20 +80,21 @@ public class HeaderListViewAdapter extends BaseAdapter implements PinnedHeaderLi
 
 
         TextView user_name_view = (TextView) view.findViewById(R.id.post_user_username);
-        user_name_view.setText("Diana_S");
+        user_name_view.setText(post.getUsername());
 
         TextView time_view= (TextView) view.findViewById(R.id.post_time);
-        time_view.setText("1d");
+        time_view.setText(post.getTime());
 
         ImageView pic_view = (ImageView) view.findViewById(R.id.pic_image);
-        pic_view.setImageBitmap(BitmapFactory.decodeFile("/sdcard/Download/download_20140523_182150.jpeg"));
+        pic_view.setImageBitmap(BitmapFactory.decodeFile(post.getPic_img_uri()));
 
         LinearLayout comment_list = (LinearLayout) view.findViewById(R.id.post_comment_list);
 
-        for (int i = 0; i < 10; ++i) {
-            TextView comment = new TextView(view.getContext());
-            comment.setText("This is a comment X from XXXXXX " + i);
-            comment_list.addView(comment);
+        ArrayList<String> comment = post.getComment();
+        for (int i = 0; i < comment.size(); ++i) {
+            TextView comment_view = new TextView(view.getContext());
+            comment_view.setText(comment.get(i));
+            comment_list.addView(comment_view);
         }
 
         return view;
@@ -116,15 +119,8 @@ public class HeaderListViewAdapter extends BaseAdapter implements PinnedHeaderLi
     }
 
     private void loadData() {
-        /*
-        datas = new ArrayList<Person>();
-        for (int i = 0; i < 50; i++) {
-            Person p = new Person();
-            p.setName("name-" + i);
-            p.setNumber("100" + i);
-            datas.add(p);
-        }
-        */
+        PostFeedData data = new PostFeedData();
+        this.datas = data.getAllPostFeedData();
     }
 
     @Override

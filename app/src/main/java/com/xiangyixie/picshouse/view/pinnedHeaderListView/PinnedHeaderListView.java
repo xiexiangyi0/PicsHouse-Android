@@ -71,12 +71,11 @@ public class PinnedHeaderListView extends ListView {
     private static final int MAX_ALPHA = 255;
 
     private PinnedHeaderAdapter mAdapter;
-    /** 显示在顶端的item */
+
     private View mHeaderView;
+
     private boolean mHeaderViewVisible;
-
     private int mHeaderViewWidth;
-
     private int mHeaderViewHeight;
 
     public PinnedHeaderListView(Context context) {
@@ -101,7 +100,6 @@ public class PinnedHeaderListView extends ListView {
         // in this particular case we would like to disable the top, but not the
         // bottom edge.
         if (mHeaderView != null) {
-            // 设置边框渐变的长度
             setFadingEdgeLength(0);
         }
         // requestLayout();
@@ -116,7 +114,7 @@ public class PinnedHeaderListView extends ListView {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        // 得到mHeaderViewz的宽、高
+
         if (mHeaderView != null) {
             measureChild(mHeaderView, widthMeasureSpec, heightMeasureSpec);
             mHeaderViewWidth = mHeaderView.getMeasuredWidth();
@@ -141,7 +139,7 @@ public class PinnedHeaderListView extends ListView {
         int state = mAdapter.getPinnedHeaderState(position);
         switch (state) {
             case PinnedHeaderAdapter.PINNED_HEADER_GONE: {
-                // mHeaderViewVisible = false;
+                mHeaderViewVisible = false;
                 break;
             }
 
@@ -150,7 +148,7 @@ public class PinnedHeaderListView extends ListView {
                 // if (mHeaderView.getTop() != 0) {
                 // mHeaderView.layout(0, 0, mHeaderViewWidth, mHeaderViewHeight);
                 // }
-                // mHeaderViewVisible = true;
+                mHeaderViewVisible = true;
                 break;
             }
 
