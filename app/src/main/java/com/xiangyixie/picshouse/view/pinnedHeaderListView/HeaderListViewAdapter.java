@@ -55,18 +55,18 @@ public class HeaderListViewAdapter extends BaseAdapter implements PinnedHeaderLi
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         // TODO Auto-generated method stub
-        View view = convertView;
-        if (view == null) {
-            view = inflater.inflate(R.layout.tab_house_listview_item, null);
+        View view_item = convertView;
+        if (view_item == null) {
+            view_item = inflater.inflate(R.layout.tab_house_listview_item_header, null);
         }
 
-        TextView view_name = (TextView) view.findViewById(R.id.username);
-        view_name.setText("AnonymousUser");
+        TextView view_name = (TextView) view_item.findViewById(R.id.username);
+        view_name.setText("Diana_S");
 
-        TextView view_time = (TextView) view.findViewById(R.id.time);
+        TextView view_time = (TextView) view_item.findViewById(R.id.time);
         view_time.setText("1h");
 
-        ImageView user_image_view = (ImageView) view.findViewById(R.id.user_image);
+        ImageView user_image_view = (ImageView) view_item.findViewById(R.id.user_image);
 
         ImageView pic_view = (ImageView) view.findViewById(R.id.pic_image);
         pic_view.setImageBitmap(BitmapFactory.decodeFile("/sdcard/Download/download_20140523_182150.jpeg"));
