@@ -10,11 +10,12 @@ import android.view.ViewGroup;
 import com.xiangyixie.picshouse.R;
 import com.xiangyixie.picshouse.view.pinnedHeaderListView.PinnedHeaderListView;
 import com.xiangyixie.picshouse.view.pinnedHeaderListView.HeaderListViewAdapter;
+import com.xiangyixie.picshouse.view.pinnedHeaderListView.SectionedBaseAdapter;
 
 
 public class TabHouseFragment extends Fragment {
 
-    private HeaderListViewAdapter adapter;
+    private SectionedBaseAdapter adapter;
     private PinnedHeaderListView listView;
 
     public TabHouseFragment() {
@@ -31,7 +32,6 @@ public class TabHouseFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        //((MainActivity)getActivity()).getSupportActionBar().hide();
         //root view for tab 'house'.
         final View view = inflater.inflate(R.layout.tab_house, container, false);
 
@@ -39,11 +39,10 @@ public class TabHouseFragment extends Fragment {
         adapter = new HeaderListViewAdapter(inflater);
 
         listView = (PinnedHeaderListView) view.findViewById(R.id.tab_house_listview);
+        listView.setPinHeaders(true);
+        // TODO: API starts from 21. Need to change it. Consider to use NestedScrollView.
+        listView.setNestedScrollingEnabled(true);
         listView.setAdapter(adapter);
-        listView.setOnScrollListener(adapter);
-
-        View view_item = inflater.inflate(R.layout.tab_house_listview_item, listView, false);
-        listView.setPinnedHeaderView(view_item.findViewById(R.id.tab_house_item_header));
 
         return view;
     }

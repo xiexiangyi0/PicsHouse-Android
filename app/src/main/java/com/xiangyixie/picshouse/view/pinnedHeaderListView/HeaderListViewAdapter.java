@@ -9,12 +9,12 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
+import android.text.TextUtils;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -26,8 +26,7 @@ import com.xiangyixie.picshouse.model.PostFeedData;
 import java.util.ArrayList;
 
 
-public class HeaderListViewAdapter extends BaseAdapter implements PinnedHeaderListView.PinnedHeaderAdapter,
-        AbsListView.OnScrollListener {
+public class HeaderListViewAdapter extends SectionedBaseAdapter {
 
     private LayoutInflater inflater;
 
@@ -42,34 +41,76 @@ public class HeaderListViewAdapter extends BaseAdapter implements PinnedHeaderLi
     }
 
     @Override
-    public int getCount() {
-        // TODO Auto-generated method stub
+    public int getSectionCount() {
+        // One section for each post
         return datas.size();
     }
 
     @Override
-    public Object getItem(int position) {
+    public int getCountForSection(int section){
+        // Section contains one header and one post body
+        return 1;
+    }
+
+    @Override
+    public Object getItem(int section, int position) {
         // TODO Auto-generated method stub
         return "lalala";
     }
 
     @Override
-    public long getItemId(int position) {
-        // TODO Auto-generated method stub
-        return 0;
+    public long getItemId(int section, int position) {
+        return section;
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        // TODO Auto-generated method stub
+    public View getItemView(int section, int position, View convertView, ViewGroup parent) {
         View view = convertView;
         if (view == null) {
-            view = inflater.inflate(R.layout.tab_house_listview_item, null);
+            view = inflater.inflate(R.layout.tab_house_listview_item_body, null);
         } else {
+            //important fix bug!
             return view;
         }
 
-        Post post = datas.get(position);
+        Post post = datas.get(section);
+
+        ImageView pic_view = (ImageView) view.findViewById(R.id.pic_image);
+        pic_view.setImageBitmap(BitmapFactory.decodeFile(post.getPic_img_uri()));
+
+        TextView likes_view= (TextView) view.findViewById(R.id.post_likes);
+        Integer likes_number = post.getLikes_number();
+        String likes_number_str = likes_number + " likes";
+        likes_view.setText(likes_number_str);
+
+        LinearLayout comment_list_view = (LinearLayout) view.findViewById(R.id.post_comment_list);
+        ArrayList<String> comment = post.getComment();
+        Log.d("MYDEBUG", "this post comment size = " + comment.size());
+        for (int i = 0; i < comment.size(); ++i) {
+            TextView comment_view = new TextView(view.getContext());
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            layoutParams.setMargins(0, 2, 0, 2);
+            comment_view.setLayoutParams(layoutParams);
+            comment_view.setText(comment.get(i));
+            comment_view.setTextSize(TypedValue.COMPLEX_UNIT_SP, 13);
+            comment_view.setTextColor(comment_view.getResources().getColor(R.color.black));
+            comment_view.setEllipsize(TextUtils.TruncateAt.END);
+            comment_view.setMaxLines(4);
+            comment_list_view.addView(comment_view);
+        }
+
+        return view;
+    }
+
+    @Override
+    public View getSectionHeaderView(int section, View convertView, ViewGroup parent) {
+        View view = convertView;
+
+        if (view == null) {
+            view = inflater.inflate(R.layout.tab_house_listview_item_header, parent, false);
+        }
+
+        Post post = datas.get(section);
 
         ImageView user_img_view = (ImageView) view.findViewById(R.id.post_user_image);
         user_img_view.setImageBitmap(BitmapFactory.decodeFile(post.getUser_img_uri()));
@@ -83,45 +124,13 @@ public class HeaderListViewAdapter extends BaseAdapter implements PinnedHeaderLi
         dr.setCornerRadius(cornerRd);
         user_img_view.setImageDrawable(dr);
 
-
         TextView user_name_view = (TextView) view.findViewById(R.id.post_user_username);
         user_name_view.setText(post.getUsername());
 
         TextView time_view= (TextView) view.findViewById(R.id.post_time);
         time_view.setText(post.getTime());
 
-        ImageView pic_view = (ImageView) view.findViewById(R.id.pic_image);
-        pic_view.setImageBitmap(BitmapFactory.decodeFile(post.getPic_img_uri()));
-
-        LinearLayout comment_list = (LinearLayout) view.findViewById(R.id.post_comment_list);
-
-        ArrayList<String> comment = post.getComment();
-        Log.d("MYDEBUG", "size = " + comment.size());
-        for (int i = 0; i < comment.size(); ++i) {
-            TextView comment_view = new TextView(view.getContext());
-            comment_view.setText(comment.get(i));
-            comment_list.addView(comment_view);
-        }
-
         return view;
-    }
-
-    @Override
-    public int getPinnedHeaderState(int position) {
-        // TODO Auto-generated method stub
-        return PINNED_HEADER_PUSHED_UP;
-    }
-
-    @Override
-    public void configurePinnedHeader(View header, int position) {
-        // TODO Auto-generated method stub
-        if (lastItem != position) {
-            notifyDataSetChanged();
-        }
-        /*
-        ((TextView) header.findViewById(R.id.header_text)).setText(datas.get(
-                position).getName());*/
-        lastItem = position;
     }
 
     private void loadData() {
@@ -129,20 +138,9 @@ public class HeaderListViewAdapter extends BaseAdapter implements PinnedHeaderLi
         ArrayList<Post> tmp = data.getAllPostFeedData();
         this.datas.add(tmp.get(0));
         this.datas.add(tmp.get(1));
-        Log.d("MYDEBUG", "size = " + datas.size());
-    }
-
-    @Override
-    public void onScroll(AbsListView view, int firstVisibleItem,
-                         int visibleItemCount, int totalItemCount) {
-        if (view instanceof PinnedHeaderListView) {
-            ((PinnedHeaderListView) view).configureHeaderView(firstVisibleItem);
-        }
-    }
-
-    @Override
-    public void onScrollStateChanged(AbsListView view, int scrollState) {
-
+        this.datas.add(tmp.get(2));
+        this.datas.add(tmp.get(3));
+        Log.d("MYDEBUG", "All post Feed datas size = " + datas.size());
     }
 
 }
