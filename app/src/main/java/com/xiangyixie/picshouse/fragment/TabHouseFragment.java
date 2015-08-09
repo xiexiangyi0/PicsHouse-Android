@@ -48,15 +48,14 @@ public class TabHouseFragment extends Fragment {
         user_imgView.setImageDrawable(dr);
 */
 
-        //set PinnedHeaderListView.
+        // set PinnedHeaderListView.
         adapter = new HeaderListViewAdapter(inflater);
 
         listView = (PinnedHeaderListView) view.findViewById(R.id.tab_house_listview);
         listView.setAdapter(adapter);
         listView.setOnScrollListener(adapter);
         listView.setPinnedHeaderView(inflater.inflate(
-                R.layout.tab_house, listView, false));
-
+                R.layout.tab_house_listview_item, listView, false));
 
         return view;
     }
