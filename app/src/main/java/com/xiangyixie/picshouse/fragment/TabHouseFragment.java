@@ -54,8 +54,9 @@ public class TabHouseFragment extends Fragment {
         listView = (PinnedHeaderListView) view.findViewById(R.id.tab_house_listview);
         listView.setAdapter(adapter);
         listView.setOnScrollListener(adapter);
-        listView.setPinnedHeaderView(inflater.inflate(
-                R.layout.tab_house_listview_item_header, listView, false));
+
+        View view_item = inflater.inflate(R.layout.tab_house_listview_item, listView, false);
+        listView.setPinnedHeaderView(view_item.findViewById(R.id.tab_house_item_header));
 
         return view;
     }

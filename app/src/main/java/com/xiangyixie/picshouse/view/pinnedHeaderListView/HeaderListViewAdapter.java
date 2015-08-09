@@ -1,6 +1,10 @@
 package com.xiangyixie.picshouse.view.pinnedHeaderListView;
 
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,13 +24,12 @@ import java.util.ArrayList;
  */
 
 
-
 public class HeaderListViewAdapter extends BaseAdapter implements PinnedHeaderListView.PinnedHeaderAdapter,
         AbsListView.OnScrollListener {
 
     private LayoutInflater inflater;
 
-    private ArrayList<Post> datas;
+    private ArrayList<Post> data;
     private int lastItem = 0;
 
     public HeaderListViewAdapter(final LayoutInflater inflater) {
@@ -55,25 +58,37 @@ public class HeaderListViewAdapter extends BaseAdapter implements PinnedHeaderLi
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         // TODO Auto-generated method stub
-        View view_item = convertView;
-        if (view_item == null) {
-            view_item = inflater.inflate(R.layout.tab_house_listview_item_header, null);
+        View view = convertView;
+        if (view == null) {
+            view = inflater.inflate(R.layout.tab_house_listview_item, null);
         }
 
-        TextView view_name = (TextView) view_item.findViewById(R.id.username);
-        view_name.setText("Diana_S");
+        ImageView user_img_view = (ImageView) view.findViewById(R.id.post_user_image);
+        user_img_view.setImageResource(R.drawable.img5);
 
-        TextView view_time = (TextView) view_item.findViewById(R.id.time);
-        view_time.setText("1h");
+        //set user_img_view to be rounded.
+        Bitmap src = ((BitmapDrawable) user_img_view.getDrawable()).getBitmap();
+        int len = Math.max(src.getHeight(), src.getWidth());
+        Bitmap dst = Bitmap.createScaledBitmap(src, len, len, true);
+        RoundedBitmapDrawable dr = RoundedBitmapDrawableFactory.create(view.getResources(), dst);
+        //set corner radius.
+        float cornerRd = dst.getWidth() / 2.0f;
+        dr.setCornerRadius(cornerRd);
+        user_img_view.setImageDrawable(dr);
 
-        ImageView user_image_view = (ImageView) view_item.findViewById(R.id.user_image);
+
+        TextView user_name_view = (TextView) view.findViewById(R.id.post_user_username);
+        user_name_view.setText("Diana_S");
+
+        TextView time_view= (TextView) view.findViewById(R.id.post_time);
+        time_view.setText("1d");
 
         ImageView pic_view = (ImageView) view.findViewById(R.id.pic_image);
         pic_view.setImageBitmap(BitmapFactory.decodeFile("/sdcard/Download/download_20140523_182150.jpeg"));
 
-        LinearLayout comment_list = (LinearLayout) view.findViewById(R.id.comment_list);
+        LinearLayout comment_list = (LinearLayout) view.findViewById(R.id.post_comment_list);
 
-        for (int i=0; i<10; ++i) {
+        for (int i = 0; i < 10; ++i) {
             TextView comment = new TextView(view.getContext());
             comment.setText("This is a comment X from XXXXXX " + i);
             comment_list.addView(comment);
