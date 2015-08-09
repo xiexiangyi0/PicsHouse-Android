@@ -22,21 +22,21 @@ public class PostFeedData {
         String[] usernames={"Sophie","Emma","Anna","Diana","Michael","Peter"};
 
         String[] user_img_uris = {
-                "/sdcard/DCIM/Camera/IMG_20140328_100316.jpeg",
-                "/sdcard/DCIM/Camera/IMG_20140328_120349.jpeg",
-                "/sdcard/DCIM/Camera/IMG_20140330_113729.jpeg",
-                "/sdcard/DCIM/Camera/IMG_20140331_174356.jpeg",
-                "/sdcard/DCIM/Camera/IMG_20140726_154656.jpeg",
-                "/sdcard/DCIM/Camera/IMG_20140918_120303.jpeg"
+                "/sdcard/Download/img1.jpg",
+                "/sdcard/Download/img2.jpg",
+                "/sdcard/Download/img3.jpg",
+                "/sdcard/Download/img4.jpg",
+                "/sdcard/Download/img5.jpg",
+                "/sdcard/Download/img6.jpg",
         };
 
         String[] pic_img_uris = {
-                "/sdcard/DCIM/Camera/IMG_20141026_122202.jpeg",
-                "/sdcard/DCIM/Camera/IMG_20141127_135254.jpeg",
-                "/sdcard/DCIM/Camera/IMG_20141224_210531.jpeg",
-                "/sdcard/DCIM/Camera/IMG_20150406_083757.jpeg",
-                "/sdcard/DCIM/Camera/IMG_20150409_123209.jpeg",
-                "/sdcard/DCIM/Camera/IMG_20150430_173705.jpeg"
+                "/sdcard/Download/img6.jpg",
+                "/sdcard/Download/img5.jpg",
+                "/sdcard/Download/img4.jpg",
+                "/sdcard/Download/img3.jpg",
+                "/sdcard/Download/img2.jpg",
+                "/sdcard/Download/img1.jpg",
         };
 
         String[] times = {

@@ -9,6 +9,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,12 +31,14 @@ public class HeaderListViewAdapter extends BaseAdapter implements PinnedHeaderLi
 
     private LayoutInflater inflater;
 
-    private ArrayList<Post> datas;
-    private int lastItem = datas.size()-1;
+    private ArrayList<Post> datas = null;
+    private int lastItem = 0;
 
     public HeaderListViewAdapter(final LayoutInflater inflater) {
         this.inflater = inflater;
+        this.datas = new ArrayList<Post>();
         loadData();
+        this.lastItem = datas.size()-1;
     }
 
     @Override
@@ -62,6 +65,8 @@ public class HeaderListViewAdapter extends BaseAdapter implements PinnedHeaderLi
         View view = convertView;
         if (view == null) {
             view = inflater.inflate(R.layout.tab_house_listview_item, null);
+        } else {
+            return view;
         }
 
         Post post = datas.get(position);
@@ -91,6 +96,7 @@ public class HeaderListViewAdapter extends BaseAdapter implements PinnedHeaderLi
         LinearLayout comment_list = (LinearLayout) view.findViewById(R.id.post_comment_list);
 
         ArrayList<String> comment = post.getComment();
+        Log.d("MYDEBUG", "size = " + comment.size());
         for (int i = 0; i < comment.size(); ++i) {
             TextView comment_view = new TextView(view.getContext());
             comment_view.setText(comment.get(i));
@@ -120,7 +126,10 @@ public class HeaderListViewAdapter extends BaseAdapter implements PinnedHeaderLi
 
     private void loadData() {
         PostFeedData data = new PostFeedData();
-        this.datas = data.getAllPostFeedData();
+        ArrayList<Post> tmp = data.getAllPostFeedData();
+        this.datas.add(tmp.get(0));
+        this.datas.add(tmp.get(1));
+        Log.d("MYDEBUG", "size = " + datas.size());
     }
 
     @Override
