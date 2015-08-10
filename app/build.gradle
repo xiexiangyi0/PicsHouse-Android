@@ -46,5 +46,6 @@ dependencies {
     compile 'com.android.support:appcompat-v7:22.2.0'
     compile 'com.facebook.android:facebook-android-sdk:3.21.1'
     compile 'com.android.support:design:22.2.0'
+    compile 'com.facebook.fresco:fresco:0.6.0+'
     compile project(':volley')
 }

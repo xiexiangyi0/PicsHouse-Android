@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 
+import com.facebook.drawee.backends.pipeline.Fresco;
 import com.xiangyixie.picshouse.R;
 import com.xiangyixie.picshouse.fragment.FragPagerAdapter;
 import com.xiangyixie.picshouse.fragment.TabCameraFragment;
@@ -81,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-
+        Fresco.initialize(this);
         setContentView(R.layout.activity_main);
 
         initToolbar();
