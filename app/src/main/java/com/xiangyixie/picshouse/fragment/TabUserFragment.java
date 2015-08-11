@@ -47,7 +47,7 @@ public class TabUserFragment extends Fragment {
         //add headerView
         gridView_userphotos.addHeaderView(header);
 
-//pull to refresh
+        //pull to refresh
         final SwipeRefreshChildFollowLayout refresh = (SwipeRefreshChildFollowLayout) view.findViewById(R.id.tab_user_refresh);
 
         refresh.setTargetView(gridView_userphotos);
