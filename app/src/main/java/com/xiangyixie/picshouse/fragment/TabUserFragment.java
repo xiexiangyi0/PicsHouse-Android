@@ -40,8 +40,7 @@ public class TabUserFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.tab_user_new, container, false);
         View header = inflater.inflate(R.layout.tab_user_header, container, false);
-
-
+        
         //'gridView_userphotos' using Google open source code: HeaderGridView.java
         HeaderGridView gridView_userphotos = (HeaderGridView) view.findViewById(R.id.gridView_userphotos);
         //add headerView
