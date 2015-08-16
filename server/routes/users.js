@@ -15,6 +15,12 @@ router.post("/create", function(req, res) {
     var email = post.email;
     var gender = post.gender;
 
+    if (!username || !password) {
+        res.status(403);
+        res.send({ecode: "syntax_error"});
+        return;
+    }
+
 
     console.log(post);
 
