@@ -7,12 +7,14 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 
+import com.facebook.drawee.backends.pipeline.Fresco;
 import com.xiangyixie.picshouse.R;
 import com.xiangyixie.picshouse.fragment.FragPagerAdapter;
 import com.xiangyixie.picshouse.fragment.TabCameraFragment;
@@ -30,16 +32,15 @@ import java.util.Date;
 //import android.app.FragmentManager;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends AppCompatActivity {
 
     private static final int TAB_HOUSE = 0;
-    private static final int TAB_DISCOVER= 1;
+    private static final int TAB_DISCOVER = 1;
     private static final int TAB_CAMERA = 2;
     private static final int TAB_NOTIFY = 3;
     private static final int TAB_USER = 4;
 
     private static final int COUNT_TAB = 5;
-
 
 
     private static final int INTENT_CAMERA = 0;
@@ -67,32 +68,24 @@ public class MainActivity extends ActionBarActivity {
     private TabNotificationFragment mTabNotificationFrag = null;
     private TabUserFragment mTabUserFrag = null;
 
+    private Toolbar mToolbar = null;
 
 
     private int curIndex = 0;     //current page tab index for 'mTabPager': 0--4
-
 
 
     private LayoutInflater inflater;
     private Uri mImageUri = null;
 
 
-
-
-
-
-
-
-
-
-
-        @Override
+    @Override
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+        Fresco.initialize(this);
         setContentView(R.layout.activity_main);
 
-
+        initToolbar();
         //启动activity时不自动弹出软键盘
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         instance = this;
@@ -113,12 +106,12 @@ public class MainActivity extends ActionBarActivity {
 
 
         //set viewPager view <-> fragmentPagerAdapter
-        mTabPager = (MyViewPager_notSwiping)findViewById(R.id.tabpager);
+        mTabPager = (MyViewPager_notSwiping) findViewById(R.id.tabpager);
         mTabPager.setPagingEnabled(false);                                   //setting not swiping!
 
-            Log.d("DEBUG", "debug + ");
+        Log.d("DEBUG", "debug + ");
 
-        mFragPagerAdapter =  new FragPagerAdapter(getSupportFragmentManager(),mFragmentList);
+        mFragPagerAdapter = new FragPagerAdapter(getSupportFragmentManager(), mFragmentList);
         mTabPager.setAdapter(mFragPagerAdapter);
         mTabPager.setOnPageChangeListener(new MyOnPageChangeListener());
 
@@ -137,15 +130,23 @@ public class MainActivity extends ActionBarActivity {
         mTab[TAB_HOUSE].setBackgroundColor(getResources().getColor(R.color.yellow));
 
 
-        for(int i=0; i<COUNT_TAB; ++i) {
+        for (int i = 0; i < COUNT_TAB; ++i) {
 
-            if(i != TAB_CAMERA) {
+            if (i != TAB_CAMERA) {
                 mTab[i].setOnClickListener(new MyOnClickListener(i));
             }
         }
 
         //set TabCamera onClickListener
         mTab[TAB_CAMERA].setOnClickListener(new TabCameraClickListener());
+
+
+    }
+
+    private void initToolbar() {
+        mToolbar = (Toolbar) findViewById(R.id.main_activity_toolbar);
+        setSupportActionBar(mToolbar);
+        setTitle("LALALALALAL");
     }
 
 
@@ -165,7 +166,9 @@ public class MainActivity extends ActionBarActivity {
             //important!Use this to control 'mTabPager' visible fragment index!
 
         }
-    };
+    }
+
+    ;
 
 
     //for 'mTabPager' change page
@@ -174,13 +177,13 @@ public class MainActivity extends ActionBarActivity {
         @Override
         public void onPageSelected(int arg0) {
 
-            if(curIndex != TAB_CAMERA) {
-                if(0 <=curIndex && curIndex <= 4) {
+            if (curIndex != TAB_CAMERA) {
+                if (0 <= curIndex && curIndex <= 4) {
                     mTab[curIndex].setBackgroundColor(getResources().getColor(R.color.transparent));
                 }
             }
 
-            if(arg0 != TAB_CAMERA) {
+            if (arg0 != TAB_CAMERA) {
                 mTab[arg0].setBackgroundColor(getResources().getColor(R.color.yellow));
             }
 
@@ -197,14 +200,14 @@ public class MainActivity extends ActionBarActivity {
     }
 
 
-
-
-    private static Uri getOutputImageFileUri(){
+    private static Uri getOutputImageFileUri() {
 
         return Uri.fromFile(getOutputMediaFile(MEDIA_TYPE_IMAGE));
     }
 
-    /** Create a File for saving an image or video */
+    /**
+     * Create a File for saving an image or video
+     */
     private static File getOutputMediaFile(int type) {
         // To be safe, you should check that the SDCard is mounted
         // using Environment.getExternalStorageState() before doing this.
@@ -239,8 +242,6 @@ public class MainActivity extends ActionBarActivity {
     }
 
 
-
-
     //TabCamera onClickListener
     public class TabCameraClickListener implements View.OnClickListener {
 
@@ -262,11 +263,11 @@ public class MainActivity extends ActionBarActivity {
 
     @Override
     protected void onActivityResult(int req_code, int res_code, Intent data) {
-        switch(req_code) {
+        switch (req_code) {
             case INTENT_CAMERA: {
                 //mTab[TAB_HOUSE].setBackgroundColor(getResources().getColor(R.color.blue));
 
-                if(res_code == RESULT_OK) {
+                if (res_code == RESULT_OK) {
                     Intent intent = new Intent(MainActivity.this, FilterActivity.class);
                     intent.putExtra(IMAGE_PATH, mImageUri.toString());
                     mImageUri = null;
@@ -275,11 +276,12 @@ public class MainActivity extends ActionBarActivity {
 
                 break;
             }
-            case INTENT_FILTER : {
+            case INTENT_FILTER: {
                 mTab[TAB_HOUSE].setBackgroundColor(getResources().getColor(R.color.yellow));
                 break;
             }
-            default : break;
+            default:
+                break;
         }
     }
 

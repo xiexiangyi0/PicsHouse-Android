@@ -19,13 +19,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 
-
-
-
 public class TabUserFragment extends Fragment {
 
-    private final static String TAG="TabUserFragment";
-
+    private final static String TAG = "TabUserFragment";
 
 
     public TabUserFragment() {
@@ -34,8 +30,8 @@ public class TabUserFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
 
+        super.onCreate(savedInstanceState);
     }
 
     @Override
@@ -45,15 +41,12 @@ public class TabUserFragment extends Fragment {
         View view = inflater.inflate(R.layout.tab_user_new, container, false);
         View header = inflater.inflate(R.layout.tab_user_header, container, false);
 
-
-
-
         //'gridView_userphotos' using Google open source code: HeaderGridView.java
         HeaderGridView gridView_userphotos = (HeaderGridView) view.findViewById(R.id.gridView_userphotos);
         //add headerView
         gridView_userphotos.addHeaderView(header);
 
-//pull to refresh
+        //pull to refresh
         final SwipeRefreshChildFollowLayout refresh = (SwipeRefreshChildFollowLayout) view.findViewById(R.id.tab_user_refresh);
 
         refresh.setTargetView(gridView_userphotos);
@@ -67,7 +60,6 @@ public class TabUserFragment extends Fragment {
                         refresh.setRefreshing(false);
                     }
                 }, 3000);
-
             }
         });
 
@@ -102,13 +94,11 @@ public class TabUserFragment extends Fragment {
 
         gridView_userphotos.setAdapter(simpleadapter);
 
-        Log.d(TAG,"gridView_userphotos simple adaptor has been created.");
+        Log.d(TAG, "gridView_userphotos simple adaptor has been created.");
         Log.d(TAG, "" + gridView_userphotos.getHeaderViewCount());
 
         return view;
-
     }
-
 
 
     @Override
