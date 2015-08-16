@@ -23,6 +23,7 @@ public class TabUserFragment extends Fragment {
 
     private final static String TAG = "TabUserFragment";
 
+    private int post_count = 15;
 
     public TabUserFragment() {
 
@@ -67,7 +68,7 @@ public class TabUserFragment extends Fragment {
         ArrayList<HashMap<String, Object>> data = new ArrayList<HashMap<String, Object>>();
 
 
-        int[] imageint = new int[9];
+        int[] imageint = new int[post_count];
         imageint[0] = R.drawable.img1;
         imageint[1] = R.drawable.img2;
         imageint[2] = R.drawable.img3;
@@ -77,9 +78,15 @@ public class TabUserFragment extends Fragment {
         imageint[6] = R.drawable.img7;
         imageint[7] = R.drawable.img8;
         imageint[8] = R.drawable.img9;
+        imageint[9] = R.drawable.img10;
+        imageint[10] = R.drawable.img11;
+        imageint[11] = R.drawable.img12;
+        imageint[12] = R.drawable.img13;
+        imageint[13] = R.drawable.img14;
+        imageint[14] = R.drawable.img15;
 
 
-        for (int i = 0; i < 9; ++i) {
+        for (int i = 0; i < post_count; ++i) {
             HashMap<String, Object> hash = new HashMap<String, Object>();
             hash.put("photo", imageint[i]);
             data.add(hash);

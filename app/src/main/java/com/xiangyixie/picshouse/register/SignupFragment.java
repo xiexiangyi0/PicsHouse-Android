@@ -58,11 +58,9 @@ public class SignupFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         setMenuVisibility(true);
-
     }
 
 
@@ -108,9 +106,7 @@ public class SignupFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
 
                 switch (item.getItemId()) {
-
                     case R.id.signup_next1:
-
                         // Instantiate the RequestQueue.
                         PHHttpClient client = PHHttpClient.getInstance(thisContext);
 
@@ -178,14 +174,9 @@ public class SignupFragment extends Fragment {
                                             m_step1_next.onSignupStep1Next(
                                                     username_str, email_str,
                                                     selected_gender == R.id.radiobutton_male);
-
-
                                         }
-
-
                                     }
                                 },
-
                                 new Response.ErrorListener() {
                                     @Override
                                     public void onErrorResponse(VolleyError error) {
@@ -193,11 +184,9 @@ public class SignupFragment extends Fragment {
                                     }
                                 }
                         );
-
                         // Add the request to the RequestQueue.
                         client.send(req);
-
-
+                        
             return true;
 
             default:

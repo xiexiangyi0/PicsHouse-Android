@@ -141,12 +141,7 @@ public class HeaderListViewAdapter extends SectionedBaseAdapter {
     private void loadData() {
         PostFeedData data = new PostFeedData();
         ArrayList<Post> tmp = data.getAllPostFeedData();
-        /*
-        this.datas.add(tmp.get(0));
-        this.datas.add(tmp.get(1));
-        this.datas.add(tmp.get(2));
-        this.datas.add(tmp.get(3));
-        */
+
         this.datas = tmp;
         Log.d("MYDEBUG", "All post Feed datas size = " + datas.size());
     }
