@@ -87,6 +87,8 @@ public class HeaderListViewAdapter extends SectionedBaseAdapter {
         ArrayList<String> comment = post.getComment();
         Log.d("MYDEBUG", "this post comment size = " + comment.size());
 
+        comment_list_view.removeAllViews();
+
         for (int i = 0; i < comment.size(); ++i) {
             TextView comment_view = new TextView(view.getContext());
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
