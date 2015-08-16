@@ -87,6 +87,7 @@ public class HeaderListViewAdapter extends SectionedBaseAdapter {
         ArrayList<String> comment = post.getComment();
         Log.d("MYDEBUG", "this post comment size = " + comment.size());
 
+        //important!To avoid duplicate comment view bug.
         comment_list_view.removeAllViews();
 
         for (int i = 0; i < comment.size(); ++i) {
@@ -140,10 +141,13 @@ public class HeaderListViewAdapter extends SectionedBaseAdapter {
     private void loadData() {
         PostFeedData data = new PostFeedData();
         ArrayList<Post> tmp = data.getAllPostFeedData();
+        /*
         this.datas.add(tmp.get(0));
         this.datas.add(tmp.get(1));
         this.datas.add(tmp.get(2));
         this.datas.add(tmp.get(3));
+        */
+        this.datas = tmp;
         Log.d("MYDEBUG", "All post Feed datas size = " + datas.size());
     }
 

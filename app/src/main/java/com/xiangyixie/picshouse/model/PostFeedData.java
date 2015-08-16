@@ -18,8 +18,8 @@ public class PostFeedData {
     }
 
     public ArrayList<Post> getAllPostFeedData(){
-        int count = 6;
-        String[] usernames={"Sophie","Emma","Anna","Diana","Michael","Peter"};
+        int count = 15;
+        String[] usernames={"1","2","3","4","5","6","7","8","9","10","11","12","13","14","15"};
 
         String[] user_img_uris = {
                 "/sdcard/Download/img1.jpg",
@@ -28,9 +28,27 @@ public class PostFeedData {
                 "/sdcard/Download/img4.jpg",
                 "/sdcard/Download/img5.jpg",
                 "/sdcard/Download/img6.jpg",
+                "/sdcard/Download/img7.jpg",
+                "/sdcard/Download/img8.jpg",
+                "/sdcard/Download/img9.jpg",
+                "/sdcard/Download/img10.jpg",
+                "/sdcard/Download/img11.jpg",
+                "/sdcard/Download/img12.jpg",
+                "/sdcard/Download/img13.jpg",
+                "/sdcard/Download/img14.jpg",
+                "/sdcard/Download/img15.jpg",
         };
 
         String[] pic_img_uris = {
+                "/sdcard/Download/img15.jpg",
+                "/sdcard/Download/img14.jpg",
+                "/sdcard/Download/img13.jpg",
+                "/sdcard/Download/img12.jpg",
+                "/sdcard/Download/img11.jpg",
+                "/sdcard/Download/img10.jpg",
+                "/sdcard/Download/img9.jpg",
+                "/sdcard/Download/img8.jpg",
+                "/sdcard/Download/img7.jpg",
                 "/sdcard/Download/img6.jpg",
                 "/sdcard/Download/img5.jpg",
                 "/sdcard/Download/img4.jpg",
@@ -40,16 +58,25 @@ public class PostFeedData {
         };
 
         String[] times = {
-                "30m",
-                "10s",
-                "2h",
-                "3d",
-                "10m",
-                "5h"
+                "1m",
+                "2s",
+                "3h",
+                "4d",
+                "5m",
+                "6h",
+                "7h",
+                "8h",
+                "9h",
+                "10h",
+                "11m",
+                "12s",
+                "13d",
+                "14m",
+                "15s"
         };
 
         Integer[] likes_numbers = {
-            153262, 53642, 43, 9428951,248, 8432
+            1, 2, 3, 4, 5, 6, 7,8,8,10,11,12,13,14,15
         };
 
         ArrayList<String> comment = new ArrayList<String>(Arrays.asList(
