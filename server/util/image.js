@@ -2,9 +2,7 @@
  * Created by imlyc on 3/16/15.
  */
 
-var mongoose = require("mongoose")
-    //, Schema = mongoose.Schema
-    , fs = require("fs")
+var fs = require("fs")
     , path = require("path")
     , mkdirp = require("mkdirp")
     , file_plugin = require("mongoose-file").filePlugin
