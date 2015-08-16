@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 
-
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/tab_house_item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -10,6 +8,7 @@
     android:orientation="vertical"
     android:background="@color/white">
 
+    <!--picture-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="340dp"
@@ -28,7 +27,7 @@
             android:src="@drawable/img5" />
     </LinearLayout>
 
-
+    <!--likes number-->
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="34dp"
@@ -46,7 +45,7 @@
             android:textStyle="bold" />
     </LinearLayout>
 
-
+    <!--comment list-->
     <LinearLayout
         android:id="@+id/post_comment_list"
         android:layout_width="match_parent"
@@ -56,7 +55,6 @@
         android:paddingLeft="14dp"
         android:paddingRight="14dp"
         android:paddingBottom="10dp">
-
     </LinearLayout>
 
 </LinearLayout>

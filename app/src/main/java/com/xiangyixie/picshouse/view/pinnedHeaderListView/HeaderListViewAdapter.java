@@ -68,10 +68,10 @@ public class HeaderListViewAdapter extends SectionedBaseAdapter {
         View view = convertView;
         if (view == null) {
             view = inflater.inflate(R.layout.tab_house_listview_item_body, null);
-        } else {
+        } /*else {
             //important fix bug!
             return view;
-        }
+        }*/
 
         Post post = datas.get(section);
 
@@ -86,6 +86,7 @@ public class HeaderListViewAdapter extends SectionedBaseAdapter {
         LinearLayout comment_list_view = (LinearLayout) view.findViewById(R.id.post_comment_list);
         ArrayList<String> comment = post.getComment();
         Log.d("MYDEBUG", "this post comment size = " + comment.size());
+
         for (int i = 0; i < comment.size(); ++i) {
             TextView comment_view = new TextView(view.getContext());
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -114,6 +115,7 @@ public class HeaderListViewAdapter extends SectionedBaseAdapter {
 
         ImageView user_img_view = (ImageView) view.findViewById(R.id.post_user_image);
         user_img_view.setImageBitmap(BitmapFactory.decodeFile(post.getUser_img_uri()));
+
         //set user_img_view to be rounded.
         Bitmap src = ((BitmapDrawable) user_img_view.getDrawable()).getBitmap();
         int len = Math.max(src.getHeight(), src.getWidth());

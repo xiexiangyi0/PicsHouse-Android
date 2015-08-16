@@ -8,6 +8,7 @@
         android:orientation="horizontal"
         android:background="@color/white">
 
+        <!--user profile image-->
         <ImageView
             android:id="@+id/post_user_image"
             android:layout_width="40dp"
@@ -15,6 +16,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="14dp" />
 
+        <!--user name-->
         <TextView
             android:id="@+id/post_user_username"
             android:layout_width="0dp"
@@ -25,6 +27,7 @@
             android:textSize="13sp"
             android:textStyle="bold" />
 
+        <!--post time-->
         <TextView
             android:id="@+id/post_time"
             android:layout_width="30dp"
