@@ -30,8 +30,8 @@ public class TabUserFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
 
+        super.onCreate(savedInstanceState);
     }
 
     @Override
@@ -40,7 +40,7 @@ public class TabUserFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.tab_user_new, container, false);
         View header = inflater.inflate(R.layout.tab_user_header, container, false);
-        
+
         //'gridView_userphotos' using Google open source code: HeaderGridView.java
         HeaderGridView gridView_userphotos = (HeaderGridView) view.findViewById(R.id.gridView_userphotos);
         //add headerView
@@ -60,7 +60,6 @@ public class TabUserFragment extends Fragment {
                         refresh.setRefreshing(false);
                     }
                 }, 3000);
-
             }
         });
 
@@ -99,7 +98,6 @@ public class TabUserFragment extends Fragment {
         Log.d(TAG, "" + gridView_userphotos.getHeaderViewCount());
 
         return view;
-
     }
 
 
