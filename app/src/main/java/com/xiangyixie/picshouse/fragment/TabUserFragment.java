@@ -57,17 +57,17 @@ public class TabUserFragment extends Fragment
         textView_username = (TextView)headerView.findViewById(R.id.user_name);
 
         View view = inflater.inflate(R.layout.tab_user_photosbody, container, false);
-        //'gridView_userphotos' using Google open source code: HeaderGridView.java
+        //'gridView_userphotos' using Google open source code: HeaderGridView.java.
         gridView_userphotos = (HeaderGridView) view.findViewById(R.id.gridView_userphotos);
-        //insert headerView into headerGridView
+        //insert headerView into headerGridView.
         gridView_userphotos.addHeaderView(headerView);
 
-        //pull to refresh, set 'refresh' listener
+        //pull to refresh, set 'refresh' listener.
         refresh_layout_ = (SwipeRefreshChildFollowLayout) view.findViewById(R.id.tab_user_refresh);
         refresh_layout_.setTargetView(gridView_userphotos);
         refresh_layout_.setOnRefreshListener(this);
 
-        //SimpleAdapter for gridView
+        //SimpleAdapter for gridView.
         ArrayList<HashMap<String, Object>> data = new ArrayList<HashMap<String, Object>>();
         int[] imageint = new int[post_count];
         imageint[0] = R.drawable.img1;
@@ -94,7 +94,8 @@ public class TabUserFragment extends Fragment
         String[] from = {"photo"};
         int[] to = new int[1];
         to[0] = R.id.griditem_user_photo;
-        // attach each user photo cell xml with adapter
+
+        // attach each user photo cell xml with adapter.
         SimpleAdapter simpleadapter = new SimpleAdapter(getActivity(), data, R.layout.griditem_user_photos, from, to);
         gridView_userphotos.setAdapter(simpleadapter);
         Log.d(TAG, "gridView_userphotos simple adaptor has been created.");
@@ -106,27 +107,25 @@ public class TabUserFragment extends Fragment
     @Override
     public void onRefresh(){
         PHHttpClient client = PHHttpClient.getInstance(this.getActivity());
-
         JSONObject jdata = new JSONObject();
 
-        // Request a string response(token) from the provided URL.
+        // Request a JSON response from getting user info url.
         PHJsonRequest req = new PHJsonRequest(Request.Method.GET,
                 "/user/get/", jdata,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-
                         try {
                             JSONObject user = response.getJSONObject("user");
                             String username = user.getString("username");
                             String email = user.getString("email");
+                            textView_username.setText(username);
                             toastWarning("username = " + username + ", email = " + email);
                         }  catch (JSONException e) {
                             toastWarning("syntax_error");
                         }
-
+                        //set refresh symbol state.
                         refresh_layout_.setRefreshing(false);
-
                     }
                 },
                 new Response.ErrorListener() {
@@ -134,7 +133,35 @@ public class TabUserFragment extends Fragment
                     public void onErrorResponse(VolleyError error) {
                         toastWarning("Error");
                         refresh_layout_.setRefreshing(false);
+                    }
+                }
+        );
+        // Add the request to the RequestQueue.
+        client.send(req);
 
+        // Request a JSON response from getting post url.
+        req = new PHJsonRequest(Request.Method.GET,
+                "/posts/get/", jdata,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            JSONObject user = response.getJSONObject("user");
+                            String username = user.getString("username");
+
+                            toastWarning("get user photos number: " );
+                        }  catch (JSONException e) {
+                            toastWarning("syntax_error");
+                        }
+                        //set refresh symbol state.
+                        refresh_layout_.setRefreshing(false);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        toastWarning("Error");
+                        refresh_layout_.setRefreshing(false);
                     }
                 }
         );
