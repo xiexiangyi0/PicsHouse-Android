@@ -28,6 +28,7 @@ import com.xiangyixie.picshouse.httpService.PHJsonRequest;
 import com.xiangyixie.picshouse.util.UserWarning;
 import com.xiangyixie.picshouse.view.SwipeRefreshChildFollowLayout;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -122,7 +123,7 @@ public class TabUserFragment extends Fragment
 
     @Override
     public void onRefresh(){
-        PHHttpClient client = PHHttpClient.getInstance(activity);
+        final PHHttpClient client = PHHttpClient.getInstance(activity);
         JSONObject jdata = new JSONObject();
 
         // Request a JSON response from getting user info url.
@@ -131,17 +132,21 @@ public class TabUserFragment extends Fragment
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
+                        String user_id = "";
                         try {
                             JSONObject user = response.getJSONObject("user");
                             String username = user.getString("username");
                             String email = user.getString("email");
+                            user_id = user.getString("id");
                             textView_username.setText(username);
-                            toastWarning("username = " + username + ", email = " + email);
+                            toastWarning("username = " + username + ", email = " + email
+                                    + ", user_id = " + user_id);
                         }  catch (JSONException e) {
                             toastWarning("syntax_error");
                         }
-                        //set refresh symbol state.
-                        refresh_layout_.setRefreshing(false);
+
+                        refreshUserPicPost(client, user_id);
+
                     }
                 },
                 new Response.ErrorListener() {
@@ -155,20 +160,39 @@ public class TabUserFragment extends Fragment
         // Add the request to the RequestQueue.
         client.send(req);
 
+
+    }
+
+    private void refreshUserPicPost(PHHttpClient client, String user_id) {
+        JSONObject jdata = new JSONObject();
+        try {
+            jdata.put("user_id", user_id);
+        } catch (JSONException e) {
+            toastWarning("error");
+            refresh_layout_.setRefreshing(false);
+        }
         // Request a JSON response from getting post url.
-        req = new PHJsonRequest(Request.Method.GET,
-                "/posts/get/", jdata,
+        PHJsonRequest req = new PHJsonRequest(Request.Method.GET,
+                "/post/get/?user_id=" + user_id, jdata,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
-                            JSONObject user = response.getJSONObject("user");
-                            String username = user.getString("username");
+                            JSONArray posts = response.getJSONArray("posts");
+                            int len = posts.length();
+                            String urls = "";
+                            for (int i=0; i<len; ++i) {
+                                JSONObject post = posts.getJSONObject(i);
+                                JSONObject image = post.getJSONObject("image");
+                                String url = image.getString("src");
+                                urls += Integer.toString(i) + ". " + url + "\n";
+                            }
 
-                            toastWarning("get user photos number: " );
+                            toastWarning("get user photos number: " + len + ":\n" + urls);
                         }  catch (JSONException e) {
                             toastWarning("syntax_error");
                         }
+
                         //set refresh symbol state.
                         refresh_layout_.setRefreshing(false);
                     }
@@ -176,7 +200,7 @@ public class TabUserFragment extends Fragment
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        toastWarning("Error");
+                        toastWarning("Error in pic post");
                         refresh_layout_.setRefreshing(false);
                     }
                 }
@@ -221,6 +245,7 @@ public class TabUserFragment extends Fragment
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
+        this.activity = activity;
 
     }
 
