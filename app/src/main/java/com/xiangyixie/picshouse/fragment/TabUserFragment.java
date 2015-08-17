@@ -56,22 +56,19 @@ public class TabUserFragment extends Fragment
         View headerView = inflater.inflate(R.layout.tab_user_header, container, false);
         textView_username = (TextView)headerView.findViewById(R.id.user_name);
 
-        View view = inflater.inflate(R.layout.tab_user_new, container, false);
+        View view = inflater.inflate(R.layout.tab_user_photosbody, container, false);
         //'gridView_userphotos' using Google open source code: HeaderGridView.java
         gridView_userphotos = (HeaderGridView) view.findViewById(R.id.gridView_userphotos);
         //insert headerView into headerGridView
         gridView_userphotos.addHeaderView(headerView);
 
-        //pull to refresh
+        //pull to refresh, set 'refresh' listener
         refresh_layout_ = (SwipeRefreshChildFollowLayout) view.findViewById(R.id.tab_user_refresh);
         refresh_layout_.setTargetView(gridView_userphotos);
-
         refresh_layout_.setOnRefreshListener(this);
 
         //SimpleAdapter for gridView
         ArrayList<HashMap<String, Object>> data = new ArrayList<HashMap<String, Object>>();
-
-
         int[] imageint = new int[post_count];
         imageint[0] = R.drawable.img1;
         imageint[1] = R.drawable.img2;
@@ -89,22 +86,17 @@ public class TabUserFragment extends Fragment
         imageint[13] = R.drawable.img14;
         imageint[14] = R.drawable.img15;
 
-
         for (int i = 0; i < post_count; ++i) {
             HashMap<String, Object> hash = new HashMap<String, Object>();
             hash.put("photo", imageint[i]);
             data.add(hash);
         }
-
         String[] from = {"photo"};
         int[] to = new int[1];
         to[0] = R.id.griditem_user_photo;
-
         // attach each user photo cell xml with adapter
         SimpleAdapter simpleadapter = new SimpleAdapter(getActivity(), data, R.layout.griditem_user_photos, from, to);
-
         gridView_userphotos.setAdapter(simpleadapter);
-
         Log.d(TAG, "gridView_userphotos simple adaptor has been created.");
         Log.d(TAG, "" + gridView_userphotos.getHeaderViewCount());
 
@@ -130,7 +122,7 @@ public class TabUserFragment extends Fragment
                             String email = user.getString("email");
                             toastWarning("username = " + username + ", email = " + email);
                         }  catch (JSONException e) {
-                            toastWarning("sytax_error");
+                            toastWarning("syntax_error");
                         }
 
                         refresh_layout_.setRefreshing(false);

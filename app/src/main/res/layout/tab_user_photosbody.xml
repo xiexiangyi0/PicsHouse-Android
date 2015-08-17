@@ -8,16 +8,16 @@
         android:layout_height="wrap_content"
         android:id="@+id/tab_user_refresh">
 
-    <com.android.photos.views.HeaderGridView
-        android:id="@+id/gridView_userphotos"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:numColumns="3"
-        android:paddingTop="2dp"
-        android:horizontalSpacing="2dp"
-        android:verticalSpacing="2dp"
-        android:stretchMode="columnWidth">
-    </com.android.photos.views.HeaderGridView>
+        <com.android.photos.views.HeaderGridView
+            android:id="@+id/gridView_userphotos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:numColumns="3"
+            android:paddingTop="2dp"
+            android:horizontalSpacing="2dp"
+            android:verticalSpacing="2dp"
+            android:stretchMode="columnWidth">
+        </com.android.photos.views.HeaderGridView>
 
 
 
