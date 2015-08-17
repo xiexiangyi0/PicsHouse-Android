@@ -15,6 +15,10 @@ router.get("/get", function(req, res) {
         cond._id = req.query.id;
     }
 
+    if ("user_id" in req.query) {
+        cond.user_id = req.query.user_id;
+    }
+
     PicPost.find(cond).populate("user_id comments")
         .exec(function(err, posts) {
             if(err) {

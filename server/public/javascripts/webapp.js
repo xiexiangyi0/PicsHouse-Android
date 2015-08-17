@@ -47,6 +47,8 @@ function onClickGetProfile() {
         }).done(function(data) {
 
             $("#profile .screen").html("user name = " + data.user.username + " email = " + data.user.email);
+            localStorage.setItem("user_id", data.user.id);
+            console.log("id = " + data.user.id);
 
         }).fail(function() {
             console.log("fail");
@@ -138,6 +140,9 @@ function onClickGetImage() {
     webappAjax({
         url : "/post/get/"
         , type : "GET"
+        , data: {
+            user_id: localStorage.getItem("user_id")
+        }
     }).done(function(data) {
         var posts = data.posts;
         var image_list = $("#get_image div");
