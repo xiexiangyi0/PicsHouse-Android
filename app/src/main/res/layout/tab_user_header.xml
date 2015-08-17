@@ -29,24 +29,22 @@
 
 
             <ImageView
-                    android:id="@+id/user_profile_img"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/img4"
-                    android:contentDescription="profile pic" />
+                android:id="@+id/user_profile_img"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"
+                android:src="@drawable/img4"
+                android:contentDescription="profile pic" />
 
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="2"
-
                 android:paddingLeft="10dp"
                 android:paddingTop="6dp"
                 android:orientation="vertical">
-
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -106,10 +104,9 @@
         </LinearLayout>
 
 
-
-
-
+        <!--user name-->
         <TextView
+            android:id="@+id/user_name"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:layout_width="match_parent"
@@ -125,13 +122,13 @@
     </LinearLayout>
 
 
+    <!--separator-->
     <View android:background="@color/gray_line_color"
           android:layout_height="1dp"
           android:layout_width="fill_parent"/>
 
 
-
-
+    <!--user folling info-->
     <LinearLayout
         android:id="@+id/user_following_info"
         android:layout_width="match_parent"

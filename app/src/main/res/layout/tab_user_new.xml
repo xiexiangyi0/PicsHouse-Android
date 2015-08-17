@@ -8,8 +8,6 @@
         android:layout_height="wrap_content"
         android:id="@+id/tab_user_refresh">
 
-
-
     <com.android.photos.views.HeaderGridView
         android:id="@+id/gridView_userphotos"
         android:layout_width="match_parent"

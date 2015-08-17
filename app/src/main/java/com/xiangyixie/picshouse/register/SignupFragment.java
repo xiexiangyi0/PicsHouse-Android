@@ -33,10 +33,6 @@ public class SignupFragment extends Fragment {
 
     private static final String TAG = "SignupFragment";
 
-    public interface SignupStep1NextListener {
-        public void onSignupStep1Next(String username, String email, boolean is_male);
-    }
-
     private Context thisContext= null;
 
     private EditText signup_username = null;
@@ -45,15 +41,15 @@ public class SignupFragment extends Fragment {
     //private CheckBox signup_gender_selected = null;
     private TextView debug_signup = null;
 
+
     private SignupStep1NextListener m_step1_next = null;
-
-
-
-
-
 
     public SignupFragment() {
 
+    }
+    //fragment interaction listener
+    public interface SignupStep1NextListener {
+        public void onSignupStep1Next(String username, String email, boolean is_male);
     }
 
     @Override
@@ -63,10 +59,6 @@ public class SignupFragment extends Fragment {
         setMenuVisibility(true);
     }
 
-
-
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -75,20 +67,13 @@ public class SignupFragment extends Fragment {
 
         thisContext = container.getContext();
 
-
-
         //signup http related
         signup_email = (EditText)view.findViewById(R.id.signup_email);
         signup_username = (EditText)view.findViewById(R.id.signup_username);
         signup_gender = (RadioGroup)view.findViewById(R.id.radio_group_gender);
         debug_signup = (TextView) view.findViewById(R.id.debug_signup);
-
-
-
         return view;
-
     }
-
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -100,11 +85,8 @@ public class SignupFragment extends Fragment {
 
     }
 
-
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
                 switch (item.getItemId()) {
                     case R.id.signup_next1:
                         // Instantiate the RequestQueue.
@@ -112,28 +94,23 @@ public class SignupFragment extends Fragment {
 
                         final String email_str = signup_email.getText().toString();
                         final String username_str = signup_username.getText().toString();
-
                         final int selected_gender = signup_gender.getCheckedRadioButtonId();
 
                         if(username_str == "") {
                             toastWarning("Please input username");
                             return true;
                         }
-
                         if(email_str == "") {
                             toastWarning("Please input email");
                             return true;
                         }
-
                         if(selected_gender != R.id.radiobutton_male
                                 && selected_gender != R.id.radiobutton_female){
                             toastWarning("must select gender");
                             return true;
                         }
 
-
                         JSONObject jdata = new JSONObject();
-
                         try {
                             jdata.put("username", username_str);
                             jdata.put("email", email_str);
@@ -186,14 +163,12 @@ public class SignupFragment extends Fragment {
                         );
                         // Add the request to the RequestQueue.
                         client.send(req);
-                        
             return true;
 
             default:
                     return super.onOptionsItemSelected(item);
         }
     }
-
 
     @Override
     public void onAttach(Activity activity) {

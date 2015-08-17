@@ -4,7 +4,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-
     <LinearLayout
         android:id="@+id/layout_top"
         android:layout_width="match_parent"
@@ -104,7 +103,7 @@
         </LinearLayout>
 
 
-
+        <!--user name-->
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="0dp"
@@ -113,6 +112,7 @@
             android:layout_marginTop="3dp">
 
             <TextView
+                android:id="@+id/user_name"
                 android:layout_height="fill_parent"
                 android:layout_width="fill_parent"
                 android:textColor="@color/black"
@@ -133,11 +133,10 @@
         android:orientation="vertical">
 
 
-
+        <!--separator-->
         <View android:background="@color/gray_line_color"
             android:layout_height="1dp"
             android:layout_width="fill_parent"/>
-
 
 
 
@@ -269,6 +268,8 @@
         </LinearLayout>
 
 
+
+        <!--separator-->
         <View android:background="@color/gray_line_color"
             android:layout_height="1dp"
             android:layout_width="fill_parent"/>
@@ -280,7 +281,7 @@
             android:layout_height="wrap_content">
             <!--user grid photos-->
             <com.android.photos.views.HeaderGridView
-                android:id="@+id/gridView_userphotos"
+                android:id="@+id/user_photos_gridView"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:padding="0dp"

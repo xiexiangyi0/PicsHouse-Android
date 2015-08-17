@@ -2,7 +2,6 @@ package com.xiangyixie.picshouse.fragment;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
@@ -10,20 +9,35 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 
 import com.android.photos.views.HeaderGridView;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.xiangyixie.picshouse.R;
+import com.xiangyixie.picshouse.httpService.PHHttpClient;
+import com.xiangyixie.picshouse.httpService.PHJsonRequest;
+import com.xiangyixie.picshouse.util.UserWarning;
 import com.xiangyixie.picshouse.view.SwipeRefreshChildFollowLayout;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 
-public class TabUserFragment extends Fragment {
+public class TabUserFragment extends Fragment
+    implements SwipeRefreshLayout.OnRefreshListener{
 
     private final static String TAG = "TabUserFragment";
 
     private int post_count = 15;
+
+    private TextView textView_username = null;
+    private HeaderGridView gridView_userphotos = null;
+    private SwipeRefreshChildFollowLayout refresh_layout_ = null;
 
     public TabUserFragment() {
 
@@ -39,30 +53,20 @@ public class TabUserFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.tab_user_new, container, false);
-        View header = inflater.inflate(R.layout.tab_user_header, container, false);
+        View headerView = inflater.inflate(R.layout.tab_user_header, container, false);
+        textView_username = (TextView)headerView.findViewById(R.id.user_name);
 
+        View view = inflater.inflate(R.layout.tab_user_new, container, false);
         //'gridView_userphotos' using Google open source code: HeaderGridView.java
-        HeaderGridView gridView_userphotos = (HeaderGridView) view.findViewById(R.id.gridView_userphotos);
-        //add headerView
-        gridView_userphotos.addHeaderView(header);
+        gridView_userphotos = (HeaderGridView) view.findViewById(R.id.gridView_userphotos);
+        //insert headerView into headerGridView
+        gridView_userphotos.addHeaderView(headerView);
 
         //pull to refresh
-        final SwipeRefreshChildFollowLayout refresh = (SwipeRefreshChildFollowLayout) view.findViewById(R.id.tab_user_refresh);
+        refresh_layout_ = (SwipeRefreshChildFollowLayout) view.findViewById(R.id.tab_user_refresh);
+        refresh_layout_.setTargetView(gridView_userphotos);
 
-        refresh.setTargetView(gridView_userphotos);
-
-        refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        refresh.setRefreshing(false);
-                    }
-                }, 3000);
-            }
-        });
+        refresh_layout_.setOnRefreshListener(this);
 
         //SimpleAdapter for gridView
         ArrayList<HashMap<String, Object>> data = new ArrayList<HashMap<String, Object>>();
@@ -107,7 +111,44 @@ public class TabUserFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onRefresh(){
+        PHHttpClient client = PHHttpClient.getInstance(this.getActivity());
 
+        JSONObject jdata = new JSONObject();
+
+        // Request a string response(token) from the provided URL.
+        PHJsonRequest req = new PHJsonRequest(Request.Method.GET,
+                "/user/get/", jdata,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+
+                        try {
+                            JSONObject user = response.getJSONObject("user");
+                            String username = user.getString("username");
+                            String email = user.getString("email");
+                            toastWarning("username = " + username + ", email = " + email);
+                        }  catch (JSONException e) {
+                            toastWarning("sytax_error");
+                        }
+
+                        refresh_layout_.setRefreshing(false);
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        toastWarning("Error");
+                        refresh_layout_.setRefreshing(false);
+
+                    }
+                }
+        );
+        // Add the request to the RequestQueue.
+        client.send(req);
+    }
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -120,6 +161,9 @@ public class TabUserFragment extends Fragment {
 
     }
 
+    private void toastWarning(String txt) {
+        UserWarning.warn(getActivity(), txt);
+    }
 
     public interface OnFragmentInteractionListener {
 

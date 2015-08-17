@@ -5,7 +5,7 @@ package com.xiangyixie.picshouse;
  */
 public class AppConfig {
 
-    public static final String SERVER_IP = "192.168.1.8";
+    public static final String SERVER_IP = "104.236.145.14";
     public static final String SERVER_PORT = "8000";
 
     public static final String KEY_USERNAME = "username";

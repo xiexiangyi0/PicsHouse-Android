@@ -122,6 +122,10 @@ public class LoginActivity extends ActionBarActivity
                                 String tk = null;
                                 try {
                                     tk = response.getString("token");
+
+                                    //TODO: record token in shared preference and remove the public
+                                    //  access of this variable
+                                    PHJsonRequest.auth_token_ = tk;
                                 } catch(JSONException e) {
                                     UserWarning.warn(LoginActivity.this, R.string.http_response_syntax_error);
                                     return;
@@ -134,13 +138,7 @@ public class LoginActivity extends ActionBarActivity
                         new Response.ErrorListener() {
                             @Override
                             public void onErrorResponse(VolleyError error) {
-
                                 LoginActivity.this.showHttpError(error);
-
-
-
-
-
                             }
                         }
                 );
