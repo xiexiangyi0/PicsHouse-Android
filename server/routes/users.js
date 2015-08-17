@@ -6,8 +6,6 @@ var auth = require("../util/auth");
 
 /* GET users listing. */
 
-
-
 router.post("/create", function(req, res) {
     var post = req.body;
     var username = post.username;
@@ -21,9 +19,6 @@ router.post("/create", function(req, res) {
         return;
     }
 
-
-    console.log(post);
-
     User.findOne({$or : [{username : username}, {email : email}]}, function(err, user) {
         if(err) {
             throw err;
@@ -32,10 +27,8 @@ router.post("/create", function(req, res) {
         if(user) {
             res.status(403);
             if(user.username == username) {
-
                 res.send({ecode : "username_exist"});
             } else {
-
                 res.send({ecode : "email_exist"});
             }
         } else {
@@ -49,13 +42,11 @@ router.post("/create", function(req, res) {
 
             auth.register(new_user, function(err, user) {
                 if(err) {
-
                     throw err;
                 }
 
                 auth.login(user, function(err, u) {
                     if(err) {
-
                         throw err;
                     }
 

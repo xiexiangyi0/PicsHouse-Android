@@ -7,7 +7,7 @@ var mongoose = require("mongoose")
     , ObjId = Schema.Types.ObjectId
     , app_config = require("../config")
     , path = require("path")
-    , image_plugin = require("../util/image").imagePlugin
+    , image_plugin = require("./plugin/image").imagePlugin
 ;
 
 var schema = new Schema({

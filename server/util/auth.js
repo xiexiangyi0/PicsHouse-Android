@@ -7,7 +7,6 @@ var passport = require("passport")
     , app_config = require("../config")
 ;
 
-
 //passport
 passport.use(
     new LocalStrategy(function(username, password, done) {
