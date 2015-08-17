@@ -1,6 +1,10 @@
 package com.xiangyixie.picshouse.fragment;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -8,8 +12,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.photos.views.HeaderGridView;
 import com.android.volley.Request;
@@ -24,6 +31,8 @@ import com.xiangyixie.picshouse.view.SwipeRefreshChildFollowLayout;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -32,6 +41,13 @@ public class TabUserFragment extends Fragment
     implements SwipeRefreshLayout.OnRefreshListener{
 
     private final static String TAG = "TabUserFragment";
+
+    private Activity activity = this.getActivity();
+
+    private Button loadimg_btn;
+    private ImageView img_view;
+    private Bitmap bitmap;
+    private ProgressDialog pDialog;
 
     private int post_count = 15;
 
@@ -57,7 +73,7 @@ public class TabUserFragment extends Fragment
         textView_username = (TextView)headerView.findViewById(R.id.user_name);
 
         View view = inflater.inflate(R.layout.tab_user_photosbody, container, false);
-        //'gridView_userphotos' using Google open source code: HeaderGridView.java.
+        //using Google open source code: HeaderGridView.java.
         gridView_userphotos = (HeaderGridView) view.findViewById(R.id.gridView_userphotos);
         //insert headerView into headerGridView.
         gridView_userphotos.addHeaderView(headerView);
@@ -96,7 +112,7 @@ public class TabUserFragment extends Fragment
         to[0] = R.id.griditem_user_photo;
 
         // attach each user photo cell xml with adapter.
-        SimpleAdapter simpleadapter = new SimpleAdapter(getActivity(), data, R.layout.griditem_user_photos, from, to);
+        SimpleAdapter simpleadapter = new SimpleAdapter(activity, data, R.layout.griditem_user_photos, from, to);
         gridView_userphotos.setAdapter(simpleadapter);
         Log.d(TAG, "gridView_userphotos simple adaptor has been created.");
         Log.d(TAG, "" + gridView_userphotos.getHeaderViewCount());
@@ -106,7 +122,7 @@ public class TabUserFragment extends Fragment
 
     @Override
     public void onRefresh(){
-        PHHttpClient client = PHHttpClient.getInstance(this.getActivity());
+        PHHttpClient client = PHHttpClient.getInstance(activity);
         JSONObject jdata = new JSONObject();
 
         // Request a JSON response from getting user info url.
@@ -168,6 +184,40 @@ public class TabUserFragment extends Fragment
         // Add the request to the RequestQueue.
         client.send(req);
     }
+
+
+    private class LoadImage extends AsyncTask<String, String, Bitmap> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pDialog = new ProgressDialog(activity);
+            pDialog.setMessage("Loading Image ....");
+            pDialog.show();
+
+        }
+        protected Bitmap doInBackground(String... args) {
+            try {
+                bitmap = BitmapFactory.decodeStream((InputStream) new URL(args[0]).getContent());
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return bitmap;
+        }
+
+        protected void onPostExecute(Bitmap image) {
+            if(image != null){
+                img_view.setImageBitmap(image);
+                pDialog.dismiss();
+
+            }else{
+                pDialog.dismiss();
+                Toast.makeText(activity, "Image Does Not Exist or Network Error", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
