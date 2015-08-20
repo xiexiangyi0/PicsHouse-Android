@@ -193,7 +193,7 @@ public class TabUserFragment extends Fragment
                             toastWarning("syntax_error");
                         }
 
-                        //set refresh symbol state.
+                        //set refresh pic state.
                         refresh_layout_.setRefreshing(false);
                     }
                 },
@@ -262,5 +262,4 @@ public class TabUserFragment extends Fragment
     public interface OnFragmentInteractionListener {
 
     }
-
 }
