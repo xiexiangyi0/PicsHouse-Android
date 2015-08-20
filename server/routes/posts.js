@@ -42,7 +42,7 @@ router.get("/get", function(req, res, next) {
 });
 
 //post a picture
-router.post("/create", auth.authToken(), function(req, res) {
+router.post("/create", auth.authToken(), function(req, res, next) {
     var post = req.body;
     var user = req.user;
     var files = req.files;
@@ -70,7 +70,7 @@ router.post("/create", auth.authToken(), function(req, res) {
     pic_post.setFile(image_file, function(err, pp) {
         pp.save(function(err, p){
             if(err) {
-                throw err;
+                return next(err);
             }
 
             //console.log(p);
@@ -82,7 +82,7 @@ router.post("/create", auth.authToken(), function(req, res) {
 });
 
 //comment a post
-router.post("/comment/create", auth.authToken(), function(req, res) {
+router.post("/comment/create", auth.authToken(), function(req, res, next) {
     var post = req.body;
     var user = req.user;
 
@@ -101,18 +101,18 @@ router.post("/comment/create", auth.authToken(), function(req, res) {
 
     PicPost.findById(pic_post, function(err, p) {
         if(err) {
-            throw err;
+            return next(err);
         }
 
         if(p) {
             comment.save(function(err, c) {
                 if (err) {
-                    throw err;
+                    return next(err);
                 }
                 p.comments.push(c);
                 p.save(function(err, post_ret) {
                     if (err) {
-                        throw err;
+                        return next(err);
                     }
 
                     res.send({comment: c});
