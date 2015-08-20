@@ -188,7 +188,7 @@ public class TabUserFragment extends Fragment
                                 url = image.getString("src");
                                 String base_url = "http://" + AppConfig.SERVER_IP + ":" + AppConfig.SERVER_PORT;
                                 url = base_url + url;
-                                new LoadImage(i+1).execute(url);
+                                new LoadImage(i).execute(url);
                             }
 
                             toastWarning("get user photos number: " + len + ":\n" + urls);
@@ -245,7 +245,8 @@ public class TabUserFragment extends Fragment
         protected void onPostExecute(Bitmap image) {
             if(image != null){
                 Log.d("MYDEBUG", "image bitmap != null");
-                View griditem_view = gridView_userphotos.getChildAt(pos);
+                View griditem_view = gridView_userphotos.getChildAt(
+                        pos + gridView_userphotos.getHeaderViewCount()*gridView_userphotos.getNumColumns());
                 Log.d("MYDEBUG","pos = " + griditem_view);
                 ImageView img_view = (ImageView)griditem_view.findViewById(R.id.griditem_userphotos_imageView);
                 Log.d("MYDEBUG","imageView = " + img_view);
