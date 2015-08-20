@@ -13,11 +13,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.xiangyixie.picshouse.view.HeaderGridView.HeaderGridView;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -26,6 +24,8 @@ import com.xiangyixie.picshouse.R;
 import com.xiangyixie.picshouse.httpService.PHHttpClient;
 import com.xiangyixie.picshouse.httpService.PHJsonRequest;
 import com.xiangyixie.picshouse.util.UserWarning;
+import com.xiangyixie.picshouse.view.HeaderGridView.GridViewAdapter;
+import com.xiangyixie.picshouse.view.HeaderGridView.HeaderGridView;
 import com.xiangyixie.picshouse.view.SwipeRefreshChildFollowLayout;
 
 import org.json.JSONArray;
@@ -44,17 +44,15 @@ public class TabUserFragment extends Fragment
     private final static String TAG = "TabUserFragment";
 
     private Activity activity = this.getActivity();
-
-    private View griditem_userphoto_view = null ;
+    private HeaderGridView gridView_userphotos = null;
     private Bitmap bitmap;
     private ProgressDialog pDialog;
+    private SwipeRefreshChildFollowLayout refresh_layout_ = null;
 
     private int post_count = 15;
     private String url = null;
 
     private TextView textView_username = null;
-    private HeaderGridView gridView_userphotos = null;
-    private SwipeRefreshChildFollowLayout refresh_layout_ = null;
 
     public TabUserFragment() {
 
@@ -113,10 +111,11 @@ public class TabUserFragment extends Fragment
         to[0] = R.id.griditem_user_photo;
 
         // attach each user photo cell xml with adapter.
-        SimpleAdapter simpleadapter = new SimpleAdapter(activity, data, R.layout.griditem_user_photos, from, to);
-        gridView_userphotos.setAdapter(simpleadapter);
-        Log.d(TAG, "gridView_userphotos simple adaptor has been created.");
-        Log.d(TAG, "" + gridView_userphotos.getHeaderViewCount());
+        //SimpleAdapter simpleadapter = new SimpleAdapter(activity, data, R.layout.griditem_user_photos, from, to);
+        GridViewAdapter gridViewAdapter = new GridViewAdapter(5,3,15);
+        gridView_userphotos.setAdapter(gridViewAdapter);
+        Log.d("MYDEBUG", "gridView_userphotos  gridViewAdaptor has been created.");
+        Log.d("MYDEBUG", "" + gridView_userphotos.getHeaderViewCount());
 
         return view;
     }
@@ -179,20 +178,23 @@ public class TabUserFragment extends Fragment
                     public void onResponse(JSONObject response) {
                         try {
                             JSONArray posts = response.getJSONArray("posts");
+                            // size of user posts.
                             int len = posts.length();
                             String urls = "";
+                            //traverse all user post photos and load image from network url asynchronously.
                             for (int i=0; i<len; ++i) {
                                 JSONObject post = posts.getJSONObject(i);
                                 JSONObject image = post.getJSONObject("image");
                                 url = image.getString("src");
-                                //urls += Integer.toString(i) + ". " + url + "\n";
+                                String base_url = "http://" + AppConfig.SERVER_IP + ":" + AppConfig.SERVER_PORT;
+                                url = base_url + url;
+                                new LoadImage(i+1).execute(url);
                             }
-                            String base_url = "http://" + AppConfig.SERVER_IP + ":" + AppConfig.SERVER_PORT;
-                            url = base_url + url;
+
                             toastWarning("get user photos number: " + len + ":\n" + urls);
-                            Log.d("MYDEBUG",url);
-                            griditem_userphoto_view = gridView_userphotos.getChildAt(0);
-                            new LoadImage().execute(url);
+                            //Log.d("MYDEBUG",url);
+                            //griditem_userphoto_view = gridView_userphotos.getChildAt(0);
+                            //new LoadImage().execute(url);
 
                         }  catch (JSONException e) {
                             toastWarning("syntax_error");
@@ -216,6 +218,12 @@ public class TabUserFragment extends Fragment
 
 
     private class LoadImage extends AsyncTask<String, String, Bitmap> {
+        int pos = 0;
+
+        public LoadImage(int position){
+            this.pos = position;
+        }
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -236,13 +244,17 @@ public class TabUserFragment extends Fragment
 
         protected void onPostExecute(Bitmap image) {
             if(image != null){
-                ImageView img_view = (ImageView)griditem_userphoto_view.findViewById(R.id.griditem_userphotos_imageView);
+                Log.d("MYDEBUG", "image bitmap != null");
+                View griditem_view = gridView_userphotos.getChildAt(pos);
+                Log.d("MYDEBUG","pos = " + griditem_view);
+                ImageView img_view = (ImageView)griditem_view.findViewById(R.id.griditem_userphotos_imageView);
+                Log.d("MYDEBUG","imageView = " + img_view);
                 img_view.setImageBitmap(image);
                 pDialog.dismiss();
 
             }else{
                 pDialog.dismiss();
-                Toast.makeText(activity, "Image Does Not Exist or Network Error", Toast.LENGTH_SHORT).show();
+                Toast.makeText(activity, "Image does not exist or Network error", Toast.LENGTH_SHORT).show();
             }
         }
     }
