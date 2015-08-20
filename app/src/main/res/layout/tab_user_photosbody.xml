@@ -8,7 +8,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/tab_user_refresh">
 
-        <com.android.photos.views.HeaderGridView
+        <com.xiangyixie.picshouse.view.HeaderGridView.HeaderGridView
             android:id="@+id/gridView_userphotos"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -17,7 +17,7 @@
             android:horizontalSpacing="2dp"
             android:verticalSpacing="2dp"
             android:stretchMode="columnWidth">
-        </com.android.photos.views.HeaderGridView>
+        </com.xiangyixie.picshouse.view.HeaderGridView.HeaderGridView>
 
 
 

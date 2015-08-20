@@ -12,16 +12,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.photos.views.HeaderGridView;
+import com.xiangyixie.picshouse.view.HeaderGridView.HeaderGridView;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.xiangyixie.picshouse.AppConfig;
 import com.xiangyixie.picshouse.R;
 import com.xiangyixie.picshouse.httpService.PHHttpClient;
 import com.xiangyixie.picshouse.httpService.PHJsonRequest;
@@ -45,12 +45,12 @@ public class TabUserFragment extends Fragment
 
     private Activity activity = this.getActivity();
 
-    private Button loadimg_btn;
-    private ImageView img_view;
+    private View griditem_userphoto_view = null ;
     private Bitmap bitmap;
     private ProgressDialog pDialog;
 
     private int post_count = 15;
+    private String url = null;
 
     private TextView textView_username = null;
     private HeaderGridView gridView_userphotos = null;
@@ -159,11 +159,10 @@ public class TabUserFragment extends Fragment
         );
         // Add the request to the RequestQueue.
         client.send(req);
-
-
     }
 
-    private void refreshUserPicPost(PHHttpClient client, String user_id) {
+
+    private void refreshUserPicPost(PHHttpClient client, final String user_id) {
         JSONObject jdata = new JSONObject();
         try {
             jdata.put("user_id", user_id);
@@ -172,6 +171,7 @@ public class TabUserFragment extends Fragment
             refresh_layout_.setRefreshing(false);
         }
         // Request a JSON response from getting post url.
+        //final String post_get_request_url = ;
         PHJsonRequest req = new PHJsonRequest(Request.Method.GET,
                 "/post/get/?user_id=" + user_id, jdata,
                 new Response.Listener<JSONObject>() {
@@ -184,16 +184,21 @@ public class TabUserFragment extends Fragment
                             for (int i=0; i<len; ++i) {
                                 JSONObject post = posts.getJSONObject(i);
                                 JSONObject image = post.getJSONObject("image");
-                                String url = image.getString("src");
-                                urls += Integer.toString(i) + ". " + url + "\n";
+                                url = image.getString("src");
+                                //urls += Integer.toString(i) + ". " + url + "\n";
                             }
-
+                            String base_url = "http://" + AppConfig.SERVER_IP + ":" + AppConfig.SERVER_PORT;
+                            url = base_url + url;
                             toastWarning("get user photos number: " + len + ":\n" + urls);
+                            Log.d("MYDEBUG",url);
+                            griditem_userphoto_view = gridView_userphotos.getChildAt(0);
+                            new LoadImage().execute(url);
+
                         }  catch (JSONException e) {
                             toastWarning("syntax_error");
                         }
 
-                        //set refresh pic state.
+                        //set refresh pic visible.
                         refresh_layout_.setRefreshing(false);
                     }
                 },
@@ -231,6 +236,7 @@ public class TabUserFragment extends Fragment
 
         protected void onPostExecute(Bitmap image) {
             if(image != null){
+                ImageView img_view = (ImageView)griditem_userphoto_view.findViewById(R.id.griditem_userphotos_imageView);
                 img_view.setImageBitmap(image);
                 pDialog.dismiss();
 

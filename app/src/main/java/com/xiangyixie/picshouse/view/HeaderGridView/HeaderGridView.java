@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.photos.views;
+package com.xiangyixie.picshouse.view.HeaderGridView;
 
 import android.content.Context;
 import android.database.DataSetObservable;

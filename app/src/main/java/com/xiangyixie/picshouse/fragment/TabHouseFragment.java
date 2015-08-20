@@ -41,7 +41,7 @@ public class TabHouseFragment extends Fragment {
         listView = (PinnedHeaderListView) view.findViewById(R.id.tab_house_listview);
         listView.setPinHeaders(true);
         // TODO: API starts from 21. Need to change it. Consider to use NestedScrollView.
-        listView.setNestedScrollingEnabled(true);
+        //listView.setNestedScrollingEnabled(true);
         listView.setAdapter(adapter);
 
         return view;
