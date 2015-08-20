@@ -17,8 +17,7 @@ public class PHJsonRequest extends JsonObjectRequest {
 
     private static String s_base_url = "http://" + AppConfig.SERVER_IP + ":" + AppConfig.SERVER_PORT;
 
-    public static String auth_token_ = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImphbmUiLCJwYXNzd29yZCI6IiQyYSQxMCRKM3NsNXpVeFladkJVNU1iakhlb1RlMnNNRlJnY2xUZGJLWDhTYXdMR0Y3THM0OEhnOWhFRyIsInRvZGF5IjoxNDM5NzkwNDY1NDA5LCJpYXQiOjE0Mzk3OTA0NjV9.jzB19CAt66aJAM694j7qabsFskCKDTp_ZZ90sjC6yoc";
-
+    public static String auth_token_ = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImphbmUiLCJwYXNzd29yZCI6IiQyYSQxMCRKM3NsNXpVeFladkJVNU1iakhlb1RlMnNNRlJnY2xUZGJLWDhTYXdMR0Y3THM0OEhnOWhFRyIsInRvZGF5IjoxNDQwMDU5NzgwNjQ2LCJpYXQiOjE0NDAwNTk3ODB9.v3gBlysDBBHGcNkpm6EmIYG5pFyw9vpcyTUEb9St11M";
     public PHJsonRequest(int method, String url, JSONObject jsonRequest,
                          Response.Listener<JSONObject> listener,
                          Response.ErrorListener errorListener) {

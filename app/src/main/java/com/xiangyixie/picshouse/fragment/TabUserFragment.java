@@ -34,8 +34,6 @@ import org.json.JSONObject;
 
 import java.io.InputStream;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
 
 
 public class TabUserFragment extends Fragment
@@ -82,6 +80,7 @@ public class TabUserFragment extends Fragment
         refresh_layout_.setTargetView(gridView_userphotos);
         refresh_layout_.setOnRefreshListener(this);
 
+        /*
         //SimpleAdapter for gridView.
         ArrayList<HashMap<String, Object>> data = new ArrayList<HashMap<String, Object>>();
         int[] imageint = new int[post_count];
@@ -112,6 +111,8 @@ public class TabUserFragment extends Fragment
 
         // attach each user photo cell xml with adapter.
         //SimpleAdapter simpleadapter = new SimpleAdapter(activity, data, R.layout.griditem_user_photos, from, to);
+        */
+
         GridViewAdapter gridViewAdapter = new GridViewAdapter(5,3,15);
         gridView_userphotos.setAdapter(gridViewAdapter);
         Log.d("MYDEBUG", "gridView_userphotos  gridViewAdaptor has been created.");
@@ -151,7 +152,7 @@ public class TabUserFragment extends Fragment
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        toastWarning("Error");
+                        toastWarning("get user info error");
                         refresh_layout_.setRefreshing(false);
                     }
                 }
@@ -190,16 +191,11 @@ public class TabUserFragment extends Fragment
                                 url = base_url + url;
                                 new LoadImage(i).execute(url);
                             }
-
                             toastWarning("get user photos number: " + len + ":\n" + urls);
-                            //Log.d("MYDEBUG",url);
-                            //griditem_userphoto_view = gridView_userphotos.getChildAt(0);
-                            //new LoadImage().execute(url);
 
                         }  catch (JSONException e) {
-                            toastWarning("syntax_error");
+                            toastWarning("parse json posts array error");
                         }
-
                         //set refresh pic visible.
                         refresh_layout_.setRefreshing(false);
                     }
@@ -207,7 +203,7 @@ public class TabUserFragment extends Fragment
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        toastWarning("Error in pic post");
+                        toastWarning("get user posts error");
                         refresh_layout_.setRefreshing(false);
                     }
                 }
@@ -218,7 +214,8 @@ public class TabUserFragment extends Fragment
 
 
     private class LoadImage extends AsyncTask<String, String, Bitmap> {
-        int pos = 0;
+
+        private int pos = 0;
 
         public LoadImage(int position){
             this.pos = position;
@@ -246,8 +243,8 @@ public class TabUserFragment extends Fragment
             if(image != null){
                 Log.d("MYDEBUG", "image bitmap != null");
                 View griditem_view = gridView_userphotos.getChildAt(
-                        pos + gridView_userphotos.getHeaderViewCount()*gridView_userphotos.getNumColumns());
-                Log.d("MYDEBUG","pos = " + griditem_view);
+                        pos + gridView_userphotos.getHeaderViewCount() * gridView_userphotos.getNumColumns());
+                Log.d("MYDEBUG","set img pos = " + griditem_view);
                 ImageView img_view = (ImageView)griditem_view.findViewById(R.id.griditem_userphotos_imageView);
                 Log.d("MYDEBUG","imageView = " + img_view);
                 img_view.setImageBitmap(image);
@@ -255,7 +252,7 @@ public class TabUserFragment extends Fragment
 
             }else{
                 pDialog.dismiss();
-                Toast.makeText(activity, "Image does not exist or Network error", Toast.LENGTH_SHORT).show();
+                Toast.makeText(activity, "Image does not exist or network error", Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -265,13 +262,11 @@ public class TabUserFragment extends Fragment
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         this.activity = activity;
-
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-
     }
 
     private void toastWarning(String txt) {
