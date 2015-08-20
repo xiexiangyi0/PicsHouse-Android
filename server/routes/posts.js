@@ -8,7 +8,7 @@ var PicPost = require("../model/pic_post");
 var Comment = require("../model/comment");
 
 //get list of all the posts
-router.get("/get", function(req, res) {
+router.get("/get", function(req, res, next) {
     var cond = {};
 
     if("id" in req.query) {
@@ -26,7 +26,7 @@ router.get("/get", function(req, res) {
     PicPost.find(cond).populate("user_id comments")
         .exec(function(err, posts) {
             if(err) {
-                throw err;
+                return next(err);
             }
 
             var jarr = [];
@@ -49,8 +49,6 @@ router.post("/create", auth.authToken(), function(req, res) {
     var desc = post.desc || "";
 
     var image_file = files.image;
-
-
 
     if(image_file) {
         image_file = image_file[0];
