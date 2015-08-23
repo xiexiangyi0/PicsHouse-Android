@@ -242,8 +242,11 @@ public class TabUserFragment extends Fragment
         protected void onPostExecute(Bitmap image) {
             if(image != null){
                 Log.d("MYDEBUG", "image bitmap != null");
-                View griditem_view = gridView_userphotos.getChildAt(
-                        pos + gridView_userphotos.getHeaderViewCount() * gridView_userphotos.getNumColumns());
+                int child_idx = pos + gridView_userphotos.getHeaderViewCount()*gridView_userphotos.getNumColumns();
+                int num_visiable_child = gridView_userphotos.getChildCount();
+                int fst_child = gridView_userphotos.getFirstVisiblePosition();
+                Log.d("MYDEBUG", "pos = " + pos + ", child_idx = " + child_idx);
+                View griditem_view = gridView_userphotos.getChildAt(child_idx-fst_child);
                 Log.d("MYDEBUG","set img pos = " + griditem_view);
                 if (griditem_view == null) {
                     //pDialog.dismiss();
