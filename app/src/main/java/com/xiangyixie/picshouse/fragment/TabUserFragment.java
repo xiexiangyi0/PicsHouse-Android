@@ -12,7 +12,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -47,6 +46,7 @@ public class TabUserFragment extends Fragment
     private ArrayList<Bitmap> bitmap_array_ = null;
     private ProgressDialog pDialog;
     private SwipeRefreshChildFollowLayout refresh_layout_ = null;
+    private GridViewAdapter gridViewAdapter = null;
 
     private int post_count = 15;
     private String url = null;
@@ -116,7 +116,7 @@ public class TabUserFragment extends Fragment
 
         bitmap_array_  = new ArrayList<>();
 
-        GridViewAdapter gridViewAdapter = new GridViewAdapter(3, bitmap_array_);
+        gridViewAdapter = new GridViewAdapter(3, bitmap_array_);
         gridView_userphotos.setAdapter(gridViewAdapter);
         Log.d("MYDEBUG", "gridView_userphotos  gridViewAdaptor has been created.");
         Log.d("MYDEBUG", "" + gridView_userphotos.getHeaderViewCount());
@@ -255,22 +255,10 @@ public class TabUserFragment extends Fragment
                     }
                 }
                 bitmap_array_.set(pos, image);
-                int child_idx = pos + gridView_userphotos.getHeaderViewCount()*gridView_userphotos.getNumColumns();
-                int num_visiable_child = gridView_userphotos.getChildCount();
-                int fst_child = gridView_userphotos.getFirstVisiblePosition();
-                Log.d("MYDEBUG", "pos = " + pos + ", child_idx = " + child_idx);
-                View griditem_view = gridView_userphotos.getChildAt(child_idx-fst_child);
-                Log.d("MYDEBUG","set img pos = " + griditem_view);
-                if (griditem_view == null) {
-                    //pDialog.dismiss();
-                    return;
-                }
-                ImageView img_view = (ImageView)griditem_view.findViewById(R.id.griditem_userphotos_imageView);
-                Log.d("MYDEBUG", "imageView = " + img_view);
-                img_view.setImageBitmap(image);
-                //pDialog.dismiss();
-                gridView_userphotos.invalidate();
-
+                // Update grid view, but this will cause a freeze, need to figure out why
+                gridViewAdapter.notifyDataSetChanged();
+                //gridView_userphotos.getAdapter().notifyDataSetChanged();
+                //gridView_userphotos.setAdapter(new GridViewAdapter(3, bitmap_array_));
             }else{
                 //pDialog.dismiss();
                 Toast.makeText(activity, "Image does not exist or network error", Toast.LENGTH_SHORT).show();
