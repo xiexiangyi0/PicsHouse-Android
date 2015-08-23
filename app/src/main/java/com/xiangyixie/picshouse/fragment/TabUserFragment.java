@@ -113,7 +113,7 @@ public class TabUserFragment extends Fragment
         //SimpleAdapter simpleadapter = new SimpleAdapter(activity, data, R.layout.griditem_user_photos, from, to);
         */
 
-        GridViewAdapter gridViewAdapter = new GridViewAdapter(5,3,15);
+        GridViewAdapter gridViewAdapter = new GridViewAdapter(6,3,18);
         gridView_userphotos.setAdapter(gridViewAdapter);
         Log.d("MYDEBUG", "gridView_userphotos  gridViewAdaptor has been created.");
         Log.d("MYDEBUG", "" + gridView_userphotos.getHeaderViewCount());
@@ -224,9 +224,9 @@ public class TabUserFragment extends Fragment
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            pDialog = new ProgressDialog(activity);
-            pDialog.setMessage("Loading Image ....");
-            pDialog.show();
+            //pDialog = new ProgressDialog(activity);
+            //pDialog.setMessage("Loading Image ....");
+            //pDialog.show();
 
         }
         protected Bitmap doInBackground(String... args) {
@@ -245,13 +245,17 @@ public class TabUserFragment extends Fragment
                 View griditem_view = gridView_userphotos.getChildAt(
                         pos + gridView_userphotos.getHeaderViewCount() * gridView_userphotos.getNumColumns());
                 Log.d("MYDEBUG","set img pos = " + griditem_view);
+                if (griditem_view == null) {
+                    //pDialog.dismiss();
+                    return;
+                }
                 ImageView img_view = (ImageView)griditem_view.findViewById(R.id.griditem_userphotos_imageView);
                 Log.d("MYDEBUG","imageView = " + img_view);
                 img_view.setImageBitmap(image);
-                pDialog.dismiss();
+                //pDialog.dismiss();
 
             }else{
-                pDialog.dismiss();
+                //pDialog.dismiss();
                 Toast.makeText(activity, "Image does not exist or network error", Toast.LENGTH_SHORT).show();
             }
         }
