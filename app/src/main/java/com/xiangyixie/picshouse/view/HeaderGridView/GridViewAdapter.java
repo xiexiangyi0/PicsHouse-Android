@@ -1,6 +1,7 @@
 package com.xiangyixie.picshouse.view.HeaderGridView;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,24 +11,24 @@ import android.widget.ImageView;
 
 import com.xiangyixie.picshouse.R;
 
+import java.util.ArrayList;
+
 /**
  * Created by xiangyixie on 8/19/15.
  */
 public class GridViewAdapter extends BaseAdapter{
-    private int mRow;
     private int mCol;
-    private int mCount;
+    private ArrayList<Bitmap> mBitmapArray;
 
-    public GridViewAdapter(int row, int col, int count) {
+    public GridViewAdapter(int col, ArrayList<Bitmap> bitmapArray) {
         super();
-        mRow = row;
         mCol = col;
-        mCount = count;
+        mBitmapArray = bitmapArray;
     }
 
     @Override
     public int getCount() {
-        return mCount;
+        return mBitmapArray.size();
     }
 
     @Override
@@ -53,7 +54,10 @@ public class GridViewAdapter extends BaseAdapter{
         Log.d("Updating -----", String.valueOf(position));
 
         ImageView img = (ImageView) v.findViewById(R.id.griditem_userphotos_imageView);
-        //img.setImageBitmap(null);
+
+        if (position < getCount() && mBitmapArray.get(position) != null) {
+            img.setImageBitmap(mBitmapArray.get(position));
+        }
         return v;
     }
 }

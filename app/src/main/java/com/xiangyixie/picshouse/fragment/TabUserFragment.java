@@ -34,6 +34,7 @@ import org.json.JSONObject;
 
 import java.io.InputStream;
 import java.net.URL;
+import java.util.ArrayList;
 
 
 public class TabUserFragment extends Fragment
@@ -43,7 +44,7 @@ public class TabUserFragment extends Fragment
 
     private Activity activity = this.getActivity();
     private HeaderGridView gridView_userphotos = null;
-    private Bitmap bitmap;
+    private ArrayList<Bitmap> bitmap_array_ = null;
     private ProgressDialog pDialog;
     private SwipeRefreshChildFollowLayout refresh_layout_ = null;
 
@@ -113,7 +114,9 @@ public class TabUserFragment extends Fragment
         //SimpleAdapter simpleadapter = new SimpleAdapter(activity, data, R.layout.griditem_user_photos, from, to);
         */
 
-        GridViewAdapter gridViewAdapter = new GridViewAdapter(6,3,18);
+        bitmap_array_  = new ArrayList<>();
+
+        GridViewAdapter gridViewAdapter = new GridViewAdapter(3, bitmap_array_);
         gridView_userphotos.setAdapter(gridViewAdapter);
         Log.d("MYDEBUG", "gridView_userphotos  gridViewAdaptor has been created.");
         Log.d("MYDEBUG", "" + gridView_userphotos.getHeaderViewCount());
@@ -230,18 +233,28 @@ public class TabUserFragment extends Fragment
 
         }
         protected Bitmap doInBackground(String... args) {
+            Bitmap bmap = null;
             try {
-                bitmap = BitmapFactory.decodeStream((InputStream) new URL(args[0]).getContent());
+                bmap = BitmapFactory.decodeStream((InputStream) new URL(args[0]).getContent());
 
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            return bitmap;
+            return bmap;
         }
 
         protected void onPostExecute(Bitmap image) {
             if(image != null){
                 Log.d("MYDEBUG", "image bitmap != null");
+                int sz = bitmap_array_.size();
+                if (sz <= pos) {
+                    int idx = sz;
+                    while(idx <= pos) {
+                        bitmap_array_.add(null);
+                        idx++;
+                    }
+                }
+                bitmap_array_.set(pos, image);
                 int child_idx = pos + gridView_userphotos.getHeaderViewCount()*gridView_userphotos.getNumColumns();
                 int num_visiable_child = gridView_userphotos.getChildCount();
                 int fst_child = gridView_userphotos.getFirstVisiblePosition();
@@ -253,9 +266,10 @@ public class TabUserFragment extends Fragment
                     return;
                 }
                 ImageView img_view = (ImageView)griditem_view.findViewById(R.id.griditem_userphotos_imageView);
-                Log.d("MYDEBUG","imageView = " + img_view);
+                Log.d("MYDEBUG", "imageView = " + img_view);
                 img_view.setImageBitmap(image);
                 //pDialog.dismiss();
+                gridView_userphotos.invalidate();
 
             }else{
                 //pDialog.dismiss();
