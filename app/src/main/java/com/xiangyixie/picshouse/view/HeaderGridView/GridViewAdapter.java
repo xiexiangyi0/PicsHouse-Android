@@ -53,7 +53,7 @@ public class GridViewAdapter extends BaseAdapter{
         }
         Log.d("Updating -----", String.valueOf(position));
 
-        ImageView img = (ImageView) v.findViewById(R.id.griditem_userphotos_imageView);
+        ImageView img = (ImageView) v.findViewById(R.id.griditem_userphoto_view);
 
         if (position < getCount() && mBitmapArray.get(position) != null) {
             img.setImageBitmap(mBitmapArray.get(position));

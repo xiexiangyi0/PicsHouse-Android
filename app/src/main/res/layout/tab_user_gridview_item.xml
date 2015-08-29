@@ -7,7 +7,7 @@
     <com.xiangyixie.picshouse.view.SquareCellGridView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:id="@+id/griditem_userphotos_imageView"
+        android:id="@+id/griditem_userphoto_view"
         android:scaleType="fitXY"/>
 
 </LinearLayout>

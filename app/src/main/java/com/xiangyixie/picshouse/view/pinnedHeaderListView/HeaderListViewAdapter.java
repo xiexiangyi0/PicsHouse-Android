@@ -55,7 +55,7 @@ public class HeaderListViewAdapter extends SectionedBaseAdapter {
     @Override
     public Object getItem(int section, int position) {
         // TODO Auto-generated method stub
-        return "lalala";
+        return "User";
     }
 
     @Override
