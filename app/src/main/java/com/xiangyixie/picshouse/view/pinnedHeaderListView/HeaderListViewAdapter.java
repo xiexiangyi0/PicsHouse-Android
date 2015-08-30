@@ -59,7 +59,7 @@ public class HeaderListViewAdapter extends SectionedBaseAdapter {
     @Override
     public Object getItem(int section, int position) {
         // TODO Auto-generated method stub
-        return "User";
+        return section;
     }
 
     @Override
@@ -119,15 +119,14 @@ public class HeaderListViewAdapter extends SectionedBaseAdapter {
 
     @Override
     public View getSectionHeaderView(int section, View convertView, ViewGroup parent) {
-        View view = convertView;
 
-        if (view == null) {
-            view = inflater.inflate(R.layout.tab_house_listview_item_header, parent, false);
+        if (convertView == null) {
+            convertView = inflater.inflate(R.layout.tab_house_listview_item_header, parent, false);
         }
 
         Post post = datas.get(section);
 
-        ImageView user_imageView = (ImageView) view.findViewById(R.id.post_user_image);
+        ImageView user_imageView = (ImageView) convertView.findViewById(R.id.post_user_image);
         //user_img_view.setImageBitmap(BitmapFactory.decodeFile(post.getUser_img_uri()));
         try{
             if (section < getSectionCount() && mBitmapArray.get(section)!=null ) {
@@ -135,7 +134,7 @@ public class HeaderListViewAdapter extends SectionedBaseAdapter {
                 Bitmap src = mBitmapArray.get(section);
                 int len = Math.min(src.getHeight(), src.getWidth());
                 Bitmap dst = Bitmap.createScaledBitmap(src, len, len, true);
-                RoundedBitmapDrawable dr = RoundedBitmapDrawableFactory.create(view.getResources(), dst);
+                RoundedBitmapDrawable dr = RoundedBitmapDrawableFactory.create(convertView.getResources(), dst);
                 //set corner radius.
                 float cornerRd = dst.getWidth() / 2.0f;
                 dr.setCornerRadius(cornerRd);
@@ -145,13 +144,13 @@ public class HeaderListViewAdapter extends SectionedBaseAdapter {
             e.printStackTrace();
         }
 
-        TextView user_name_view = (TextView) view.findViewById(R.id.post_user_username);
+        TextView user_name_view = (TextView) convertView.findViewById(R.id.post_user_username);
         user_name_view.setText(post.getUsername());
 
-        TextView time_view= (TextView) view.findViewById(R.id.post_time);
+        TextView time_view= (TextView) convertView.findViewById(R.id.post_time);
         time_view.setText(post.getTime());
 
-        return view;
+        return convertView;
     }
 
     private void loadData() {
@@ -161,7 +160,6 @@ public class HeaderListViewAdapter extends SectionedBaseAdapter {
         this.datas = tmp;
         Log.d("MYDEBUG", "All post Feed datas size = " + datas.size());
     }
-
 }
 
 

@@ -45,21 +45,17 @@ public class GridViewAdapter extends BaseAdapter{
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        View v;
-
         if(convertView == null) {
             LayoutInflater inflater = (LayoutInflater)parent.getContext().getSystemService
                     (Context.LAYOUT_INFLATER_SERVICE);
-            v = inflater.inflate(R.layout.tab_user_gridview_item, null);
-        } else {
-            v = convertView;
+            convertView = inflater.inflate(R.layout.tab_user_gridview_item, null);
         }
 
-        ImageView img = (ImageView) v.findViewById(R.id.griditem_userphoto_view);
+        ImageView img = (ImageView) convertView.findViewById(R.id.griditem_userphoto_view);
 
         if (position < getCount() && mBitmapArray.get(position) != null) {
             img.setImageBitmap(mBitmapArray.get(position));
         }
-        return v;
+        return convertView;
     }
 }
