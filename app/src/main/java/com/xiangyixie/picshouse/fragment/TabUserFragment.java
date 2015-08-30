@@ -44,7 +44,7 @@ public class TabUserFragment extends Fragment
 
     private HeaderGridView gridView_userphotos = null;
     private GridViewAdapter gridViewAdapter = null;
-    private ArrayList<Bitmap> bitmap_array_ = null;
+    private ArrayList<Bitmap> bitmap_array = null;
     //private ProgressDialog pDialog;
 
     private SwipeRefreshChildFollowLayout refresh_layout_ = null;
@@ -115,9 +115,9 @@ public class TabUserFragment extends Fragment
         //SimpleAdapter simpleadapter = new SimpleAdapter(activity, data, R.layout.griditem_user_photos, from, to);
         */
 
-        bitmap_array_  = new ArrayList<>();
+        bitmap_array  = new ArrayList<>();
 
-        gridViewAdapter = new GridViewAdapter(3, bitmap_array_);
+        gridViewAdapter = new GridViewAdapter(3, bitmap_array);
         gridView_userphotos.setAdapter(gridViewAdapter);
         Log.d("MYDEBUG", "gridView_userphotos  gridViewAdaptor has been created.");
         Log.d("MYDEBUG", "" + gridView_userphotos.getHeaderViewCount());
@@ -130,7 +130,7 @@ public class TabUserFragment extends Fragment
         final PHHttpClient client = PHHttpClient.getInstance(activity);
         JSONObject jdata = new JSONObject();
 
-        // Request a JSON response from getting user info url.
+        //Request a JSON response from getting user info url.
         PHJsonRequest req = new PHJsonRequest(Request.Method.GET,
                 "/user/get/", jdata,
                 new Response.Listener<JSONObject>() {
@@ -174,7 +174,7 @@ public class TabUserFragment extends Fragment
             toastWarning("error");
             refresh_layout_.setRefreshing(false);
         }
-        // Request a JSON response from getting post url.
+        //Request a JSON response from getting post url.
         //final String post_get_request_url = ;
         PHJsonRequest req = new PHJsonRequest(Request.Method.GET,
                 "/post/get/?user_id=" + user_id, jdata,
@@ -193,6 +193,7 @@ public class TabUserFragment extends Fragment
                                 url = image.getString("src");
                                 String base_url = "http://" + AppConfig.SERVER_IP + ":" + AppConfig.SERVER_PORT;
                                 url = base_url + url;
+                                //Async task LoadImage.
                                 new LoadImage(i).execute(url);
                             }
                             toastWarning("get user photos number: " + len + ":\n" + urls);
@@ -212,11 +213,11 @@ public class TabUserFragment extends Fragment
                     }
                 }
         );
-        // Add the request to the RequestQueue.
+        //Add the request to the RequestQueue.
         client.send(req);
     }
 
-
+    //Async task LoadImage(i).execute(url).
     private class LoadImage extends AsyncTask<String, String, Bitmap> {
 
         private int pos = 0;
@@ -231,13 +232,12 @@ public class TabUserFragment extends Fragment
             //pDialog = new ProgressDialog(activity);
             //pDialog.setMessage("Loading Image ....");
             //pDialog.show();
-
         }
+
         protected Bitmap doInBackground(String... args) {
             Bitmap bmap = null;
             try {
                 bmap = BitmapFactory.decodeStream((InputStream) new URL(args[0]).getContent());
-
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -247,19 +247,16 @@ public class TabUserFragment extends Fragment
         protected void onPostExecute(Bitmap image) {
             if(image != null){
                 Log.d("MYDEBUG", "image bitmap != null");
-                int sz = bitmap_array_.size();
+                int sz = bitmap_array.size();
                 if (sz <= pos) {
                     int idx = sz;
                     while(idx <= pos) {
-                        bitmap_array_.add(null);
+                        bitmap_array.add(null);
                         idx++;
                     }
                 }
-                bitmap_array_.set(pos, image);
-                // Update grid view, but this will cause a freeze, need to figure out why
+                bitmap_array.set(pos, image);
                 gridViewAdapter.notifyDataSetChanged();
-                //gridView_userphotos.getAdapter().notifyDataSetChanged();
-                //gridView_userphotos.setAdapter(new GridViewAdapter(3, bitmap_array_));
             }else{
                 //pDialog.dismiss();
                 Toast.makeText(activity, "Image does not exist or network error", Toast.LENGTH_SHORT).show();
