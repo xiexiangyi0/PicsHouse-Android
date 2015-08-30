@@ -1,7 +1,6 @@
 package com.xiangyixie.picshouse.fragment;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -42,15 +41,17 @@ public class TabUserFragment extends Fragment
     private final static String TAG = "TabUserFragment";
 
     private Activity activity = this.getActivity();
+
     private HeaderGridView gridView_userphotos = null;
-    private ArrayList<Bitmap> bitmap_array_ = null;
-    private ProgressDialog pDialog;
-    private SwipeRefreshChildFollowLayout refresh_layout_ = null;
     private GridViewAdapter gridViewAdapter = null;
+    private ArrayList<Bitmap> bitmap_array_ = null;
+    //private ProgressDialog pDialog;
+
+    private SwipeRefreshChildFollowLayout refresh_layout_ = null;
 
     private int post_count = 15;
-    private String url = null;
 
+    private String url = null;
     private TextView textView_username = null;
 
     public TabUserFragment() {
