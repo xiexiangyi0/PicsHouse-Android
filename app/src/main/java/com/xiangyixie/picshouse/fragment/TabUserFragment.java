@@ -117,7 +117,7 @@ public class TabUserFragment extends Fragment
 
         bitmap_array  = new ArrayList<>();
 
-        gridViewAdapter = new GridViewAdapter(3, bitmap_array);
+        gridViewAdapter = new GridViewAdapter(bitmap_array);
         gridView_userphotos.setAdapter(gridViewAdapter);
         Log.d("MYDEBUG", "gridView_userphotos  gridViewAdaptor has been created.");
         Log.d("MYDEBUG", "" + gridView_userphotos.getHeaderViewCount());
@@ -174,8 +174,8 @@ public class TabUserFragment extends Fragment
             toastWarning("error");
             refresh_layout_.setRefreshing(false);
         }
+
         //Request a JSON response from getting post url.
-        //final String post_get_request_url = ;
         PHJsonRequest req = new PHJsonRequest(Request.Method.GET,
                 "/post/get/?user_id=" + user_id, jdata,
                 new Response.Listener<JSONObject>() {
@@ -201,14 +201,14 @@ public class TabUserFragment extends Fragment
                         }  catch (JSONException e) {
                             toastWarning("parse json posts array error");
                         }
-                        //set refresh pic visible.
+                        //set refresh symbol visible.
                         refresh_layout_.setRefreshing(false);
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        toastWarning("get user posts error");
+                        toastWarning("get user posts url error");
                         refresh_layout_.setRefreshing(false);
                     }
                 }

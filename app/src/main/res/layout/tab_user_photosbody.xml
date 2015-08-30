@@ -19,8 +19,6 @@
             android:stretchMode="columnWidth">
         </com.xiangyixie.picshouse.view.HeaderGridView.HeaderGridView>
 
-
-
     </com.xiangyixie.picshouse.view.SwipeRefreshChildFollowLayout>
 
 </LinearLayout>

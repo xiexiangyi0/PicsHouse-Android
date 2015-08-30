@@ -19,10 +19,11 @@ import java.util.ArrayList;
 public class GridViewAdapter extends BaseAdapter{
 
     //important!To instantiate imageview for user photos.
-    private ArrayList<Bitmap> mBitmapArray;
+    private ArrayList<Bitmap> mBitmapArray = null;
 
-    public GridViewAdapter(int col, ArrayList<Bitmap> bitmapArray) {
+    public GridViewAdapter(ArrayList<Bitmap> bitmapArray) {
         super();
+
         mBitmapArray = bitmapArray;
     }
 
