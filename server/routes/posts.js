@@ -9,8 +9,7 @@ var Comment = require("../model/comment");
 
 var mydebug = require("../util/debug");
 
-//get list of all the posts
-router.get("/get", function(req, res, next) {
+function getQueryFromReq(req) {
     var cond = {};
 
     if("id" in req.query) {
@@ -24,6 +23,13 @@ router.get("/get", function(req, res, next) {
     if ("user_id" in req.body) {
         cond.user_id = req.body.user_id;
     }
+
+    return cond;
+}
+
+//get list of all the posts
+router.get("/get", function(req, res, next) {
+    var cond = getQueryFromReq(req);
 
     PicPost.find(cond).populate("user_id comments")
         .exec(function(err, posts) {
@@ -41,6 +47,24 @@ router.get("/get", function(req, res, next) {
             //console.log(jarr);
             res.send({"posts" : jarr});
         });
+});
+
+router.get("/getthumbnail", function (req, res, next) {
+    var cond = getQueryFromReq(req);
+
+    PicPost.find(cond, function(err, posts) {
+        if (err) {
+            return next(err);
+        }
+
+        var jarr = [];
+
+        posts.forEach(function(p, idx, arr) {
+            jarr.push(p.getJsonPublic({id: p.user_id}));
+        });
+
+        res.send({"posts": jarr});
+    });
 });
 
 //post a picture

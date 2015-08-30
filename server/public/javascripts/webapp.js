@@ -11,6 +11,10 @@ function webappAjax(options) {
     return $.ajax(options);
 }
 
+function mydebug_info(str) {
+    console.log("[INFO] " + str);
+}
+
 
 function onClickSignup() {
     var username = $("#register input[type=text]").val();
@@ -165,6 +169,25 @@ function onClickGetImage() {
     }).fail(function() {
        console.log("fail");
     });
+}
+
+function onClickGetImageThumbnail() {
+    webappAjax({
+        url: "/post/getthumbnail/"
+        , type: "GET"
+    }).done(function (data) {
+        var posts = data.posts;
+        var image_list = $("#get_image div");
+
+        for (var i=0; i<posts.length; i++) {
+            var html = "<img src=" + posts[i].image.src + ">";
+            image_list[0].innerHTML += html;
+
+            mydebug_info(posts[i].user.id);
+        }
+    }).fail(function () {
+        console.log("fail");
+    })
 }
 
 function onClickAddComment(post) {
