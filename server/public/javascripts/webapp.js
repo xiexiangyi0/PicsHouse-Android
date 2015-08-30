@@ -151,6 +151,7 @@ function onClickGetImage() {
             console.log(posts[i]);
             var html = "<p>Image " + i + ": " + posts[i].desc + "</p>" +
                        "<img src=" + posts[i].image.src + ">" +
+                       "<button onclick='onClickDeleteImage(\"" + posts[i].id + "\")'>Delete Image</button>" +
                        "<p>Comments: </p>";
 
             for (var j=0; j<posts[i].comments.length; j++) {
@@ -179,5 +180,20 @@ function onClickAddComment(post) {
         onClickGetImage();
     }).fail(function() {
       console.log("Oops")
+    });
+}
+
+function onClickDeleteImage(post) {
+    console.log("delete image");
+    webappAjax({
+        url: "/post/delete/"
+        , type: "POST"
+        , data: {
+            post_id: post
+        }
+    }).done(function(data) {
+        console.log("Image deleted");
+    }).fail(function(xhr) {
+        console.log(xhr);
     });
 }

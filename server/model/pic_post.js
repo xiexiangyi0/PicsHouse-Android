@@ -39,4 +39,11 @@ schema.method("getJsonPublic", function(user_json) {
     };
 });
 
+schema.pre("remove", function(next) {
+    this.model("Comment").remove(
+        {_id: {$in: this.comments}}
+        , next
+    );
+});
+
 module.exports = mongoose.model("PicPost", schema);

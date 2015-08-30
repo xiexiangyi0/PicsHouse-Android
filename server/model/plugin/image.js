@@ -59,6 +59,13 @@ var imagePlugin = function(schema, option) {
         }
 
     });
+
+    schema.pre("remove", function(next) {
+        var _this = this;
+        fs.unlink(_this[pathname].path, function() {
+            next();
+        });
+    });
 };
 
 module.exports = {

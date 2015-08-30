@@ -7,6 +7,8 @@ var auth = require("../util/auth");
 var PicPost = require("../model/pic_post");
 var Comment = require("../model/comment");
 
+var mydebug = require("../util/debug");
+
 //get list of all the posts
 router.get("/get", function(req, res, next) {
     var cond = {};
@@ -73,12 +75,57 @@ router.post("/create", auth.authToken(), function(req, res, next) {
                 return next(err);
             }
 
-            //console.log(p);
-
             res.send({"post" : p.getJsonPublic(req.user.getJsonPublic())});
         });
     });
 
+});
+
+// delete a post
+router.post("/delete", auth.authToken(), function(req, res, next) {
+    var post = req.body;
+    var user = req.user;
+
+    var post_id = post.post_id || "";
+
+    mydebug.log("delete post " + post_id);
+
+    PicPost.findById(post_id, function (err, p) {
+        if (err) {
+            mydebug.log(err);
+            return next(err);
+        }
+
+        if (!p) {
+            // no post found
+            mydebug.log("no post");
+            res.status(403);
+            res.send({ecode: "invalid_object"});
+            return;
+        }
+
+        mydebug.log("p.user_id="+p.user_id);
+        mydebug.log("user._id="+user._id);
+
+        if (!p.user_id.equals(user._id)) {
+            mydebug.log("incorrect user");
+            res.status(403);
+            res.send({ecode: "invalid_permission"});
+            return;
+        }
+
+        p.remove(function (err, p) {
+            if (err) {
+                return next(err);
+            }
+
+            mydebug.log("removed");
+
+            res.send({});
+        })
+
+
+    });
 });
 
 //comment a post
