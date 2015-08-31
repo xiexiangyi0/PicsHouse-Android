@@ -50,7 +50,7 @@ public class HeaderListViewAdapter extends SectionedBaseAdapter {
     @Override
     public int getSectionCount() {
         //important!
-        return mUsernameArray.size();
+        return mBitmapArray.size();
     }
 
     @Override
@@ -70,6 +70,7 @@ public class HeaderListViewAdapter extends SectionedBaseAdapter {
         return section;
     }
 
+    //Body view.
     @Override
     public View getItemView(int section, int position, View convertView, ViewGroup parent) {
         View view = convertView;
@@ -80,22 +81,17 @@ public class HeaderListViewAdapter extends SectionedBaseAdapter {
 
         Post post = datas.get(section);
 
-        ImageView post_ImageView = (ImageView) view.findViewById(R.id.pic_image);
-        try{
-            Log.d("MYDEBUG", "section == " + section);
-            if (section < getSectionCount() && mBitmapArray.get(section) != null) {
-                post_ImageView.setImageBitmap(mBitmapArray.get(section));
-            }
-        }
-        catch(Exception e){
-            e.printStackTrace();
+        ImageView post_imageView = (ImageView) view.findViewById(R.id.pic_image);
+        if (section < getSectionCount() && mBitmapArray.get(section) != null) {
+            post_imageView.setImageBitmap(mBitmapArray.get(section));
+
         }
 
-        TextView likes_view= (TextView) view.findViewById(R.id.post_likes);
+        TextView likes_textView= (TextView) view.findViewById(R.id.post_likes);
         //text view
         Integer likes_number = post.getLikes_number();
         String likes_number_str = likes_number + " likes";
-        likes_view.setText(likes_number_str);
+        likes_textView.setText(likes_number_str);
 
         //commment list
         LinearLayout comment_list_view = (LinearLayout) view.findViewById(R.id.post_comment_list);
@@ -121,6 +117,7 @@ public class HeaderListViewAdapter extends SectionedBaseAdapter {
         return view;
     }
 
+    //pinned Header view.
     @Override
     public View getSectionHeaderView(int section, View convertView, ViewGroup parent) {
 
@@ -129,6 +126,7 @@ public class HeaderListViewAdapter extends SectionedBaseAdapter {
         }
 
         Post post = datas.get(section);
+
 
         ImageView user_imageView = (ImageView) convertView.findViewById(R.id.post_user_image);
         //user_img_view.setImageBitmap(BitmapFactory.decodeFile(post.getUser_img_uri()));
@@ -144,14 +142,13 @@ public class HeaderListViewAdapter extends SectionedBaseAdapter {
                 user_imageView.setImageDrawable(dr);
         }
 
-
         TextView username_textView = (TextView) convertView.findViewById(R.id.post_user_username);
         if (section < getSectionCount() && mUsernameArray.get(section)!=null) {
             username_textView.setText(mUsernameArray.get(section));
         }
 
-        TextView time_view= (TextView) convertView.findViewById(R.id.post_time);
-        time_view.setText(post.getTime());
+        TextView time_textView= (TextView) convertView.findViewById(R.id.post_time);
+        time_textView.setText(post.getTime());
 
         return convertView;
     }

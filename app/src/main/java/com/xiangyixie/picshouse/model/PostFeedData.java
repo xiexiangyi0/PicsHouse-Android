@@ -18,8 +18,9 @@ public class PostFeedData {
     }
 
     public ArrayList<Post> getAllPostFeedData(){
-        int count = 15;
-        String[] usernames={"1","2","3","4","5","6","7","8","9","10","11","12","13","14","15"};
+        int count = 16;
+        
+        String[] usernames={"1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16"};
 
         String[] user_img_uris = {
                 "/sdcard/Download/img1.jpg",
@@ -36,6 +37,7 @@ public class PostFeedData {
                 "/sdcard/Download/img12.jpg",
                 "/sdcard/Download/img13.jpg",
                 "/sdcard/Download/img14.jpg",
+                "/sdcard/Download/img15.jpg",
                 "/sdcard/Download/img15.jpg",
         };
 
@@ -55,6 +57,7 @@ public class PostFeedData {
                 "/sdcard/Download/img3.jpg",
                 "/sdcard/Download/img2.jpg",
                 "/sdcard/Download/img1.jpg",
+                "/sdcard/Download/img1.jpg",
         };
 
         String[] times = {
@@ -72,11 +75,12 @@ public class PostFeedData {
                 "12s",
                 "13d",
                 "14m",
-                "15s"
+                "15s",
+                "15m",
         };
 
         Integer[] likes_numbers = {
-            1, 2, 3, 4, 5, 6, 7,8,8,10,11,12,13,14,15
+            1, 2, 3, 4, 5, 6, 7,8,8,10,11,12,13,14,15,16
         };
 
         ArrayList<String> comment = new ArrayList<String>(Arrays.asList(
