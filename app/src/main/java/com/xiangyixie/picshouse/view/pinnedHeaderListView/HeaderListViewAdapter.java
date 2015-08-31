@@ -30,8 +30,9 @@ public class HeaderListViewAdapter extends SectionedBaseAdapter {
     private LayoutInflater inflater;
     //post feed data
     private List<Post> datas = null;
-    //To instantiate Imageview for post photos.
+    //To instantiate photo Imageview for each post.
     private List<Bitmap> mBitmapArray = null;
+    //To instantiate username TextView for each post.
     private List<String> mUsernameArray = null;
 
     private int lastItem = 0;
@@ -48,8 +49,8 @@ public class HeaderListViewAdapter extends SectionedBaseAdapter {
 
     @Override
     public int getSectionCount() {
-        // One section for each post
-        return datas.size();
+        //important!
+        return mUsernameArray.size();
     }
 
     @Override
@@ -131,14 +132,7 @@ public class HeaderListViewAdapter extends SectionedBaseAdapter {
 
         ImageView user_imageView = (ImageView) convertView.findViewById(R.id.post_user_image);
         //user_img_view.setImageBitmap(BitmapFactory.decodeFile(post.getUser_img_uri()));
-        if(section < getSectionCount()){
-            int len = mBitmapArray.size();
-            while(len <= section){
-                mBitmapArray.add(null);
-                len = mBitmapArray.size();
-            }
-        }
-        if (mBitmapArray.get(section)!=null) {
+        if (section < getSectionCount() && mBitmapArray.get(section)!=null) {
                 //set user_img_view to be rounded.
                 Bitmap src = mBitmapArray.get(section);
                 int len = Math.min(src.getHeight(), src.getWidth());
@@ -152,17 +146,9 @@ public class HeaderListViewAdapter extends SectionedBaseAdapter {
 
 
         TextView username_textView = (TextView) convertView.findViewById(R.id.post_user_username);
-        if(section < getSectionCount()){
-            int len = mUsernameArray.size();
-            while(len <= section){
-                mUsernameArray.add(null);
-                len = mUsernameArray.size();
-            }
-        }
-        if (mUsernameArray.get(section)!=null) {
+        if (section < getSectionCount() && mUsernameArray.get(section)!=null) {
             username_textView.setText(mUsernameArray.get(section));
         }
-
 
         TextView time_view= (TextView) convertView.findViewById(R.id.post_time);
         time_view.setText(post.getTime());
