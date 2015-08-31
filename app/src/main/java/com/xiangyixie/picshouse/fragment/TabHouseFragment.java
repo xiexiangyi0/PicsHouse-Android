@@ -49,8 +49,6 @@ public class TabHouseFragment extends Fragment implements SwipeRefreshLayout.OnR
 
     private int post_count = 15;
 
-    private String url = null;
-
     public TabHouseFragment() {
 
     }
@@ -86,42 +84,8 @@ public class TabHouseFragment extends Fragment implements SwipeRefreshLayout.OnR
 
     @Override
     public void onRefresh(){
+
         final PHHttpClient client = PHHttpClient.getInstance(activity);
-
-        JSONObject jdata = new JSONObject();
-        //Request a JSON response from getting user info url.
-        PHJsonRequest req = new PHJsonRequest(Request.Method.GET,
-                "/user/get/", jdata,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        String user_id = "";
-                        try {
-                            JSONObject user = response.getJSONObject("user");
-                            String username = user.getString("username");
-                            //change user name to adapter.
-
-                        }  catch (JSONException e) {
-                            toastWarning("syntax_error");
-                        }
-
-                        refreshPostFeed(client, user_id);
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        toastWarning("get user info error");
-                        refresh_layout.setRefreshing(false);
-                    }
-                }
-        );
-        // Add the request to the RequestQueue.
-        client.send(req);
-    }
-
-
-    private void refreshPostFeed (PHHttpClient client, final String user_id) {
         JSONObject jdata = new JSONObject();
 
         //Request a JSON response from getting post url.
@@ -138,12 +102,29 @@ public class TabHouseFragment extends Fragment implements SwipeRefreshLayout.OnR
                             //traverse all post feed photos and load post from network asynchronously.
                             for (int i=0; i<len; ++i) {
                                 JSONObject post = posts.getJSONObject(i);
-                                JSONObject image = post.getJSONObject("image");
-                                url = image.getString("src");
+                                String post_id = post.getString("id");
+
+                                JSONObject post_user = post.getJSONObject("user");
+                                String post_username = post_user.getString("username");
+
+                                JSONObject post_image = post.getJSONObject("image");
+                                String url = post_image.getString("src");
                                 String base_url = "http://" + AppConfig.SERVER_IP + ":" + AppConfig.SERVER_PORT;
                                 url = base_url + url;
                                 //Async task LoadImage.
                                 new LoadImage(i).execute(url);
+
+                                String post_desc = post.getString("desc");
+
+                                JSONArray post_comments = post.getJSONArray("comments");
+                                int comments_len = post_comments.length();
+                                for(int j=0; j < comments_len; ++j){
+                                    JSONObject post_onecomment = post_comments.getJSONObject(i);
+                                    String comment_userid = post_onecomment.getString("userid");
+                                    String comment_content = post_onecomment.getString("content");
+                                }
+
+                                //add 'reply to' later.
                             }
                             toastWarning("get feed posts number: " + len + ":\n" + urls);
 
