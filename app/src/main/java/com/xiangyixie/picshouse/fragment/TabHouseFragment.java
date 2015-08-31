@@ -43,6 +43,7 @@ public class TabHouseFragment extends Fragment implements SwipeRefreshLayout.OnR
     private SectionedBaseAdapter adapter = null;
     private PinnedHeaderListView listView = null;
     private ArrayList<Bitmap> bitmap_array = null;
+    private ArrayList<String> username_array = null;
     //private ProgressDialog pDialog;
 
     private SwipeRefreshLayout refresh_layout = null;
@@ -63,12 +64,12 @@ public class TabHouseFragment extends Fragment implements SwipeRefreshLayout.OnR
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         final View view = inflater.inflate(R.layout.tab_house, container, false);
 
         bitmap_array = new ArrayList<>();
         //create PinnedHeaderListView adpater.
-        adapter = new HeaderListViewAdapter(inflater, bitmap_array);
+        adapter = new HeaderListViewAdapter(inflater, bitmap_array, username_array);
+
         listView = (PinnedHeaderListView) view.findViewById(R.id.tab_house_listview);
         listView.setPinHeaders(true);
         // TODO: API starts from 21. Need to change it. Consider to use NestedScrollView.
@@ -96,7 +97,7 @@ public class TabHouseFragment extends Fragment implements SwipeRefreshLayout.OnR
                     public void onResponse(JSONObject response) {
                         try {
                             JSONArray posts = response.getJSONArray("posts");
-                            // size of user posts.
+                            //size of user posts.
                             int len = posts.length();
                             String urls = "";
                             //traverse all post feed photos and load post from network asynchronously.
@@ -131,7 +132,7 @@ public class TabHouseFragment extends Fragment implements SwipeRefreshLayout.OnR
                         }  catch (JSONException e) {
                             toastWarning("parse json posts array error");
                         }
-                        //set refresh pic visible.
+                        // set refresh circle to stop.
                         refresh_layout.setRefreshing(false);
                     }
                 },
@@ -166,6 +167,7 @@ public class TabHouseFragment extends Fragment implements SwipeRefreshLayout.OnR
         protected Bitmap doInBackground(String... args) {
             Bitmap bmap = null;
             try {
+                //decode network image bitmap
                 bmap = BitmapFactory.decodeStream((InputStream) new URL(args[0]).getContent());
             } catch (Exception e) {
                 e.printStackTrace();
@@ -194,6 +196,10 @@ public class TabHouseFragment extends Fragment implements SwipeRefreshLayout.OnR
         }
     }
 
+    public void appendUsername (String username, int pos){
+        int len = this.username_array.size();
+        
+    }
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);

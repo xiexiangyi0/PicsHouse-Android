@@ -32,16 +32,18 @@ public class HeaderListViewAdapter extends SectionedBaseAdapter {
     private List<Post> datas = null;
     //To instantiate Imageview for post photos.
     private List<Bitmap> mBitmapArray = null;
+    private List<String> mUsernameArray = null;
 
     private int lastItem = 0;
 
 
-    public HeaderListViewAdapter(final LayoutInflater inflater, ArrayList<Bitmap> bitmapArray) {
+    public HeaderListViewAdapter(final LayoutInflater inflater, ArrayList<Bitmap> bitmapArray, ArrayList<String> usernameArray) {
         this.inflater = inflater;
         this.datas = new ArrayList<Post>();
         loadData();
         this.lastItem = datas.size()-1;
         this.mBitmapArray = bitmapArray;
+        this.mUsernameArray = usernameArray;
     }
 
     @Override
@@ -93,6 +95,7 @@ public class HeaderListViewAdapter extends SectionedBaseAdapter {
         Integer likes_number = post.getLikes_number();
         String likes_number_str = likes_number + " likes";
         likes_view.setText(likes_number_str);
+
         //commment list
         LinearLayout comment_list_view = (LinearLayout) view.findViewById(R.id.post_comment_list);
         ArrayList<String> comment = post.getComment();
@@ -144,8 +147,14 @@ public class HeaderListViewAdapter extends SectionedBaseAdapter {
             e.printStackTrace();
         }
 
-        TextView user_name_view = (TextView) convertView.findViewById(R.id.post_user_username);
-        user_name_view.setText(post.getUsername());
+        TextView username_textView = (TextView) convertView.findViewById(R.id.post_user_username);
+        try{
+            if (section < getSectionCount() && mUsernameArray.get(section)!=null ) {
+                username_textView.setText(mUsernameArray.get(section));
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
         TextView time_view= (TextView) convertView.findViewById(R.id.post_time);
         time_view.setText(post.getTime());
