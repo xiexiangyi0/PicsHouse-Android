@@ -67,6 +67,7 @@ public class TabHouseFragment extends Fragment implements SwipeRefreshLayout.OnR
         final View view = inflater.inflate(R.layout.tab_house, container, false);
 
         bitmap_array = new ArrayList<>();
+        username_array = new ArrayList<>();
         //create PinnedHeaderListView adpater.
         adapter = new HeaderListViewAdapter(inflater, bitmap_array, username_array);
 
@@ -79,6 +80,8 @@ public class TabHouseFragment extends Fragment implements SwipeRefreshLayout.OnR
         //pull to refresh, set 'refresh' listener.
         refresh_layout = (SwipeRefreshLayout) view.findViewById(R.id.tab_house_refresh);
         refresh_layout.setOnRefreshListener(this);
+
+        onRefresh();
 
         return view;
     }
@@ -107,6 +110,7 @@ public class TabHouseFragment extends Fragment implements SwipeRefreshLayout.OnR
 
                                 JSONObject post_user = post.getJSONObject("user");
                                 String post_username = post_user.getString("username");
+                                appendUsername(post_username, i);
 
                                 JSONObject post_image = post.getJSONObject("image");
                                 String url = post_image.getString("src");
@@ -121,7 +125,7 @@ public class TabHouseFragment extends Fragment implements SwipeRefreshLayout.OnR
                                 int comments_len = post_comments.length();
                                 for(int j=0; j < comments_len; ++j){
                                     JSONObject post_onecomment = post_comments.getJSONObject(i);
-                                    String comment_userid = post_onecomment.getString("userid");
+                                    String comment_userid = post_onecomment.getString("user_id");
                                     String comment_content = post_onecomment.getString("content");
                                 }
 
@@ -130,7 +134,7 @@ public class TabHouseFragment extends Fragment implements SwipeRefreshLayout.OnR
                             toastWarning("get feed posts number: " + len + ":\n" + urls);
 
                         }  catch (JSONException e) {
-                            toastWarning("parse json posts array error");
+                            toastWarning("parse json posts array error: " + e.getMessage());
                         }
                         // set refresh circle to stop.
                         refresh_layout.setRefreshing(false);
@@ -178,14 +182,10 @@ public class TabHouseFragment extends Fragment implements SwipeRefreshLayout.OnR
         protected void onPostExecute(Bitmap image) {
             if(image != null){
                 Log.d("MYDEBUG", "image bitmap != null");
-                int sz = bitmap_array.size();
-                Log.d("MYDEBUG", "sz == " + sz + ", pos == " + pos);
-                if (sz <= pos) {
-                    int idx = sz;
-                    while(idx <= pos) {
-                        bitmap_array.add(null);
-                        idx++;
-                    }
+                int len = bitmap_array.size();
+                while (pos >= len) {
+                    bitmap_array.add(null);
+                    len = bitmap_array.size();
                 }
                 bitmap_array.set(pos, image);
                 adapter.notifyDataSetChanged();
@@ -197,9 +197,16 @@ public class TabHouseFragment extends Fragment implements SwipeRefreshLayout.OnR
     }
 
     public void appendUsername (String username, int pos){
-        int len = this.username_array.size();
-        
+        Log.d("MYDEBUG", "username == " + username);
+        int len = username_array.size();
+        while(pos >= len){
+            username_array.add(null);
+            len = username_array.size();
+        }
+        username_array.set(pos,username);
+        adapter.notifyDataSetChanged();
     }
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);

@@ -131,8 +131,14 @@ public class HeaderListViewAdapter extends SectionedBaseAdapter {
 
         ImageView user_imageView = (ImageView) convertView.findViewById(R.id.post_user_image);
         //user_img_view.setImageBitmap(BitmapFactory.decodeFile(post.getUser_img_uri()));
-        try{
-            if (section < getSectionCount() && mBitmapArray.get(section)!=null ) {
+        if(section < getSectionCount()){
+            int len = mBitmapArray.size();
+            while(len <= section){
+                mBitmapArray.add(null);
+                len = mBitmapArray.size();
+            }
+        }
+        if (mBitmapArray.get(section)!=null) {
                 //set user_img_view to be rounded.
                 Bitmap src = mBitmapArray.get(section);
                 int len = Math.min(src.getHeight(), src.getWidth());
@@ -142,19 +148,21 @@ public class HeaderListViewAdapter extends SectionedBaseAdapter {
                 float cornerRd = dst.getWidth() / 2.0f;
                 dr.setCornerRadius(cornerRd);
                 user_imageView.setImageDrawable(dr);
-            }
-        }catch (Exception e){
-            e.printStackTrace();
         }
 
+
         TextView username_textView = (TextView) convertView.findViewById(R.id.post_user_username);
-        try{
-            if (section < getSectionCount() && mUsernameArray.get(section)!=null ) {
-                username_textView.setText(mUsernameArray.get(section));
+        if(section < getSectionCount()){
+            int len = mUsernameArray.size();
+            while(len <= section){
+                mUsernameArray.add(null);
+                len = mUsernameArray.size();
             }
-        }catch (Exception e){
-            e.printStackTrace();
         }
+        if (mUsernameArray.get(section)!=null) {
+            username_textView.setText(mUsernameArray.get(section));
+        }
+
 
         TextView time_view= (TextView) convertView.findViewById(R.id.post_time);
         time_view.setText(post.getTime());
