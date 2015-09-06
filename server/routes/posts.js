@@ -6,7 +6,7 @@ var router = require("express").Router();
 var auth = require("../util/auth");
 var PicPost = require("../model/pic_post");
 var Comment = require("../model/comment");
-
+var User = require("../model/user");
 var mydebug = require("../util/debug");
 
 function getQueryFromReq(req) {
@@ -27,6 +27,36 @@ function getQueryFromReq(req) {
     return cond;
 }
 
+function populateUserInCommentArray(comments, idx, res, cb) {
+    if (idx >= comments.length) {
+        return cb(res);
+    } else {
+        User.findById(comments[idx].user_id, function(err, u) {
+           if (err || !u) {
+              populateUserInCommentArray(comments, idx+1, res, cb);
+           } else {
+               var jcomment = comments[idx].getJsonPublic(u.getJsonPublic());
+
+               res.push(jcomment);
+               populateUserInCommentArray(comments, idx+1, res, cb);
+           }
+        });
+    }
+}
+
+function populateCommentInPostArray(posts, idx, res, cb) {
+    if (idx >= posts.length) {
+        return cb(res);
+    } else {
+        populateUserInCommentArray(posts[idx].comments, 0, [], function(comment_arr) {
+            var jpost = posts[idx].getJsonPublic(posts[idx].user_id.getJsonPublic());
+            jpost.comments = comment_arr;
+            res.push(jpost);
+            populateCommentInPostArray(posts, idx+1, res, cb);
+        });
+    }
+}
+
 //get list of all the posts
 router.get("/get", function(req, res, next) {
     var cond = getQueryFromReq(req);
@@ -37,15 +67,9 @@ router.get("/get", function(req, res, next) {
                 return next(err);
             }
 
-            var jarr = [];
-
-            posts.forEach(function(p, idx, arr) {
-                var jdata = p.getJsonPublic(p.user_id.getJsonPublic());
-                jarr.push(jdata);
+            populateCommentInPostArray(posts, 0, [], function(jarr) {
+                res.send({"posts": jarr});
             });
-
-            //console.log(jarr);
-            res.send({"posts" : jarr});
         });
 });
 

@@ -144,12 +144,14 @@ function onClickGetImage() {
     webappAjax({
         url : "/post/get/"
         , type : "GET"
-        , data: {
-            user_id: localStorage.getItem("user_id")
-        }
+//        , data: {
+//            user_id: localStorage.getItem("user_id")
+//        }
     }).done(function(data) {
         var posts = data.posts;
         var image_list = $("#get_image div");
+
+        console.log(data);
 
         for (var i=0; i<posts.length; i++) {
             console.log(posts[i]);
@@ -160,6 +162,7 @@ function onClickGetImage() {
 
             for (var j=0; j<posts[i].comments.length; j++) {
                 html += "<p>" + j + ". " + posts[i].comments[j].content + "</p>";
+                html += "<p>from " + posts[i].comments[j].user.username + "</p>";
             }
 
             html += "<button onclick='onClickAddComment(\"" + posts[i].id + "\")'>Add comment</button>";
