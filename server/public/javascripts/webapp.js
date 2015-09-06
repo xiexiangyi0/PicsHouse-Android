@@ -11,6 +11,16 @@ function webappAjax(options) {
     return $.ajax(options);
 }
 
+function webappAjaxWithFormData(options, form_data) {
+    options.type = "POST";
+    options.cache = false;
+    options.contentType = false;
+    options.processData = false;
+    options.data = form_data;
+
+    return webappAjax(options);
+}
+
 function mydebug_info(str) {
     console.log("[INFO] " + str);
 }
@@ -222,4 +232,19 @@ function onClickDeleteImage(post) {
     }).fail(function(xhr) {
         console.log(xhr);
     });
+}
+
+function onClickUpdateAvatar(post) {
+    var form = $("#update_avatar form")[0];
+    var form_data = new FormData(form);
+
+    webappAjaxWithFormData({
+        url : "/user/avatar/update"
+    }
+    , form_data).done(function(data) {
+       console.log(data);
+       $("#update_avatar img").attr("src", data.user.avatar.src);
+    }).fail(function() {
+        console.log("fail");
+     });
 }

@@ -3,25 +3,36 @@ var router = express.Router();
 var User = require("../model/user");
 
 var auth = require("../util/auth");
-
+var mydebug = require("../util/debug");
+var errorHandler = require("../util/error").errorHandler;
+var errorSyntax = require("../util/error").errorSyntax;
+var errorNoObj = require("../util/error").errorNoObj;
 /* GET users listing. */
 
-router.post("/create", function(req, res) {
+router.post("/create", function(req, res, next) {
     var post = req.body;
     var username = post.username;
     var password = post.password;
     var email = post.email;
     var gender = post.gender;
+    var files = req.files;
 
     if (!username || !password) {
-        res.status(403);
-        res.send({ecode: "syntax_error"});
+        errorSyntax(res);
         return;
     }
 
+    var avatar_file = undefined;
+
+    if (files && files.image) {
+        avatar_file = files.image[0];
+    }
+
+    mydebug.log("avatar_file = " + avatar_file);
+
     User.findOne({$or : [{username : username}, {email : email}]}, function(err, user) {
         if(err) {
-            throw err;
+            return errorHandler(err, next);
         }
 
         if(user) {
@@ -40,21 +51,31 @@ router.post("/create", function(req, res) {
                 , gender : gender
             });
 
-            auth.register(new_user, function(err, user) {
-                if(err) {
-                    throw err;
+            var onUserRegistered = function(err, user) {
+                if (err) {
+                    return errorHandler(err, next);
                 }
 
                 auth.login(user, function(err, u) {
-                    if(err) {
-                        throw err;
+                    if (err) {
+                        return errorHandler(err, next);
                     }
 
-                    res.send({token: u.token});
+                    res.send({token : u.token});
                 });
+            };
 
-            });
-
+            if (avatar_file) {
+                new_user.setFile(avatar_file, function(err, user) {
+                    if (err) {
+                        auth.register(new_user, onUserRegistered);
+                    } else {
+                        auth.register(user, onUserRegistered);
+                    }
+                });
+            } else {
+                auth.register(new_user, onUserRegistered);
+            }
         }
     });
 });
@@ -70,12 +91,43 @@ router.post("/update", auth.authToken(), function(req, res) {
 
     auth.login(user, function(err, u) {
         if(err) {
-            throw err;
+            errorHandler(err, next);
         }
 
         res.send({token : u.token});
     });
 
+});
+
+router.post("/avatar/update", auth.authToken(), function(req, res, next) {
+    var files = req.files;
+    var avatar_file = files.image;
+
+    if (avatar_file) {
+        avatar_file = avatar_file[0];
+    } else {
+        errorSyntax(res);
+        return;
+    }
+
+    User.findById(req.user._id, function(err, user) {
+        if (err) {
+            return errorHandler(err, next);
+        }
+
+        if (user) {
+            user.setFile(avatar_file, function(err, u) {
+                u.save(function(err, u) {
+                    if (err) {
+                        errorHandler(err, next);
+                    }
+                    res.send({user : u.getJsonPublic()});
+                });
+            });
+        } else {
+          errorNoObj(res);
+        }
+    });
 });
 
 router.get("/get", auth.authToken(), function(req, res) {
@@ -87,7 +139,7 @@ router.post("/login", auth.authLocal(), function(req, res) {
 
     auth.login(req.user, function(err, u) {
         if(err) {
-            throw err;
+            return errorHandler(err, next);
         }
 
         res.send({token: u.token});

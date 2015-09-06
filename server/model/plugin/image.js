@@ -8,6 +8,8 @@ var fs = require("fs")
     , file_plugin = require("mongoose-file").filePlugin
 ;
 
+var mydebug = require("../../util/debug");
+
 var imagePlugin = function(schema, option) {
 
     var upload_to = null;
@@ -24,44 +26,64 @@ var imagePlugin = function(schema, option) {
 
         var _this = this;
 
-        if(upload_to) {
-            var dest = "";
-            if (typeof upload_to === "function") {
-                dest = upload_to.call(_this, image_file);
-            } else {
-                dest = path.join(upload_to, image_file.name);
-            }
-
-            var dest_dir = path.dirname(dest);
-
-            mkdirp(dest_dir, function (err) {
-                if (err) {
-
-                    return cb(err);
+        var setFileOnly = function() {
+            if(upload_to) {
+                var dest = "";
+                if (typeof upload_to === "function") {
+                    dest = upload_to.call(_this, image_file);
+                } else {
+                    dest = path.join(upload_to, image_file.name);
                 }
 
-                fs.rename(image_file.path, dest, function (err) {
+                var dest_dir = path.dirname(dest);
+
+                mkdirp(dest_dir, function (err) {
                     if (err) {
+
                         return cb(err);
                     }
 
-                    image_file.path = dest;
-                    _this[pathname].file = image_file;
+                    fs.rename(image_file.path, dest, function (err) {
+                        if (err) {
+                            return cb(err);
+                        }
 
-                    return cb(null, _this, image_file);
+                        image_file.path = dest;
+                        _this[pathname].file = image_file;
+
+                        return cb(null, _this, image_file);
+                    });
                 });
+            } else {
+
+                _this[pathname].file = image_file;
+                return cb(null, _this, image_file);
+
+            }
+        };
+
+        // remove if already set
+        var old_file = _this[pathname].path;
+
+        if (old_file) {
+            mydebug.log("[WARNING] file exist: " + old_file + " remove first");
+            fs.exists(old_file, function(exist) {
+                if (exist) {
+                    fs.unlink(old_file, function() {
+                        setFileOnly();
+                    });
+                } else {
+                    setFileOnly();
+                }
             });
         } else {
-
-            _this[pathname].file = image_file;
-            return cb(null, _this, image_file);
-
+           setFileOnly();
         }
-
     });
 
     schema.pre("remove", function(next) {
         var _this = this;
+        mydebug.log("path = " + _this[pathname].file);
         fs.unlink(_this[pathname].path, function() {
             next();
         });
