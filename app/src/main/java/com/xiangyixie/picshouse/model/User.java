@@ -42,15 +42,11 @@ public class User {
 
 
     public User(User user) {
-
         mId = user.getId();
         mUserName = user.getUserName();
         mLastName = user.getLastName();
         mFirstName = user.getFirstName();
         mDescription = user.getDescription();
-
-        //mUrlEntities = user.getUrlEntities();
-
 
         mFollowersCount = user.getFollowersCount();
         mFollowingCount = user.getFollowingCount();
@@ -63,7 +59,23 @@ public class User {
         mProfileImageUrlMini = user.getProfileImageUrlMini();
         mProfileImageUrlNormal = user.getProfileImageUrlNormal();
         mProfileImageUrlOriginal = user.getProfileImageUrlOriginal();
+    }
 
+    public User(String username) {
+
+        mId = 1000;
+        mUserName = username;
+        mLastName = new String();
+        mFirstName = new String();
+        mDescription = new String();
+
+        mFollowersCount = 0;
+        mFollowingCount = 0;
+        mPhotosCount = 0;
+        mBeLikedCount = 0;
+
+        mCurrentUserFollowed = new ArrayList<>();
+        mFollowingCurrentUsers = new ArrayList<>();
     }
 
 

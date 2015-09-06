@@ -23,6 +23,7 @@ public class PostFeedData {
         String[] usernames={"1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16"};
 
 
+        /*
         String[] user_img_uris = {
                 "/sdcard/Download/img1.jpg",
                 "/sdcard/Download/img2.jpg",
@@ -60,6 +61,7 @@ public class PostFeedData {
                 "/sdcard/Download/img1.jpg",
                 "/sdcard/Download/img1.jpg",
         };
+        */
 
         String[] times = {
                 "1m",
@@ -84,18 +86,26 @@ public class PostFeedData {
             1, 2, 3, 4, 5, 6, 7,8,8,10,11,12,13,14,15,16
         };
 
-        ArrayList<String> comment = new ArrayList<String>(Arrays.asList(
+        ArrayList<String> comm_usernames = new ArrayList<>(Arrays.asList("AAA","BBB","CCC"));
+
+        ArrayList<String> comm_contents = new ArrayList<String>(Arrays.asList(
                 "WOW, it's so awesome!",
                 "I like your concert and your songs very much. I have listened your songs for 10 years, starting from my 14 year old youth, to now. I listened every song of yours,actually whole of them just recorded the youth days of my generation. Love you and your spirit, it's so wonderful and have lived with me for 10 years.",
                 "Like you!",
                 "Cute!"
         ));
+        ArrayList<Comment> comment = new ArrayList<>();
+        for(int i=0;i<comm_usernames.size();++i){
+            User newuser = new User(comm_usernames.get(i));
+            Comment newcomment = new Comment(newuser, comm_contents.get(i));
+            comment.add(newcomment);
+        }
 
         for(int i=0 ; i<count; ++i){
             Post post = new Post();
             post.setUsername(usernames[i]);
-            post.setUser_img_uri(user_img_uris[i]);
-            post.setPic_img_uri(pic_img_uris[i]);
+            //post.setUser_img_uri(user_img_uris[i]);
+            //post.setPic_img_uri(pic_img_uris[i]);
             post.setTime(times[i]);
             post.setLikes_number(likes_numbers[i]);
             post.setComment(comment);

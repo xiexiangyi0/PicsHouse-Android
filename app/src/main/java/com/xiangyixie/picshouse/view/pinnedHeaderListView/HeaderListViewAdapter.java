@@ -5,19 +5,23 @@ package com.xiangyixie.picshouse.view.pinnedHeaderListView;
  */
 
 import android.graphics.Bitmap;
+import android.graphics.Typeface;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TableLayout;
 import android.widget.TextView;
 
 import com.xiangyixie.picshouse.R;
+import com.xiangyixie.picshouse.model.Comment;
 import com.xiangyixie.picshouse.model.Post;
 import com.xiangyixie.picshouse.model.PostFeedData;
 
@@ -28,6 +32,7 @@ import java.util.List;
 public class HeaderListViewAdapter extends SectionedBaseAdapter {
 
     private LayoutInflater inflater;
+
     //post feed data
     private List<Post> datas = null;
     //To instantiate photo Imageview for each post.
@@ -87,31 +92,51 @@ public class HeaderListViewAdapter extends SectionedBaseAdapter {
 
         }
 
+        //
         TextView likes_textView= (TextView) view.findViewById(R.id.post_likes);
         //text view
         Integer likes_number = post.getLikes_number();
         String likes_number_str = likes_number + " likes";
         likes_textView.setText(likes_number_str);
 
+
+
+
         //commment list
         LinearLayout comment_list_view = (LinearLayout) view.findViewById(R.id.post_comment_list);
-        ArrayList<String> comment = post.getComment();
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        layoutParams.setMargins(0, 2, 0, 2);
+        comment_list_view.setLayoutParams(layoutParams);
+
+        ArrayList<Comment> comment = post.getComment();
         Log.d("MYDEBUG", "this post comment size = " + comment.size());
         //important!To avoid duplicate comment view bug.
         comment_list_view.removeAllViews();
-
         for (int i = 0; i < comment.size(); ++i) {
             /////////comment view
+            TextView username_view = new TextView(view.getContext());
             TextView comment_view = new TextView(view.getContext());
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            layoutParams.setMargins(0, 2, 0, 2);
-            comment_view.setLayoutParams(layoutParams);
-            comment_view.setText(comment.get(i));
+
+            username_view.setText(comment.get(i).getUsername());
+            username_view.setTextSize(TypedValue.COMPLEX_UNIT_SP, 13);
+            username_view.setPadding(2, 1, 3, 1);
+            username_view.setTypeface(Typeface.DEFAULT_BOLD);
+            username_view.setGravity(Gravity.LEFT | Gravity.CENTER);
+            username_view.setTextColor(comment_view.getResources().getColor(R.color.dark_blue_like_text));
+            username_view.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT, 1f));
+
+            comment_view.setText(comment.get(i).getContent());
             comment_view.setTextSize(TypedValue.COMPLEX_UNIT_SP, 13);
+            username_view.setPadding(2, 1, 3, 1);
+            username_view.setTypeface(Typeface.DEFAULT);
+            username_view.setGravity(Gravity.LEFT | Gravity.CENTER);
             comment_view.setTextColor(comment_view.getResources().getColor(R.color.black));
             comment_view.setEllipsize(TextUtils.TruncateAt.END);
             comment_view.setMaxLines(4);
-            comment_list_view.addView(comment_view);
+            comment_view.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT, 1f));
+
+            comment_list_view.addView(username_view, 0);
+            comment_list_view.addView(comment_view, 0);
         }
 
         return view;
