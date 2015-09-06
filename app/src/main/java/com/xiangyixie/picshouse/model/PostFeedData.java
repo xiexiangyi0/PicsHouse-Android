@@ -82,6 +82,8 @@ public class PostFeedData {
                 "15m",
         };
 
+        String pic_desc = "The moment is so wonderful! I feel so happy now! Hope all of us can enjoy it~~~~~";
+
         Integer[] likes_numbers = {
             1, 2, 3, 4, 5, 6, 7,8,8,10,11,12,13,14,15,16
         };
@@ -106,9 +108,10 @@ public class PostFeedData {
             post.setUsername(usernames[i]);
             //post.setUser_img_uri(user_img_uris[i]);
             //post.setPic_img_uri(pic_img_uris[i]);
-            post.setTime(times[i]);
-            post.setLikes_number(likes_numbers[i]);
-            post.setComment(comment);
+            post.setPicDesc(pic_desc);
+            post.setTime(times[i].toString());
+            post.setLikesNumber(likes_numbers[i]);
+            post.setComments(comment);
             post_feed_data.add(post);
         }
 

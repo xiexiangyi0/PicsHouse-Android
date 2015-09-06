@@ -5,25 +5,21 @@ package com.xiangyixie.picshouse.view.pinnedHeaderListView;
  */
 
 import android.graphics.Bitmap;
-import android.graphics.Typeface;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
-import android.text.TextUtils;
 import android.util.Log;
-import android.util.TypedValue;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TableLayout;
 import android.widget.TextView;
 
 import com.xiangyixie.picshouse.R;
 import com.xiangyixie.picshouse.model.Comment;
 import com.xiangyixie.picshouse.model.Post;
 import com.xiangyixie.picshouse.model.PostFeedData;
+import com.xiangyixie.picshouse.view.CommentView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -92,51 +88,70 @@ public class HeaderListViewAdapter extends SectionedBaseAdapter {
 
         }
 
-        //
+        //description textView
+        CommentView post_desc_view = (CommentView)view.findViewById(R.id.post_desc);
+        post_desc_view.setContent(mUsernameArray.get(section), post.getPicDesc());
+        /*
+        TextView desc_username_textview = (TextView)view.findViewById(R.id.post_desc_username);
+        String desc_username_str = mUsernameArray.get(section);
+        desc_username_textview.setText(desc_username_str);
+
+        TextView desc_textview = (TextView)view.findViewById(R.id.post_desc);
+        String desc_str = post.getPicDesc();
+        desc_textview.setText(desc_str);
+        */
+
+        //likes textView
         TextView likes_textView= (TextView) view.findViewById(R.id.post_likes);
-        //text view
-        Integer likes_number = post.getLikes_number();
+        Integer likes_number = post.getLikesNumber();
         String likes_number_str = likes_number + " likes";
         likes_textView.setText(likes_number_str);
 
 
-
-
-        //commment list
+        //commment list linearLayout
         LinearLayout comment_list_view = (LinearLayout) view.findViewById(R.id.post_comment_list);
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        layoutParams.setMargins(0, 2, 0, 2);
-        comment_list_view.setLayoutParams(layoutParams);
 
-        ArrayList<Comment> comment = post.getComment();
+        ArrayList<Comment> comment = post.getComments();
         Log.d("MYDEBUG", "this post comment size = " + comment.size());
         //important!To avoid duplicate comment view bug.
         comment_list_view.removeAllViews();
         for (int i = 0; i < comment.size(); ++i) {
-            /////////comment view
+            CommentView cv = new CommentView(
+                    view.getContext(), comment.get(i).getUsername(), comment.get(i).getContent());
+
+            /*
+            ///////comment view
+            LinearLayout one_comment_view = new LinearLayout(view.getContext());
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            layoutParams.setMargins(0, 2, 0, 2);
+            one_comment_view.setLayoutParams(layoutParams);
+
             TextView username_view = new TextView(view.getContext());
             TextView comment_view = new TextView(view.getContext());
 
             username_view.setText(comment.get(i).getUsername());
             username_view.setTextSize(TypedValue.COMPLEX_UNIT_SP, 13);
-            username_view.setPadding(2, 1, 3, 1);
-            username_view.setTypeface(Typeface.DEFAULT_BOLD);
-            username_view.setGravity(Gravity.LEFT | Gravity.CENTER);
+            username_view.setPadding(2, 1, 8, 3);
+            //username_view.setTypeface(Typeface.DEFAULT_BOLD);
+            //username_view.setGravity(Gravity.LEFT | Gravity.CENTER);
             username_view.setTextColor(comment_view.getResources().getColor(R.color.dark_blue_like_text));
             username_view.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT, 1f));
 
             comment_view.setText(comment.get(i).getContent());
             comment_view.setTextSize(TypedValue.COMPLEX_UNIT_SP, 13);
-            username_view.setPadding(2, 1, 3, 1);
-            username_view.setTypeface(Typeface.DEFAULT);
-            username_view.setGravity(Gravity.LEFT | Gravity.CENTER);
+            username_view.setPadding(4, 1, 3, 1);
+            //username_view.setTypeface(Typeface.DEFAULT);
+            //username_view.setGravity(Gravity.LEFT | Gravity.CENTER);
             comment_view.setTextColor(comment_view.getResources().getColor(R.color.black));
             comment_view.setEllipsize(TextUtils.TruncateAt.END);
             comment_view.setMaxLines(4);
             comment_view.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT, 1f));
 
-            comment_list_view.addView(username_view, 0);
-            comment_list_view.addView(comment_view, 0);
+            one_comment_view.addView(username_view,0);
+            one_comment_view.addView(comment_view);
+            */
+
+            comment_list_view.addView(cv);
         }
 
         return view;

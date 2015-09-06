@@ -5,11 +5,11 @@ package com.xiangyixie.picshouse.model;
  */
 public class Comment {
     private User mUser;
-    private String content;
+    private String mContent;
 
     public Comment(User user, String str){
         this.mUser = user;
-        this.content = str;
+        this.mContent = str;
     }
 
     /*
@@ -24,6 +24,6 @@ public class Comment {
     }
 
     public String getContent(){
-        return this.content;
+        return this.mContent;
     }
 }

@@ -7,41 +7,49 @@ package com.xiangyixie.picshouse.model;
 import java.util.ArrayList;
 
 public class Post {
-    String username;
+    private String mUsername;
     //Location location;
     //Photo photo;
-    String user_img_uri;
-    String pic_img_uri;
+    private String mUserImgUrl;
+    String mPicImgUrl;
+    String mPicDesc;
     String time;
 
-    Integer likes_number;
-    String likes_number_str;
-    ArrayList<Comment> comments;
-    //ArrayList<User> usersliked;
+    Integer mLikesNumber;
+
+    ArrayList<Comment> mComments;
 
 
     public void setUsername(String usr_name){
-        this.username = usr_name;
+        this.mUsername = usr_name;
     }
 
     public String getUsername(){
-        return this.username;
+        return this.mUsername;
     }
 
-    public void setUser_img_uri(String path){
-        this.user_img_uri = path;
+    public void setUserImgUrl(String path){
+        this.mUserImgUrl = path;
     }
 
-    public String getUser_img_uri(){
-        return this.user_img_uri;
+    public String getUserImgUrl(){
+        return this.mUserImgUrl;
     }
 
-    public void setPic_img_uri(String path){
-        this.pic_img_uri = path;
+    public void setPicImgUrl(String path){
+        this.mPicImgUrl = path;
     }
 
-    public String getPic_img_uri(){
-        return this.pic_img_uri;
+    public String getPicImgUrl(){
+        return this.mPicImgUrl;
+    }
+
+    public void setPicDesc(String str){
+        this.mPicDesc = str;
+    }
+
+    public String getPicDesc(){
+        return this.mPicDesc;
     }
 
     public void setTime(String t){
@@ -52,25 +60,20 @@ public class Post {
         return this.time;
     }
 
-    public void setLikes_number(Integer n){
-        this.likes_number = n;
-        this.likes_number_str = n + " likes";
+    public void setLikesNumber(Integer n){
+        this.mLikesNumber = n;
     }
 
-    public Integer getLikes_number(){
-        return this.likes_number;
+    public Integer getLikesNumber(){
+        return this.mLikesNumber;
     }
 
-    public String getLikes_number_str(){
-        return this.likes_number_str;
+    public void setComments(ArrayList<Comment> comm){
+        this.mComments = comm;
     }
 
-    public void setComment(ArrayList<Comment> comm){
-        this.comments = comm;
-    }
-
-    public ArrayList<Comment> getComment(){
-        return this.comments;
+    public ArrayList<Comment> getComments(){
+        return this.mComments;
     }
 
 }
