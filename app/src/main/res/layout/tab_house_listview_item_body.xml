@@ -27,6 +27,7 @@
             android:src="@drawable/img5" />
     </LinearLayout>
 
+
     <!--likes number-->
     <LinearLayout
         android:layout_width="fill_parent"
@@ -44,6 +45,25 @@
             android:textSize="13sp"
             android:textStyle="bold" />
     </LinearLayout>
+
+    <!--description-->
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="34dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="14dp">
+
+        <TextView
+            android:id="@+id/post_desc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/dark_blue_like_text"
+            android:textSize="13sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
 
     <!--comment list-->
     <LinearLayout

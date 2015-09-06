@@ -125,7 +125,8 @@ public class TabHouseFragment extends Fragment implements SwipeRefreshLayout.OnR
                                 int comments_len = post_comments.length();
                                 for(int j=0; j < comments_len; ++j){
                                     JSONObject post_onecomment = post_comments.getJSONObject(i);
-                                    String comment_userid = post_onecomment.getString("user_id");
+                                    JSONObject comment_user = post_onecomment.getJSONObject("user");
+                                    String comment_username = comment_user.getString("username");
                                     String comment_content = post_onecomment.getString("content");
                                 }
 

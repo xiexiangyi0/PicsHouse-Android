@@ -19,8 +19,9 @@ public class PostFeedData {
 
     public ArrayList<Post> getAllPostFeedData(){
         int count = 16;
-        
+
         String[] usernames={"1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16"};
+
 
         String[] user_img_uris = {
                 "/sdcard/Download/img1.jpg",

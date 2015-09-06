@@ -16,8 +16,7 @@ public class Post {
 
     Integer likes_number;
     String likes_number_str;
-    ArrayList<String> comment;
-    //ArrayList<UserCommentPair> comments;
+    ArrayList<Comment> comments;
     //ArrayList<User> usersliked;
 
 
@@ -66,18 +65,13 @@ public class Post {
         return this.likes_number_str;
     }
 
-    public void setComment(ArrayList<String> comm){
-        this.comment = comm;
+    public void setComment(ArrayList<Comment> comm){
+        this.comments = comm;
     }
 
-    public ArrayList<String> getComment(){
-        return this.comment;
+    public ArrayList<Comment> getComment(){
+        return this.comments;
     }
 
-}
-
-class UserCommentPair{
-    User user;
-    Comment comment;
 }
 

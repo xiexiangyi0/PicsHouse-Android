@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 public class User {
 
-    private long mId;
+    private long mId;                        //primary key, unique.
     private String mUserName;
     private String mFirstName, mLastName;
     private String mDescription;
@@ -35,7 +35,6 @@ public class User {
 
 
     enum ProfileImageSize{
-
         MINI,NORMAL,ORIGINAL
     }
 

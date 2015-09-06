@@ -132,7 +132,7 @@ public class TabUserFragment extends Fragment
 
         //Request a JSON response from getting user info url.
         PHJsonRequest req = new PHJsonRequest(Request.Method.GET,
-                "/user/getthumbnail/", jdata,
+                "/post/getthumbnail/", jdata,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
