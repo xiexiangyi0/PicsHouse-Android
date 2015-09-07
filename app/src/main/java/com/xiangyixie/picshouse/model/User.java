@@ -3,6 +3,8 @@ package com.xiangyixie.picshouse.model;
 import com.xiangyixie.picshouse.httpService.URLEntity;
 
 import org.apache.http.entity.StringEntity;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -13,7 +15,7 @@ import java.util.ArrayList;
 
 public class User {
 
-    private long mId;                        //primary key, unique.
+    private String mId;                        //primary key, unique.
     private String mUserName;
     private String mFirstName, mLastName;
     private String mDescription;
@@ -63,7 +65,7 @@ public class User {
 
     public User(String username) {
 
-        mId = 1000;
+        mId = "100";
         mUserName = username;
         mLastName = new String();
         mFirstName = new String();
@@ -78,8 +80,11 @@ public class User {
         mFollowingCurrentUsers = new ArrayList<>();
     }
 
+    private User() {
+    }
 
-    public long getId() {
+
+    public String getId() {
         return mId;
     }
     public String getUserName() {
@@ -141,5 +146,15 @@ public class User {
                 return mProfileImageUrlOriginal;
         }
         return null;
+    }
+
+    public static User parseUser(JSONObject juser) throws JSONException{
+        User user = new User();
+
+        user.mId = juser.getString("id");
+        user.mUserName = juser.getString("username");
+
+
+        return user;
     }
 }

@@ -31,27 +31,35 @@ public class HeaderListViewAdapter extends SectionedBaseAdapter {
 
     //post feed data
     private List<Post> datas = null;
-    //To instantiate photo Imageview for each post.
-    private List<Bitmap> mBitmapArray = null;
-    //To instantiate username TextView for each post.
-    private List<String> mUsernameArray = null;
+
+    // post feed data
+    private ArrayList<Post> mPostArray = null;
+    private ArrayList<Bitmap> mBitmapArray = null;
 
     private int lastItem = 0;
 
 
-    public HeaderListViewAdapter(final LayoutInflater inflater, ArrayList<Bitmap> bitmapArray, ArrayList<String> usernameArray) {
+    public HeaderListViewAdapter(
+            final LayoutInflater inflater) {
         this.inflater = inflater;
-        this.datas = new ArrayList<Post>();
-        loadData();
-        this.lastItem = datas.size()-1;
-        this.mBitmapArray = bitmapArray;
-        this.mUsernameArray = usernameArray;
+        //this.datas = new ArrayList<Post>();
+        //loadData();
+        //updatePostAndImage(post_array, bitmap_array);
+    }
+
+    public void updatePostAndImage(ArrayList<Post> post_array, ArrayList<Bitmap> bitmap_array) {
+        this.mPostArray = post_array;
+        this.mBitmapArray = bitmap_array;
+        this.lastItem = mPostArray.size()-1;
     }
 
     @Override
     public int getSectionCount() {
         //important!
-        return mBitmapArray.size();
+        if (mPostArray == null) {
+            return 0;
+        }
+        return mPostArray.size();
     }
 
     @Override
@@ -80,26 +88,30 @@ public class HeaderListViewAdapter extends SectionedBaseAdapter {
             view = inflater.inflate(R.layout.tab_house_listview_item_body, parent, false);
         }
 
-        Post post = datas.get(section);
+        if (section >= getSectionCount()) {
+            return view;
+        }
 
+        Post post = mPostArray.get(section);
+
+        if (post == null) {
+            return view;
+        }
+
+        //pic imageView
         ImageView post_imageView = (ImageView) view.findViewById(R.id.pic_image);
-        if (section < getSectionCount() && mBitmapArray.get(section) != null) {
+        if (mBitmapArray.get(section) != null) {
             post_imageView.setImageBitmap(mBitmapArray.get(section));
 
         }
 
-        //description textView
-        CommentView post_desc_view = (CommentView)view.findViewById(R.id.post_desc);
-        post_desc_view.setContent(mUsernameArray.get(section), post.getPicDesc());
-        /*
-        TextView desc_username_textview = (TextView)view.findViewById(R.id.post_desc_username);
-        String desc_username_str = mUsernameArray.get(section);
-        desc_username_textview.setText(desc_username_str);
+        //post desc layout embedded with commentView
+        LinearLayout desc_layout = (LinearLayout) view.findViewById(R.id.post_desc_layout);
+        desc_layout.removeAllViews();
+        CommentView post_desc_view = new CommentView(view.getContext(),post.getUsername(), post.getPicDesc());
+        post_desc_view.setTextSize(13);
+        desc_layout.addView(post_desc_view);
 
-        TextView desc_textview = (TextView)view.findViewById(R.id.post_desc);
-        String desc_str = post.getPicDesc();
-        desc_textview.setText(desc_str);
-        */
 
         //likes textView
         TextView likes_textView= (TextView) view.findViewById(R.id.post_likes);
@@ -108,17 +120,19 @@ public class HeaderListViewAdapter extends SectionedBaseAdapter {
         likes_textView.setText(likes_number_str);
 
 
-        //commment list linearLayout
+        //commment list layout embedded with commentView
         LinearLayout comment_list_view = (LinearLayout) view.findViewById(R.id.post_comment_list);
-
         ArrayList<Comment> comment = post.getComments();
-        Log.d("MYDEBUG", "this post comment size = " + comment.size());
+        //Log.d("MYDEBUG", "this post comment size = " + comment.size());
         //important!To avoid duplicate comment view bug.
         comment_list_view.removeAllViews();
+
         for (int i = 0; i < comment.size(); ++i) {
             CommentView cv = new CommentView(
                     view.getContext(), comment.get(i).getUsername(), comment.get(i).getContent());
-
+            cv.setTextSize(13);
+            comment_list_view.addView(cv);
+        }
             /*
             ///////comment view
             LinearLayout one_comment_view = new LinearLayout(view.getContext());
@@ -151,9 +165,6 @@ public class HeaderListViewAdapter extends SectionedBaseAdapter {
             one_comment_view.addView(comment_view);
             */
 
-            comment_list_view.addView(cv);
-        }
-
         return view;
     }
 
@@ -165,12 +176,16 @@ public class HeaderListViewAdapter extends SectionedBaseAdapter {
             convertView = inflater.inflate(R.layout.tab_house_listview_item_header, parent, false);
         }
 
-        Post post = datas.get(section);
+        if (section >= getSectionCount()) {
+            return convertView;
+        }
+
+        Post post = mPostArray.get(section);
 
 
         ImageView user_imageView = (ImageView) convertView.findViewById(R.id.post_user_image);
         //user_img_view.setImageBitmap(BitmapFactory.decodeFile(post.getUser_img_uri()));
-        if (section < getSectionCount() && mBitmapArray.get(section)!=null) {
+        if (mBitmapArray.get(section)!=null) {
                 //set user_img_view to be rounded.
                 Bitmap src = mBitmapArray.get(section);
                 int len = Math.min(src.getHeight(), src.getWidth());
@@ -183,9 +198,7 @@ public class HeaderListViewAdapter extends SectionedBaseAdapter {
         }
 
         TextView username_textView = (TextView) convertView.findViewById(R.id.post_user_username);
-        if (section < getSectionCount() && mUsernameArray.get(section)!=null) {
-            username_textView.setText(mUsernameArray.get(section));
-        }
+        username_textView.setText(post.getUsername());
 
         TextView time_textView= (TextView) convertView.findViewById(R.id.post_time);
         time_textView.setText(post.getTime());

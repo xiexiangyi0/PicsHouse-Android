@@ -4,6 +4,10 @@ package com.xiangyixie.picshouse.model;
  * Created by xiangyixie on 8/6/15.
  */
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 public class Post {
@@ -18,6 +22,13 @@ public class Post {
     Integer mLikesNumber;
 
     ArrayList<Comment> mComments;
+
+    // TODO: value is for test, please remove when all finished.
+    public Post() {
+        mUsername = "test_user";
+        time = "12h";
+        mLikesNumber = 123;
+    }
 
 
     public void setUsername(String usr_name){
@@ -74,6 +85,38 @@ public class Post {
 
     public ArrayList<Comment> getComments(){
         return this.mComments;
+    }
+
+    public static ArrayList<Post> parsePostArray(JSONArray post_jarr) {
+        ArrayList<Post> post_array = new ArrayList<>();
+        int len = post_jarr.length();
+        for (int i=0; i<len; ++i) {
+            try {
+                Post post = parsePost(post_jarr.getJSONObject(i));
+                post_array.add(post);
+            } catch (JSONException e) {
+                JsonParser.onException(e);
+            }
+        }
+
+        return post_array;
+    }
+
+    public static Post parsePost(JSONObject jpost) throws JSONException {
+        Post post = new Post();
+
+        JSONObject juser = jpost.getJSONObject("user");
+        post.mUsername = juser.getString("username");
+
+        post.mPicDesc = jpost.getString("desc");
+
+        JSONObject jimage = jpost.getJSONObject("image");
+        post.mPicImgUrl = jimage.getString("src");
+
+        JSONArray jcomments = jpost.getJSONArray("comments");
+        post.mComments = Comment.parseCommentArray(jcomments);
+
+        return post;
     }
 
 }

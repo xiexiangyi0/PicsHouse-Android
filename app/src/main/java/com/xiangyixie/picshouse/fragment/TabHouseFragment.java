@@ -13,17 +13,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.xiangyixie.picshouse.AppConfig;
 import com.xiangyixie.picshouse.R;
 import com.xiangyixie.picshouse.httpService.PHHttpClient;
-import com.xiangyixie.picshouse.httpService.PHJsonRequest;
+import com.xiangyixie.picshouse.httpService.PHJsonGet;
+import com.xiangyixie.picshouse.model.JsonParser;
+import com.xiangyixie.picshouse.model.Post;
+import com.xiangyixie.picshouse.util.UrlGenerator;
 import com.xiangyixie.picshouse.util.UserWarning;
 import com.xiangyixie.picshouse.view.pinnedHeaderListView.HeaderListViewAdapter;
 import com.xiangyixie.picshouse.view.pinnedHeaderListView.PinnedHeaderListView;
-import com.xiangyixie.picshouse.view.pinnedHeaderListView.SectionedBaseAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -34,17 +34,19 @@ import java.net.URL;
 import java.util.ArrayList;
 
 
-public class TabHouseFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener{
+public class TabHouseFragment extends Fragment
+        implements SwipeRefreshLayout.OnRefreshListener{
 
     private final static String TAG = "TabHouseFragment";
 
     private Activity activity = null;
 
-    private SectionedBaseAdapter adapter = null;
+    private HeaderListViewAdapter mAdapter = null;
     private PinnedHeaderListView listView = null;
-    private ArrayList<Bitmap> bitmap_array = null;
-    private ArrayList<String> username_array = null;
     //private ProgressDialog pDialog;
+
+    private ArrayList<Post> mPostArray = null;
+    private ArrayList<Bitmap> mBitmapArray = null;
 
     private SwipeRefreshLayout refresh_layout = null;
 
@@ -66,16 +68,17 @@ public class TabHouseFragment extends Fragment implements SwipeRefreshLayout.OnR
                              Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.tab_house, container, false);
 
-        bitmap_array = new ArrayList<>();
-        username_array = new ArrayList<>();
+        mPostArray = new ArrayList<>();
+        mBitmapArray = new ArrayList<>();
+
         //create PinnedHeaderListView adpater.
-        adapter = new HeaderListViewAdapter(inflater, bitmap_array, username_array);
+        mAdapter = new HeaderListViewAdapter(inflater);//, mPostArray, mBitmapArray);
 
         listView = (PinnedHeaderListView) view.findViewById(R.id.tab_house_listview);
         listView.setPinHeaders(true);
         // TODO: API starts from 21. Need to change it. Consider to use NestedScrollView.
         //listView.setNestedScrollingEnabled(true);
-        listView.setAdapter(adapter);
+        listView.setAdapter(mAdapter);
 
         //pull to refresh, set 'refresh' listener.
         refresh_layout = (SwipeRefreshLayout) view.findViewById(R.id.tab_house_refresh);
@@ -93,50 +96,36 @@ public class TabHouseFragment extends Fragment implements SwipeRefreshLayout.OnR
         JSONObject jdata = new JSONObject();
 
         //Request a JSON response from getting post url.
-        PHJsonRequest req = new PHJsonRequest(Request.Method.GET,
+        PHJsonGet req = new PHJsonGet(
                 "/post/get/", jdata,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
+
                             JSONArray posts = response.getJSONArray("posts");
-                            //size of user posts.
-                            int len = posts.length();
-                            String urls = "";
-                            //traverse all post feed photos and load post from network asynchronously.
-                            for (int i=0; i<len; ++i) {
-                                JSONObject post = posts.getJSONObject(i);
-                                String post_id = post.getString("id");
-
-                                JSONObject post_user = post.getJSONObject("user");
-                                String post_username = post_user.getString("username");
-                                appendUsername(post_username, i);
-
-                                JSONObject post_image = post.getJSONObject("image");
-                                String url = post_image.getString("src");
-                                String base_url = "http://" + AppConfig.SERVER_IP + ":" + AppConfig.SERVER_PORT;
-                                url = base_url + url;
-                                //Async task LoadImage.
-                                new LoadImage(i).execute(url);
-
-                                String post_desc = post.getString("desc");
-
-                                JSONArray post_comments = post.getJSONArray("comments");
-                                int comments_len = post_comments.length();
-                                for(int j=0; j < comments_len; ++j){
-                                    JSONObject post_onecomment = post_comments.getJSONObject(i);
-                                    JSONObject comment_user = post_onecomment.getJSONObject("user");
-                                    String comment_username = comment_user.getString("username");
-                                    String comment_content = post_onecomment.getString("content");
-                                }
-
-                                //add 'reply to' later.
+                            mPostArray = Post.parsePostArray(posts);
+                            mBitmapArray = new ArrayList<>(mPostArray.size());
+                            for (int i=0; i<mPostArray.size(); ++i) {
+                                mBitmapArray.add(null);
                             }
-                            toastWarning("get feed posts number: " + len + ":\n" + urls);
+
+                            toastWarning("get feed posts number: " + mPostArray.size());
 
                         }  catch (JSONException e) {
+                            JsonParser.onException(e);
                             toastWarning("parse json posts array error: " + e.getMessage());
                         }
+
+                        mAdapter.updatePostAndImage(mPostArray, mBitmapArray);
+                        mAdapter.notifyDataSetChanged();
+
+                        // Fetch image
+                        for (int i=0; i < mPostArray.size(); ++i) {
+                            new LoadImage(i).execute(
+                                    UrlGenerator.fullUrl(mPostArray.get(i).getPicImgUrl()));
+                        }
+
                         // set refresh circle to stop.
                         refresh_layout.setRefreshing(false);
                     }
@@ -183,29 +172,14 @@ public class TabHouseFragment extends Fragment implements SwipeRefreshLayout.OnR
         protected void onPostExecute(Bitmap image) {
             if(image != null){
                 Log.d("MYDEBUG", "image bitmap != null");
-                int len = bitmap_array.size();
-                while (pos >= len) {
-                    bitmap_array.add(null);
-                    len = bitmap_array.size();
-                }
-                bitmap_array.set(pos, image);
-                adapter.notifyDataSetChanged();
+
+                mBitmapArray.set(pos, image);
+                mAdapter.notifyDataSetChanged();
             }else{
                 //pDialog.dismiss();
                 Toast.makeText(activity, "Image does not exist or network error", Toast.LENGTH_SHORT).show();
             }
         }
-    }
-
-    public void appendUsername (String username, int pos){
-        Log.d("MYDEBUG", "username == " + username);
-        int len = username_array.size();
-        while(pos >= len){
-            username_array.add(null);
-            len = username_array.size();
-        }
-        username_array.set(pos,username);
-        adapter.notifyDataSetChanged();
     }
 
     @Override

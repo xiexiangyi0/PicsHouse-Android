@@ -14,7 +14,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.facebook.AppEventsLogger;
@@ -23,6 +22,7 @@ import com.xiangyixie.picshouse.R;
 import com.xiangyixie.picshouse.activity.MainActivity;
 import com.xiangyixie.picshouse.fragment.FbLoginFragment;
 import com.xiangyixie.picshouse.httpService.PHHttpClient;
+import com.xiangyixie.picshouse.httpService.PHJsonPost;
 import com.xiangyixie.picshouse.httpService.PHJsonRequest;
 import com.xiangyixie.picshouse.util.UserWarning;
 
@@ -115,7 +115,7 @@ public class LoginActivity extends ActionBarActivity
                 }
 
                 // Request a string response from the provided URL.
-                PHJsonRequest req = new PHJsonRequest(Request.Method.POST, "/user/login/", jdata,
+                PHJsonPost req = new PHJsonPost("/user/login/", jdata,
                         new Response.Listener<JSONObject>() {
                             @Override
                             public void onResponse(JSONObject response) {
@@ -255,7 +255,7 @@ public class LoginActivity extends ActionBarActivity
             return;
         }
 
-        PHJsonRequest req = new PHJsonRequest(Request.Method.POST, "/user/create/", jdata,
+        PHJsonPost req = new PHJsonPost("/user/create/", jdata,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
@@ -333,7 +333,7 @@ public class LoginActivity extends ActionBarActivity
             return;
         }
 
-        PHJsonRequest req = new PHJsonRequest(Request.Method.POST, "/user/fblogin/", jdata,
+        PHJsonPost req = new PHJsonPost("/user/fblogin/", jdata,
                 new Response.Listener<JSONObject>() {
 
                     @Override

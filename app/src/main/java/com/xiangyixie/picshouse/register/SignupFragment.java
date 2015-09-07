@@ -16,12 +16,11 @@ import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
-import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.xiangyixie.picshouse.R;
 import com.xiangyixie.picshouse.httpService.PHHttpClient;
-import com.xiangyixie.picshouse.httpService.PHJsonRequest;
+import com.xiangyixie.picshouse.httpService.PHJsonPost;
 import com.xiangyixie.picshouse.util.UserWarning;
 
 import org.json.JSONException;
@@ -125,7 +124,7 @@ public class SignupFragment extends Fragment {
                         }
 
                         // Request a string response(token) from the provided URL.
-                        PHJsonRequest req = new PHJsonRequest(Request.Method.POST,
+                        PHJsonPost req = new PHJsonPost(
                                 "/user/exist/", jdata,
                                 new Response.Listener<JSONObject>() {
                                     @Override

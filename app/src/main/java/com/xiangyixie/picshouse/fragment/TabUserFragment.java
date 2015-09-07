@@ -14,13 +14,12 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.xiangyixie.picshouse.AppConfig;
 import com.xiangyixie.picshouse.R;
 import com.xiangyixie.picshouse.httpService.PHHttpClient;
-import com.xiangyixie.picshouse.httpService.PHJsonRequest;
+import com.xiangyixie.picshouse.httpService.PHJsonGet;
 import com.xiangyixie.picshouse.util.UserWarning;
 import com.xiangyixie.picshouse.view.HeaderGridView.GridViewAdapter;
 import com.xiangyixie.picshouse.view.HeaderGridView.HeaderGridView;
@@ -131,8 +130,8 @@ public class TabUserFragment extends Fragment
         JSONObject jdata = new JSONObject();
 
         //Request a JSON response from getting user info url.
-        PHJsonRequest req = new PHJsonRequest(Request.Method.GET,
-                "/post/getthumbnail/", jdata,
+        PHJsonGet req = new PHJsonGet(
+                "/user/get/", jdata,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
@@ -176,8 +175,8 @@ public class TabUserFragment extends Fragment
         }
 
         //Request a JSON response from getting post url.
-        PHJsonRequest req = new PHJsonRequest(Request.Method.GET,
-                "/post/get/?user_id=" + user_id, jdata,
+        PHJsonGet req = new PHJsonGet(
+                "/post/getthumbnail/?user_id=" + user_id, jdata,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {

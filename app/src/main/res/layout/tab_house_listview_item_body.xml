@@ -48,18 +48,15 @@
     </LinearLayout>
 
 
-    <!--description-->
+    <!--comment view-->
     <LinearLayout
+        android:id="@+id/post_desc_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:paddingLeft="14dp">
-
-        <com.xiangyixie.picshouse.view.CommentView
-            android:id="@+id/post_desc"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+        android:gravity="left"
+        android:orientation="vertical"
+        android:paddingLeft="14dp"
+        android:paddingRight="14dp">
 
         <!--TextView
             android:id="@+id/post_desc_username"

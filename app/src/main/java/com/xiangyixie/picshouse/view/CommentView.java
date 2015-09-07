@@ -26,12 +26,13 @@ public class CommentView extends TextView {
         super(context, attrs);
         mUsername = "user";
         mComment = "comment";
+
         updateText();
     }
 
     private void updateText() {
-        String html = "<font color=" + getResources().getColor(R.color.dark_blue_like_text) + ">" +
-                mUsername + "</font>\t\t<font color=" + getResources().getColor(R.color.black) +
+        String html = "<font color=" + getResources().getColor(R.color.dark_blue_like_text) + "><b>"
+                + mUsername + "</b>" + "</font>\t\t<font color=" + getResources().getColor(R.color.black) +
                 ">" + mComment + "</font>";
         setText(Html.fromHtml(html));
     }
@@ -41,6 +42,4 @@ public class CommentView extends TextView {
         mComment = comment;
         updateText();
     }
-
-
 }
