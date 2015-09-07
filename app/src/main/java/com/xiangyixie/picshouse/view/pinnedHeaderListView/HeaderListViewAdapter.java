@@ -7,7 +7,6 @@ package com.xiangyixie.picshouse.view.pinnedHeaderListView;
 import android.graphics.Bitmap;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,11 +17,9 @@ import android.widget.TextView;
 import com.xiangyixie.picshouse.R;
 import com.xiangyixie.picshouse.model.Comment;
 import com.xiangyixie.picshouse.model.Post;
-import com.xiangyixie.picshouse.model.PostFeedData;
 import com.xiangyixie.picshouse.view.CommentView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 
 public class HeaderListViewAdapter extends SectionedBaseAdapter {
@@ -30,26 +27,20 @@ public class HeaderListViewAdapter extends SectionedBaseAdapter {
     private LayoutInflater inflater;
 
     //post feed data
-    private List<Post> datas = null;
-
-    // post feed data
     private ArrayList<Post> mPostArray = null;
     private ArrayList<Bitmap> mBitmapArray = null;
 
     private int lastItem = 0;
 
-
     public HeaderListViewAdapter(
             final LayoutInflater inflater) {
         this.inflater = inflater;
-        //this.datas = new ArrayList<Post>();
-        //loadData();
-        //updatePostAndImage(post_array, bitmap_array);
     }
 
     public void updatePostAndImage(ArrayList<Post> post_array, ArrayList<Bitmap> bitmap_array) {
         this.mPostArray = post_array;
         this.mBitmapArray = bitmap_array;
+
         this.lastItem = mPostArray.size()-1;
     }
 
@@ -93,16 +84,15 @@ public class HeaderListViewAdapter extends SectionedBaseAdapter {
         }
 
         Post post = mPostArray.get(section);
-
         if (post == null) {
             return view;
         }
 
         //pic imageView
+        Bitmap image = mBitmapArray.get(section);
         ImageView post_imageView = (ImageView) view.findViewById(R.id.pic_image);
-        if (mBitmapArray.get(section) != null) {
-            post_imageView.setImageBitmap(mBitmapArray.get(section));
-
+        if (image != null) {
+            post_imageView.setImageBitmap(image);
         }
 
         //post desc layout embedded with commentView
@@ -123,7 +113,7 @@ public class HeaderListViewAdapter extends SectionedBaseAdapter {
         //commment list layout embedded with commentView
         LinearLayout comment_list_view = (LinearLayout) view.findViewById(R.id.post_comment_list);
         ArrayList<Comment> comment = post.getComments();
-        //Log.d("MYDEBUG", "this post comment size = " + comment.size());
+
         //important!To avoid duplicate comment view bug.
         comment_list_view.removeAllViews();
 
@@ -133,6 +123,8 @@ public class HeaderListViewAdapter extends SectionedBaseAdapter {
             cv.setTextSize(13);
             comment_list_view.addView(cv);
         }
+        return view;
+
             /*
             ///////comment view
             LinearLayout one_comment_view = new LinearLayout(view.getContext());
@@ -164,8 +156,6 @@ public class HeaderListViewAdapter extends SectionedBaseAdapter {
             one_comment_view.addView(username_view,0);
             one_comment_view.addView(comment_view);
             */
-
-        return view;
     }
 
     //pinned Header view.
@@ -181,7 +171,6 @@ public class HeaderListViewAdapter extends SectionedBaseAdapter {
         }
 
         Post post = mPostArray.get(section);
-
 
         ImageView user_imageView = (ImageView) convertView.findViewById(R.id.post_user_image);
         //user_img_view.setImageBitmap(BitmapFactory.decodeFile(post.getUser_img_uri()));
@@ -204,14 +193,6 @@ public class HeaderListViewAdapter extends SectionedBaseAdapter {
         time_textView.setText(post.getTime());
 
         return convertView;
-    }
-
-    private void loadData() {
-        PostFeedData data = new PostFeedData();
-        ArrayList<Post> tmp = data.getAllPostFeedData();
-
-        this.datas = tmp;
-        Log.d("MYDEBUG", "All post Feed datas size = " + datas.size());
     }
 }
 
