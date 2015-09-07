@@ -34,7 +34,11 @@ import java.util.ArrayList;
 
 
 public class TabHouseFragment extends Fragment
-        implements SwipeRefreshLayout.OnRefreshListener{
+        implements SwipeRefreshLayout.OnRefreshListener, HeaderListViewAdapter.OnPostClickListener {
+    public interface OnFragmentInteractionListener {
+        // comment_idx -1 implies comment on post
+        public void onComment(Post post, int comment_idx);
+    }
 
     private final static String TAG = "TabHouseFragment";
 
@@ -51,10 +55,14 @@ public class TabHouseFragment extends Fragment
 
     private SwipeRefreshLayout refresh_layout = null;
 
-    private int post_count = 15;
+    private OnFragmentInteractionListener mInteractionListener = null;
 
     public TabHouseFragment() {
 
+    }
+
+    public void setInteractionListener(OnFragmentInteractionListener listener) {
+        mInteractionListener = listener;
     }
 
 
@@ -74,13 +82,16 @@ public class TabHouseFragment extends Fragment
         mPicBitmapArray = new ArrayList<>();
 
         //create PinnedHeaderListView adpater.
-        mAdapter = new HeaderListViewAdapter(inflater);//, mPostArray, mBitmapArray);
+        mAdapter = new HeaderListViewAdapter(inflater, this);//, mPostArray, mBitmapArray);
 
         listView = (PinnedHeaderListView) view.findViewById(R.id.tab_house_listview);
         listView.setPinHeaders(true);
         // TODO: API starts from 21. Need to change it. Consider to use NestedScrollView.
         //listView.setNestedScrollingEnabled(true);
         listView.setAdapter(mAdapter);
+
+        // on click listener
+        //listView.setOnItemClickListener(new PinnedHeaderListViewClickListener(this));
 
         //pull to refresh, set 'refresh' listener.
         refresh_layout = (SwipeRefreshLayout) view.findViewById(R.id.tab_house_refresh);
@@ -161,6 +172,16 @@ public class TabHouseFragment extends Fragment
                 }
         );
         client.send(req);
+    }
+
+    @Override
+    public void onPostDescClick(int i) {
+        mInteractionListener.onComment(mPostArray.get(i), -1);
+    }
+
+    @Override
+    public void onPostCommentClick(int post_idx, int comment_idx) {
+        mInteractionListener.onComment(mPostArray.get(post_idx), comment_idx);
     }
 
     //Async task LoadPicImage(i).execute(url).
@@ -250,7 +271,5 @@ public class TabHouseFragment extends Fragment
         UserWarning.warn(this.getActivity(), txt);
     }
 
-    public interface OnFragmentInteractionListener {
 
-    }
 }

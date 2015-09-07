@@ -24,7 +24,13 @@ import java.util.ArrayList;
 
 public class HeaderListViewAdapter extends SectionedBaseAdapter {
 
+    public interface OnPostClickListener {
+        public void onPostDescClick(int i);
+        public void onPostCommentClick(int post_idx, int comment_idx);
+    }
+
     private LayoutInflater inflater;
+    private OnPostClickListener mListener;
 
     //post feed data
     private ArrayList<Post> mPostArray = null;
@@ -35,8 +41,9 @@ public class HeaderListViewAdapter extends SectionedBaseAdapter {
     private Integer mSize = 0;
     private int lastItem = 0;
 
-    public HeaderListViewAdapter(final LayoutInflater inflater) {
+    public HeaderListViewAdapter(final LayoutInflater inflater, OnPostClickListener listener) {
         this.inflater = inflater;
+        mListener = listener;
     }
 
     public void updatePostAndImage(ArrayList<Post> post_array, ArrayList<Bitmap> avatar_bitmap_array, ArrayList<Bitmap> pic_bitmap_array ) {
@@ -110,6 +117,14 @@ public class HeaderListViewAdapter extends SectionedBaseAdapter {
         post_desc_view.setTextSize(13);
         desc_layout.addView(post_desc_view);
 
+        final int post_idx = section;
+        post_desc_view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mListener.onPostDescClick(post_idx);
+            }
+        });
+
 
         //likes textView
         TextView likes_textView= (TextView) view.findViewById(R.id.post_likes);
@@ -130,6 +145,14 @@ public class HeaderListViewAdapter extends SectionedBaseAdapter {
                     view.getContext(), comment.get(i).getUsername(), comment.get(i).getContent());
             cv.setTextSize(13);
             comment_list_view.addView(cv);
+
+            final int comment_idx = i;
+            cv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mListener.onPostCommentClick(post_idx, comment_idx);
+                }
+            });
         }
         return view;
 

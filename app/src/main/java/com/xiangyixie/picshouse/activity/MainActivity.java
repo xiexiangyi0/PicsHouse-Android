@@ -1,5 +1,6 @@
 package com.xiangyixie.picshouse.activity;
 
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -19,9 +20,11 @@ import com.xiangyixie.picshouse.R;
 import com.xiangyixie.picshouse.fragment.FragPagerAdapter;
 import com.xiangyixie.picshouse.fragment.TabCameraFragment;
 import com.xiangyixie.picshouse.fragment.TabDiscoverFragment;
+import com.xiangyixie.picshouse.fragment.TabHouseCommentFragment;
 import com.xiangyixie.picshouse.fragment.TabHouseFragment;
 import com.xiangyixie.picshouse.fragment.TabNotificationFragment;
 import com.xiangyixie.picshouse.fragment.TabUserFragment;
+import com.xiangyixie.picshouse.model.Post;
 import com.xiangyixie.picshouse.view.MyViewPager_notSwiping;
 
 import java.io.File;
@@ -32,7 +35,8 @@ import java.util.Date;
 //import android.app.FragmentManager;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity
+implements TabHouseFragment.OnFragmentInteractionListener {
 
     private static final int TAB_HOUSE = 0;
     private static final int TAB_DISCOVER = 1;
@@ -98,6 +102,8 @@ public class MainActivity extends AppCompatActivity {
         mTabNotificationFrag = new TabNotificationFragment();
         mTabUserFrag = new TabUserFragment();
 
+        mTabHouseFrag.setInteractionListener(this);
+
         mFragmentList.add(mTabHouseFrag);
         mFragmentList.add(mTabDiscoverFrag);
         mFragmentList.add(mTabCameraFrag);
@@ -147,6 +153,23 @@ public class MainActivity extends AppCompatActivity {
         mToolbar = (Toolbar) findViewById(R.id.main_activity_toolbar);
         setSupportActionBar(mToolbar);
         setTitle("LALALALALAL");
+    }
+
+    @Override
+    public void onComment(Post post, int comment_idx) {
+        // TODO: start new activity or fragment
+        TabHouseCommentFragment comment_fragment = new TabHouseCommentFragment();
+        // Create new fragment and transaction
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+
+        // Replace whatever is in the fragment_container view with this fragment,
+        // and add the transaction to the back stack
+        // TODO: fix red error
+        //transaction.add(R.id.tabpager, comment_fragment);
+        transaction.addToBackStack(null);
+
+        // Commit the transaction
+        transaction.commit();
     }
 
 
