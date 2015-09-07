@@ -12,18 +12,16 @@ import java.util.ArrayList;
 
 public class Post {
     private String mUsername;
-    //Location location;
-    //Photo photo;
-    private String mUserImgUrl;
+    private String mUserAvatarUrl;
+
     String mPicImgUrl;
+
     String mPicDesc;
     String time;
-
     Integer mLikesNumber;
 
     ArrayList<Comment> mComments;
 
-    // TODO: value is for test, please remove when all finished.
     public Post() {
         mUsername = "test_user";
         time = "12h";
@@ -39,12 +37,12 @@ public class Post {
         return this.mUsername;
     }
 
-    public void setUserImgUrl(String path){
-        this.mUserImgUrl = path;
+    public void setUserAvatarUrl(String path){
+        this.mUserAvatarUrl = path;
     }
 
-    public String getUserImgUrl(){
-        return this.mUserImgUrl;
+    public String getUserAvatarUrl(){
+        return this.mUserAvatarUrl;
     }
 
     public void setPicImgUrl(String path){
@@ -87,6 +85,7 @@ public class Post {
         return this.mComments;
     }
 
+
     public static ArrayList<Post> parsePostArray(JSONArray post_jarr) {
         ArrayList<Post> post_array = new ArrayList<>();
         int len = post_jarr.length();
@@ -98,15 +97,22 @@ public class Post {
                 JsonParser.onException(e);
             }
         }
-
         return post_array;
     }
+
 
     public static Post parsePost(JSONObject jpost) throws JSONException {
         Post post = new Post();
 
         JSONObject juser = jpost.getJSONObject("user");
         post.mUsername = juser.getString("username");
+        JSONObject javatar = juser.getJSONObject("avatar");
+        String avatar_url = javatar.getString("src");
+        if (avatar_url == "null") {
+            post.mUserAvatarUrl = "";
+        } else {
+            post.mUserAvatarUrl = avatar_url;
+        }
 
         post.mPicDesc = jpost.getString("desc");
 
@@ -118,6 +124,5 @@ public class Post {
 
         return post;
     }
-
 }
 

@@ -7,7 +7,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,7 +45,9 @@ public class TabHouseFragment extends Fragment
     //private ProgressDialog pDialog;
 
     private ArrayList<Post> mPostArray = null;
-    private ArrayList<Bitmap> mBitmapArray = null;
+    private ArrayList<Bitmap> mAvatarBitmapArray = null;
+    private ArrayList<Bitmap> mPicBitmapArray = null;
+    private Integer mPostSize = 0;
 
     private SwipeRefreshLayout refresh_layout = null;
 
@@ -69,7 +70,8 @@ public class TabHouseFragment extends Fragment
         final View view = inflater.inflate(R.layout.tab_house, container, false);
 
         mPostArray = new ArrayList<>();
-        mBitmapArray = new ArrayList<>();
+        mAvatarBitmapArray = new ArrayList<>();
+        mPicBitmapArray = new ArrayList<>();
 
         //create PinnedHeaderListView adpater.
         mAdapter = new HeaderListViewAdapter(inflater);//, mPostArray, mBitmapArray);
@@ -91,39 +93,59 @@ public class TabHouseFragment extends Fragment
 
     @Override
     public void onRefresh(){
-
         final PHHttpClient client = PHHttpClient.getInstance(activity);
         JSONObject jdata = new JSONObject();
 
         //Request a JSON response from getting post url.
+        //"http://104.236.145.14:8000/post/get/"
         PHJsonGet req = new PHJsonGet(
                 "/post/get/", jdata,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        try {
 
+                        try {
                             JSONArray posts = response.getJSONArray("posts");
+                            //Parse post json array.
                             mPostArray = Post.parsePostArray(posts);
-                            mBitmapArray = new ArrayList<>(mPostArray.size());
-                            for (int i=0; i<mPostArray.size(); ++i) {
-                                mBitmapArray.add(null);
+                            mPostSize = mPostArray.size();
+
+                            //Initiate mAvatarBitmapArray and mPicBitmapArray ArrayList.
+                            mAvatarBitmapArray = new ArrayList<>(mPostSize);
+                            mPicBitmapArray = new ArrayList<>(mPostSize);
+                            for (int i=0; i< mPostSize; ++i) {
+                                mAvatarBitmapArray.add(null);
+                                mPicBitmapArray.add(null);
                             }
 
                             toastWarning("get feed posts number: " + mPostArray.size());
 
                         }  catch (JSONException e) {
                             JsonParser.onException(e);
-                            toastWarning("parse json posts array error: " + e.getMessage());
+                            toastWarning("parse posts json array error: " + e.getMessage());
                         }
-
-                        mAdapter.updatePostAndImage(mPostArray, mBitmapArray);
+                        //Update Adaptor.
+                        mAdapter.updatePostAndImage(mPostArray, mAvatarBitmapArray, mPicBitmapArray);
                         mAdapter.notifyDataSetChanged();
 
-                        // Fetch image
+                        //Fetch user avatar img from url.
+                        for (int i=0; i < mPostSize; ++i) {
+                            Post post = mPostArray.get(i);
+                            String url = post.getUserAvatarUrl();
+                            if(!url.isEmpty()){
+                                new LoadUsrAvatarImage(i).execute(
+                                        UrlGenerator.fullUrl(url));
+                            }
+                        }
+
+                        //Fetch post pic img from url.
                         for (int i=0; i < mPostArray.size(); ++i) {
-                            new LoadImage(i).execute(
-                                    UrlGenerator.fullUrl(mPostArray.get(i).getPicImgUrl()));
+                            Post post = mPostArray.get(i);
+                            String url = post.getPicImgUrl();
+                            if(!url.isEmpty()) {
+                                new LoadPicImage(i).execute(
+                                        UrlGenerator.fullUrl(url));
+                            }
                         }
 
                         // set refresh circle to stop.
@@ -141,12 +163,11 @@ public class TabHouseFragment extends Fragment
         client.send(req);
     }
 
-    //Async task LoadImage(i).execute(url).
-    private class LoadImage extends AsyncTask<String, String, Bitmap> {
-
+    //Async task LoadPicImage(i).execute(url).
+    private class LoadPicImage extends AsyncTask<String, String, Bitmap> {
         private int pos = 0;
 
-        public LoadImage(int position){
+        public LoadPicImage(int position){
             this.pos = position;
         }
 
@@ -161,7 +182,7 @@ public class TabHouseFragment extends Fragment
         protected Bitmap doInBackground(String... args) {
             Bitmap bmap = null;
             try {
-                //decode network image bitmap
+                //decode network image to bitmap
                 bmap = BitmapFactory.decodeStream((InputStream) new URL(args[0]).getContent());
             } catch (Exception e) {
                 e.printStackTrace();
@@ -171,9 +192,7 @@ public class TabHouseFragment extends Fragment
 
         protected void onPostExecute(Bitmap image) {
             if(image != null){
-                Log.d("MYDEBUG", "image bitmap != null");
-
-                mBitmapArray.set(pos, image);
+                mPicBitmapArray.set(pos, image);
                 mAdapter.notifyDataSetChanged();
             }else{
                 //pDialog.dismiss();
@@ -181,6 +200,40 @@ public class TabHouseFragment extends Fragment
             }
         }
     }
+
+    //Async task LoadUsrAvatarImage(i).execute(url).
+    private class LoadUsrAvatarImage extends AsyncTask<String, String, Bitmap> {
+        private int pos = 0;
+
+        public LoadUsrAvatarImage(int position){
+            this.pos = position;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        protected Bitmap doInBackground(String... args) {
+            Bitmap bmap = null;
+            try {
+                bmap = BitmapFactory.decodeStream((InputStream) new URL(args[0]).getContent());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return bmap;
+        }
+
+        protected void onPostExecute(Bitmap image) {
+            if(image != null){
+                mAvatarBitmapArray.set(pos, image);
+                mAdapter.notifyDataSetChanged();
+            }else{
+                Toast.makeText(activity, "User avatar does not exist or network error", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
 
     @Override
     public void onAttach(Activity activity) {

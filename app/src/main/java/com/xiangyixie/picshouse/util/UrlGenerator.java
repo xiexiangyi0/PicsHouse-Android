@@ -7,6 +7,9 @@ import com.xiangyixie.picshouse.AppConfig;
  */
 public class UrlGenerator {
     public static String fullUrl(String tail) {
+        if(tail == null){
+            return "http://" + AppConfig.SERVER_IP + ":" + AppConfig.SERVER_PORT;
+        }
         return "http://" + AppConfig.SERVER_IP + ":" + AppConfig.SERVER_PORT + tail;
     }
 }

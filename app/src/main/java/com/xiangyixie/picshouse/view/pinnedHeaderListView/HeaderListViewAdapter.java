@@ -28,20 +28,25 @@ public class HeaderListViewAdapter extends SectionedBaseAdapter {
 
     //post feed data
     private ArrayList<Post> mPostArray = null;
-    private ArrayList<Bitmap> mBitmapArray = null;
+    private ArrayList<Bitmap> mAvatarBitmapArray = null;
+    private ArrayList<Bitmap> mPicBitmapArray = null;
 
+
+    private Integer mSize = 0;
     private int lastItem = 0;
 
-    public HeaderListViewAdapter(
-            final LayoutInflater inflater) {
+    public HeaderListViewAdapter(final LayoutInflater inflater) {
         this.inflater = inflater;
     }
 
-    public void updatePostAndImage(ArrayList<Post> post_array, ArrayList<Bitmap> bitmap_array) {
+    public void updatePostAndImage(ArrayList<Post> post_array, ArrayList<Bitmap> avatar_bitmap_array, ArrayList<Bitmap> pic_bitmap_array ) {
         this.mPostArray = post_array;
-        this.mBitmapArray = bitmap_array;
 
-        this.lastItem = mPostArray.size()-1;
+        this.mAvatarBitmapArray = avatar_bitmap_array;
+        this.mPicBitmapArray = pic_bitmap_array;
+
+        this.mSize = mPostArray.size();
+        this.lastItem = mSize - 1;
     }
 
     @Override
@@ -89,10 +94,13 @@ public class HeaderListViewAdapter extends SectionedBaseAdapter {
         }
 
         //pic imageView
-        Bitmap image = mBitmapArray.get(section);
+        Bitmap image = mPicBitmapArray.get(section);
         ImageView post_imageView = (ImageView) view.findViewById(R.id.pic_image);
         if (image != null) {
             post_imageView.setImageBitmap(image);
+        } else {
+            // TODO: set default image here
+            post_imageView.setImageResource(0);
         }
 
         //post desc layout embedded with commentView
@@ -174,9 +182,9 @@ public class HeaderListViewAdapter extends SectionedBaseAdapter {
 
         ImageView user_imageView = (ImageView) convertView.findViewById(R.id.post_user_image);
         //user_img_view.setImageBitmap(BitmapFactory.decodeFile(post.getUser_img_uri()));
-        if (mBitmapArray.get(section)!=null) {
+        if (mAvatarBitmapArray.get(section)!=null) {
                 //set user_img_view to be rounded.
-                Bitmap src = mBitmapArray.get(section);
+                Bitmap src = mAvatarBitmapArray.get(section);
                 int len = Math.min(src.getHeight(), src.getWidth());
                 Bitmap dst = Bitmap.createScaledBitmap(src, len, len, true);
                 RoundedBitmapDrawable dr = RoundedBitmapDrawableFactory.create(convertView.getResources(), dst);
@@ -184,6 +192,9 @@ public class HeaderListViewAdapter extends SectionedBaseAdapter {
                 float cornerRd = dst.getWidth() / 2.0f;
                 dr.setCornerRadius(cornerRd);
                 user_imageView.setImageDrawable(dr);
+        } else {
+            // TODO: set default avatar here
+            user_imageView.setImageResource(0);
         }
 
         TextView username_textView = (TextView) convertView.findViewById(R.id.post_user_username);
