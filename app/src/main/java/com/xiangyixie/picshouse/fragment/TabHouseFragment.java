@@ -37,7 +37,7 @@ public class TabHouseFragment extends Fragment
         implements SwipeRefreshLayout.OnRefreshListener, HeaderListViewAdapter.OnPostClickListener {
     public interface OnFragmentInteractionListener {
         // comment_idx -1 implies comment on post
-        public void onComment(Post post, int comment_idx);
+        void onComment(Post post, int comment_idx);
     }
 
     private final static String TAG = "TabHouseFragment";
@@ -259,7 +259,7 @@ public class TabHouseFragment extends Fragment
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        this.activity = this.getActivity();
+        this.activity = activity;
     }
 
     @Override

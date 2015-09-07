@@ -9,11 +9,8 @@ import android.view.MotionEvent;
  * Created by xiangyixie on 2/20/15.
  */
 
-
-
-
 //'MyViewPager_notSwiping' class for tab pager
-public class MyViewPager_notSwiping extends ViewPager{
+public class MyViewPager_notSwiping extends ViewPager {
 
         private boolean enabled;
 
@@ -41,6 +38,8 @@ public class MyViewPager_notSwiping extends ViewPager{
         public void setPagingEnabled(boolean enabled) {
             this.enabled = enabled;
         }
+
+
 }
 
 

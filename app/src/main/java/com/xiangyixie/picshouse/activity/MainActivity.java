@@ -1,12 +1,12 @@
 package com.xiangyixie.picshouse.activity;
 
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -152,20 +152,18 @@ implements TabHouseFragment.OnFragmentInteractionListener {
     private void initToolbar() {
         mToolbar = (Toolbar) findViewById(R.id.main_activity_toolbar);
         setSupportActionBar(mToolbar);
-        setTitle("LALALALALAL");
     }
 
     @Override
     public void onComment(Post post, int comment_idx) {
-        // TODO: start new activity or fragment
+        Log.d("MYDEBUG", "onComment clicked " + comment_idx);
+
         TabHouseCommentFragment comment_fragment = new TabHouseCommentFragment();
-        // Create new fragment and transaction
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
         // Replace whatever is in the fragment_container view with this fragment,
         // and add the transaction to the back stack
-        // TODO: fix red error
-        //transaction.add(R.id.tabpager, comment_fragment);
+        transaction.add(R.id.main_container, comment_fragment);
         transaction.addToBackStack(null);
 
         // Commit the transaction
@@ -185,7 +183,7 @@ implements TabHouseFragment.OnFragmentInteractionListener {
         @Override
         public void onClick(View v) {
 
-            mTabPager.setCurrentItem(index);
+            mTabPager.setCurrentItem(index, false);
             //important!Use this to control 'mTabPager' visible fragment index!
 
         }
