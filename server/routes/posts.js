@@ -84,7 +84,7 @@ router.get("/getthumbnail", function (req, res, next) {
         var jarr = [];
 
         posts.forEach(function(p, idx, arr) {
-            jarr.push(p.getJsonPublic(p.user_id.getJsonPublic()));
+            jarr.push(p.getJsonPublic({id: p.user_id}));
         });
 
         res.send({"posts": jarr});
