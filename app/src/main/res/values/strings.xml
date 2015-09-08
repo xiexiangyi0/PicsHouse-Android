@@ -57,6 +57,10 @@
     <string name="following">Following</string>
     <string name="posts">Posts</string>
 
+    <!--comment-->
+    <string name="frag_comment_edittext_hint">Please input your comments</string>
+    <string name="frag_comment_edittext_action">Send</string>
+
 
 
 <!-- TODO: Remove or change this placeholder text -->

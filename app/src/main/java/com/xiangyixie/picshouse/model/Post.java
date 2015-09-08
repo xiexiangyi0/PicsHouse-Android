@@ -13,6 +13,7 @@ import java.util.ArrayList;
 public class Post {
     private String mUsername;
     private String mUserAvatarUrl;
+    private String mId;
 
     String mPicImgUrl;
 
@@ -26,8 +27,12 @@ public class Post {
         mUsername = "test_user";
         time = "12h";
         mLikesNumber = 123;
+        mId = "lalalal";
     }
 
+    public String getId() {
+        return mId;
+    }
 
     public void setUsername(String usr_name){
         this.mUsername = usr_name;
@@ -103,6 +108,8 @@ public class Post {
 
     public static Post parsePost(JSONObject jpost) throws JSONException {
         Post post = new Post();
+
+        post.mId = jpost.getString("id");
 
         JSONObject juser = jpost.getJSONObject("user");
         post.mUsername = juser.getString("username");

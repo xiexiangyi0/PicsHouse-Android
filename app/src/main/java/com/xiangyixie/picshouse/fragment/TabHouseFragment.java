@@ -270,6 +270,4 @@ public class TabHouseFragment extends Fragment
     private void toastWarning(String txt) {
         UserWarning.warn(this.getActivity(), txt);
     }
-
-
 }

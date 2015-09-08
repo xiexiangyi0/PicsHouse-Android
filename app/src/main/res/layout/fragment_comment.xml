@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:clickable="true">
+
+
+    <LinearLayout
+        android:id="@+id/commentFrag_post_desc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="left"
+        android:orientation="vertical"
+        android:paddingLeft="14dp"
+        android:paddingRight="14dp">
+    </LinearLayout>
+
+    <!--comment list-->
+    <LinearLayout
+        android:id="@+id/commentFrag_comment_layout"
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:gravity="left"
+        android:layout_gravity="top"
+        android:orientation="vertical"
+        android:paddingLeft="14dp"
+        android:paddingRight="14dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp">
+
+        <ListView
+            android:id="@+id/commentFrag_comment_listView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </ListView>
+    </LinearLayout>
+
+    <!--Input comment space-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_gravity="bottom"
+        android:orientation="horizontal">
+        <EditText
+            android:id="@+id/commentFrag_edittext_input"
+            android:layout_width="0pt"
+            android:layout_height="match_parent"
+            android:layout_weight="5"
+            android:inputType="text"
+            android:imeOptions="actionSend"
+            android:imeActionLabel="@string/frag_comment_edittext_action"
+            android:hint="@string/frag_comment_edittext_hint"/>
+        <Button
+            android:id="@+id/commentFrag_button_send"
+            android:layout_width="0pt"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/frag_comment_edittext_action"/>
+    </LinearLayout>
+
+</LinearLayout>

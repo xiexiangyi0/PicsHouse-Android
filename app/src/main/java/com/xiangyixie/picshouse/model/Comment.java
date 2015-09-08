@@ -12,6 +12,7 @@ import java.util.ArrayList;
 public class Comment {
     private User mUser;
     private String mContent;
+    private String mId;
 
     public Comment(User user, String str){
         this.mUser = user;
@@ -25,6 +26,9 @@ public class Comment {
     }
 
 
+    public String getId() {
+        return mId;
+    }
     public String getUsername(){
         return this.mUser.getUserName();
     }
@@ -45,13 +49,13 @@ public class Comment {
                 JsonParser.onException(e);
             }
         }
-
         return comments;
     }
 
     public static Comment parseComment(JSONObject jcomment) throws JSONException {
         Comment comment = new Comment();
 
+        comment.mId = jcomment.getString("id");
         // User
         comment.mUser = User.parseUser(jcomment.getJSONObject("user"));
         comment.mContent = jcomment.getString("content");

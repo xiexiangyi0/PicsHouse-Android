@@ -43,7 +43,7 @@ public class HeaderListViewAdapter extends SectionedBaseAdapter {
 
     public HeaderListViewAdapter(final LayoutInflater inflater, OnPostClickListener listener) {
         this.inflater = inflater;
-        mListener = listener;
+        this.mListener = listener;
     }
 
     public void updatePostAndImage(ArrayList<Post> post_array, ArrayList<Bitmap> avatar_bitmap_array, ArrayList<Bitmap> pic_bitmap_array ) {

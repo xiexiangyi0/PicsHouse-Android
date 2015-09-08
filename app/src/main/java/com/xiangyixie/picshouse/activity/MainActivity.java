@@ -159,6 +159,8 @@ implements TabHouseFragment.OnFragmentInteractionListener {
         Log.d("MYDEBUG", "onComment clicked " + comment_idx);
 
         TabHouseCommentFragment comment_fragment = new TabHouseCommentFragment();
+        comment_fragment.initialize(post, comment_idx);
+
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
         // Replace whatever is in the fragment_container view with this fragment,
