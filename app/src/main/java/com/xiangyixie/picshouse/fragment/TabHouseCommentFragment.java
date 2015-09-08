@@ -204,6 +204,7 @@ public class TabHouseCommentFragment extends Fragment {
 
     @Override
     public void onDetach() {
+        super.onDetach();
     }
 
     private void toastWarning(String txt) {
