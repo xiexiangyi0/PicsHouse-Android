@@ -113,7 +113,7 @@ public class HeaderListViewAdapter extends SectionedBaseAdapter {
         //post desc layout embedded with commentView
         LinearLayout desc_layout = (LinearLayout) view.findViewById(R.id.post_desc_layout);
         desc_layout.removeAllViews();
-        CommentView post_desc_view = new CommentView(view.getContext(),post.getUsername(), post.getPicDesc());
+        CommentView post_desc_view = new CommentView(view.getContext(),post.getUser().getUserName(), post.getPicDesc());
         post_desc_view.setTextSize(13);
         desc_layout.addView(post_desc_view);
 
@@ -221,7 +221,7 @@ public class HeaderListViewAdapter extends SectionedBaseAdapter {
         }
 
         TextView username_textView = (TextView) convertView.findViewById(R.id.post_user_username);
-        username_textView.setText(post.getUsername());
+        username_textView.setText(post.getUser().getUserName());
 
         TextView time_textView= (TextView) convertView.findViewById(R.id.post_time);
         time_textView.setText(post.getTime());

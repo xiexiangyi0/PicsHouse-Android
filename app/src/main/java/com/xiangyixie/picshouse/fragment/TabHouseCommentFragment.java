@@ -125,7 +125,7 @@ public class TabHouseCommentFragment extends Fragment {
         listView.setAdapter(mAdapter);
 
         String desc = mPost.getPicDesc();
-        String username = mPost.getUsername();
+        String username = mPost.getUser().getUserName();
         //ViewGroup comment_layout = (ViewGroup)view.findViewById(R.id.commentFrag_comment_layout);
         //comment_layout.addView(new CommentView(mActivity, username, desc));
     }

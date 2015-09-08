@@ -4,10 +4,10 @@ import android.graphics.Bitmap;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.TextView;
 
 import com.xiangyixie.picshouse.model.Comment;
 import com.xiangyixie.picshouse.model.Post;
+import com.xiangyixie.picshouse.model.User;
 
 import java.util.ArrayList;
 
@@ -50,7 +50,16 @@ public class CommentListViewAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int pos) {
-        return mCommentArray.get(pos);
+        Comment comment = null;
+        if(pos == 0){
+            User user = mPost.getUser();
+            String desc = mPost.getPicDesc();
+            comment = new Comment(user,desc);
+        }
+        else if(pos > 0){
+            comment = mCommentArray.get(pos);
+        }
+        return comment;
     }
 
     @Override
@@ -65,7 +74,7 @@ public class CommentListViewAdapter extends BaseAdapter {
         if(convertView == null){
             CommentView cv = null;
             if(position == 0){
-                cv = new CommentView(parent.getContext(), mPost.getUsername(), mPost.getPicDesc());
+                cv = new CommentView(parent.getContext(), mPost.getUser().getUserName(), mPost.getPicDesc());
             }
             else if(position > 0){
                 Comment comment = mCommentArray.get(position-1);
@@ -79,7 +88,7 @@ public class CommentListViewAdapter extends BaseAdapter {
         else {
             CommentView cv = (CommentView)view;
             if(position == 0){
-                cv.setContent(mPost.getUsername(), mPost.getPicDesc());
+                cv.setContent(mPost.getUser().getUserName(), mPost.getPicDesc());
             }
             else if(position > 0){
                 Comment comment = mCommentArray.get(position-1);
@@ -94,9 +103,11 @@ public class CommentListViewAdapter extends BaseAdapter {
     }
 }
 
+/*
 class CompleteListViewHolder {
     public TextView mTVItem;
     public CompleteListViewHolder(View base) {
         //mTVItem = (TextView) base.findViewById(R.id.commentFrag_comment_listView);
     }
 }
+*/

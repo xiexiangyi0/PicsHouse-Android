@@ -105,9 +105,7 @@ public class PostFeedData {
 
         for(int i=0 ; i<count; ++i){
             Post post = new Post();
-            post.setUsername(usernames[i]);
-            //post.setUser_img_uri(user_img_uris[i]);
-            //post.setPic_img_uri(pic_img_uris[i]);
+            post.getUser().setUsername(usernames[i]);
             post.setPicDesc(pic_desc);
             post.setTime(times[i].toString());
             post.setLikesNumber(likes_numbers[i]);

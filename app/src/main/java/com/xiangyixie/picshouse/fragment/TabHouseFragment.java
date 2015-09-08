@@ -142,7 +142,7 @@ public class TabHouseFragment extends Fragment
                         //Fetch user avatar img from url.
                         for (int i=0; i < mPostSize; ++i) {
                             Post post = mPostArray.get(i);
-                            String url = post.getUserAvatarUrl();
+                            String url = post.getUser().getUserAvatarUrl();
                             if(!url.isEmpty()){
                                 new LoadUsrAvatarImage(i).execute(
                                         UrlGenerator.fullUrl(url));

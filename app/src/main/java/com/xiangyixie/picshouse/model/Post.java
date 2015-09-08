@@ -11,83 +11,73 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class Post {
-    private String mUsername;
-    private String mUserAvatarUrl;
-    private String mId;
+    private User mUser = null;
+    private String mId = null;
 
-    String mPicImgUrl;
+    private String mPicImgUrl = null;
+    private String mPicDesc = null;
 
-    String mPicDesc;
-    String time;
-    Integer mLikesNumber;
+    private String time = null;
+    private Integer mLikesNumber = null;
 
-    ArrayList<Comment> mComments;
+    private ArrayList<Comment> mComments = null;
+
 
     public Post() {
-        mUsername = "test_user";
+        mUser = new User("test_user");
+        mId = "123456abcdefgh";
         time = "12h";
         mLikesNumber = 123;
-        mId = "lalalal";
+        mComments = new ArrayList<>();
     }
 
     public String getId() {
         return mId;
     }
-
-    public void setUsername(String usr_name){
-        this.mUsername = usr_name;
+    public void setId(String id){
+        mId = id;
     }
 
-    public String getUsername(){
-        return this.mUsername;
+    public User getUser(){
+        return this.mUser;
     }
-
-    public void setUserAvatarUrl(String path){
-        this.mUserAvatarUrl = path;
-    }
-
-    public String getUserAvatarUrl(){
-        return this.mUserAvatarUrl;
-    }
-
-    public void setPicImgUrl(String path){
-        this.mPicImgUrl = path;
+    public void setUser(User user){
+        this.mUser = user;
     }
 
     public String getPicImgUrl(){
         return this.mPicImgUrl;
     }
-
-    public void setPicDesc(String str){
-        this.mPicDesc = str;
+    public void setPicImgUrl(String path){
+        this.mPicImgUrl = path;
     }
 
     public String getPicDesc(){
         return this.mPicDesc;
     }
-
-    public void setTime(String t){
-        this.time = t;
+    public void setPicDesc(String str){
+        this.mPicDesc = str;
     }
 
     public String getTime(){
         return this.time;
     }
-
-    public void setLikesNumber(Integer n){
-        this.mLikesNumber = n;
+    public void setTime(String t){
+        this.time = t;
     }
 
     public Integer getLikesNumber(){
         return this.mLikesNumber;
     }
-
-    public void setComments(ArrayList<Comment> comm){
-        this.mComments = comm;
+    public void setLikesNumber(Integer n){
+        this.mLikesNumber = n;
     }
 
     public ArrayList<Comment> getComments(){
         return this.mComments;
+    }
+    public void setComments(ArrayList<Comment> comm){
+        this.mComments = comm;
     }
 
 
@@ -105,29 +95,22 @@ public class Post {
         return post_array;
     }
 
-
+    //http://104.236.145.14:8000/post/get/
     public static Post parsePost(JSONObject jpost) throws JSONException {
         Post post = new Post();
-
-        post.mId = jpost.getString("id");
+        User user = new User();
+        post.setId(jpost.getString("id"));
 
         JSONObject juser = jpost.getJSONObject("user");
-        post.mUsername = juser.getString("username");
-        JSONObject javatar = juser.getJSONObject("avatar");
-        String avatar_url = javatar.getString("src");
-        if (avatar_url == "null") {
-            post.mUserAvatarUrl = "";
-        } else {
-            post.mUserAvatarUrl = avatar_url;
-        }
-
-        post.mPicDesc = jpost.getString("desc");
+        user = User.parseUser(juser);
+        post.setUser(user);
+        post.setPicDesc(jpost.getString("desc"));
 
         JSONObject jimage = jpost.getJSONObject("image");
-        post.mPicImgUrl = jimage.getString("src");
+        post.setPicImgUrl(jimage.getString("src"));
 
         JSONArray jcomments = jpost.getJSONArray("comments");
-        post.mComments = Comment.parseCommentArray(jcomments);
+        post.setComments(Comment.parseCommentArray(jcomments));
 
         return post;
     }
