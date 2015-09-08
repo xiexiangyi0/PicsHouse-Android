@@ -78,38 +78,29 @@ public class CommentListViewAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = convertView;
 
-        if(convertView == null){
+        if(convertView == null) {
             view = mInflater.inflate(R.layout.comment_listview_item, parent, false);
+        }
 
-            ImageView avatar_imgView = (ImageView) view.findViewById(R.id.comment_user_avatar);
+        ImageView avatar_imgView = (ImageView) view.findViewById(R.id.comment_user_avatar);
+
+        // TODO: remove guard once current user's avatar is ready
+        if (position < mUserAvatarBitmapArray.size()) {
             avatar_imgView.setImageBitmap(mUserAvatarBitmapArray.get(position));
+        }
 
-            LinearLayout layout = (LinearLayout)view.findViewById(R.id.comment_content_layout);
-            CommentView cv = null;
-            if(position == 0){
-                cv = new CommentView(parent.getContext(), mPost.getUser().getUserName(), mPost.getPicDesc());
-            }
-            else if(position > 0){
-                Comment comment = mCommentArray.get(position-1);
-                cv = new CommentView(parent.getContext(), comment.getUser().getUserName(), comment.getContent());
-            }
-            layout.addView(cv);
+        LinearLayout layout = (LinearLayout)view.findViewById(R.id.comment_content_layout);
+        CommentView cv = null;
+        if(position == 0){
+            cv = new CommentView(parent.getContext(), mPost.getUser().getUserName(), mPost.getPicDesc());
         }
-        else {
-            /*
-            CommentView cv = (CommentView)view;
-            if(position == 0){
-                cv.setContent(mPost.getUser().getUserName(), mPost.getPicDesc());
-            }
-            else if(position > 0){
-                Comment comment = mCommentArray.get(position-1);
-                //view = mLayoutInflater.inflate(R.layout.fragment_comment, null);
-                cv.setContent(comment.getUsername(), comment.getContent());
-                //viewHolder = new CompleteListViewHolder(view);
-                //view.setTag(viewHolder);
-            }
-            */
+        else if(position > 0){
+            Comment comment = mCommentArray.get(position-1);
+            cv = new CommentView(parent.getContext(), comment.getUser().getUserName(), comment.getContent());
         }
+
+        layout.removeAllViews();
+        layout.addView(cv);
 
         return view;
     }

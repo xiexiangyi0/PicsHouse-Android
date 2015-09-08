@@ -240,6 +240,10 @@ public class TabHouseCommentFragment extends Fragment {
         if (comment != null) {
             mInputComment.setText("");
             mInputComment.setHint(R.string.frag_comment_edittext_hint);
+
+            // TODO: set current user's avatar
+            mUserAvatarBitmapArray.add(null);
+
             mAdapter.appendComment(comment);
         } else {
             toastWarning("Send comment fail");
