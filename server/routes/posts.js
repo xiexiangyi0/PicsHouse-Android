@@ -210,7 +210,7 @@ router.post("/comment/create", auth.authToken(), function(req, res, next) {
                         return next(err);
                     }
 
-                    res.send({comment: c});
+                    res.send({comment: c.getJsonPublic(user.getJsonPublic())});
 
                 });
             });
