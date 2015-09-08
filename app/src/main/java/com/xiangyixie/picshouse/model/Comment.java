@@ -21,6 +21,7 @@ public class Comment {
 
 
     private Comment(){
+        this.mId = "fdsakjkgaljgdas";
         this.mUser = null;
         this.mContent = "";
     }
@@ -29,13 +30,34 @@ public class Comment {
     public String getId() {
         return mId;
     }
-    public String getUsername(){
-        return this.mUser.getUserName();
+    public void setId(String id){
+        this.mId = id;
     }
-
+    public User getUser(){
+        return this.mUser;
+    }
+    public void setUser(User user){
+        this.mUser = user;
+    }
     public String getContent(){
         return this.mContent;
     }
+    public void setContent(String content){
+        this.mContent = content;
+    }
+
+
+    public static Comment parseComment(JSONObject jcomment) throws JSONException {
+        Comment comment = new Comment();
+
+        comment.mId = jcomment.getString("id");
+        // User
+        comment.mUser = User.parseUser(jcomment.getJSONObject("user"));
+        comment.mContent = jcomment.getString("content");
+
+        return comment;
+    }
+
 
     public static ArrayList<Comment> parseCommentArray(JSONArray jcomments) {
         ArrayList<Comment> comments = new ArrayList<>();
@@ -50,16 +72,5 @@ public class Comment {
             }
         }
         return comments;
-    }
-
-    public static Comment parseComment(JSONObject jcomment) throws JSONException {
-        Comment comment = new Comment();
-
-        comment.mId = jcomment.getString("id");
-        // User
-        comment.mUser = User.parseUser(jcomment.getJSONObject("user"));
-        comment.mContent = jcomment.getString("content");
-
-        return comment;
     }
 }

@@ -4,6 +4,8 @@ package com.xiangyixie.picshouse.fragment;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -17,6 +19,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -26,12 +29,15 @@ import com.xiangyixie.picshouse.httpService.PHJsonPost;
 import com.xiangyixie.picshouse.model.Comment;
 import com.xiangyixie.picshouse.model.JsonParser;
 import com.xiangyixie.picshouse.model.Post;
+import com.xiangyixie.picshouse.util.UrlGenerator;
 import com.xiangyixie.picshouse.util.UserWarning;
 import com.xiangyixie.picshouse.view.CommentListViewAdapter;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 
 /**
@@ -75,10 +81,9 @@ public class TabHouseCommentFragment extends Fragment {
                       Bundle savedInstanceState) {
 
         View view =  View.inflate(container.getContext(), R.layout.fragment_comment, null);
-
-        // Comment list
         if (mPost != null) {
-            initCommentList(view);
+            //init
+            initCommentList(inflater, view);
         } else {
             // In case fragment is created without initialize
             // TODO: read post url from bundle and ajax to get list
@@ -88,7 +93,7 @@ public class TabHouseCommentFragment extends Fragment {
         mInputComment = (EditText)view.findViewById(R.id.commentFrag_edittext_input);
         if (mPost != null && mCommentIdx != -1) {
             Comment comment = mPost.getComments().get(mCommentIdx);
-            mInputComment.setHint("Rely to " + comment.getUsername() + ":");
+            mInputComment.setHint("Rely to " + comment.getUser().getUserName() + ":");
         }
 
         // Set keypad 'send' listener
@@ -112,23 +117,69 @@ public class TabHouseCommentFragment extends Fragment {
                 sendComment(comment);
             }
         });
-
         return view;
     };
 
-    // mPost can't be null
-    private void initCommentList(View view) {
-        // TODO: pass correct avatar array
-        mAdapter = new CommentListViewAdapter(mPost, null);
 
+    // if mPost != null
+    private void initCommentList(LayoutInflater inflater, View view) {
+        // TODO: pass correct avatar array
+        mUserAvatarBitmapArray = new ArrayList<>();
+        ArrayList<Comment> comment_list = mPost.getComments();
+        for(int i=0;i < comment_list.size();++i){
+            mUserAvatarBitmapArray.add(null);
+        }
+        mAdapter = new CommentListViewAdapter(inflater, mPost, mUserAvatarBitmapArray);
         ListView listView = (ListView)view.findViewById(R.id.commentFrag_comment_listView);
         listView.setAdapter(mAdapter);
 
-        String desc = mPost.getPicDesc();
-        String username = mPost.getUser().getUserName();
-        //ViewGroup comment_layout = (ViewGroup)view.findViewById(R.id.commentFrag_comment_layout);
-        //comment_layout.addView(new CommentView(mActivity, username, desc));
+
+        for(int i=0;i < comment_list.size();++i){
+            Comment comment = comment_list.get(i);
+            String url = comment.getUser().getUserAvatarUrl();
+            new LoadUsrAvatarImage(i).execute(UrlGenerator.fullUrl(url));
+        }
     }
+
+
+    //Async task LoadUsrAvatarImage(i).execute(url).
+    private class LoadUsrAvatarImage extends AsyncTask<String, String, Bitmap> {
+        private int pos = 0;
+
+        public LoadUsrAvatarImage(int position){
+            this.pos = position;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            //pDialog = new ProgressDialog(activity);
+            //pDialog.setMessage("Loading Image ....");
+            //pDialog.show();
+        }
+
+        protected Bitmap doInBackground(String... args) {
+            Bitmap bmap = null;
+            try {
+                //decode network image to bitmap
+                bmap = BitmapFactory.decodeStream((InputStream) new URL(args[0]).getContent());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return bmap;
+        }
+
+        protected void onPostExecute(Bitmap image) {
+            if(image != null){
+                mUserAvatarBitmapArray.set(pos, image);
+                mAdapter.notifyDataSetChanged();
+            }else{
+                //pDialog.dismiss();
+                Toast.makeText(mActivity, "Image does not exist or network error", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
 
     private void sendComment(String comment) {
         Log.d(TAG, "send comment " + comment);

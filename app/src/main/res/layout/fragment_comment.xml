@@ -6,9 +6,6 @@
     android:background="@color/white"
     android:clickable="true">
 
-
-
-
     <!--comment list-->
     <LinearLayout
         android:id="@+id/commentFrag_comment_layout"

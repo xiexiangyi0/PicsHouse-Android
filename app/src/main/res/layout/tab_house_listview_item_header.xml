@@ -8,7 +8,7 @@
         android:orientation="horizontal"
         android:background="@color/white">
 
-        <!--user profile image-->
+        <!--user avatar image-->
         <ImageView
             android:id="@+id/post_user_image"
             android:layout_width="40dp"

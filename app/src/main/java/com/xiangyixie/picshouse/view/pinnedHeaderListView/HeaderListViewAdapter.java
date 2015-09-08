@@ -142,7 +142,7 @@ public class HeaderListViewAdapter extends SectionedBaseAdapter {
 
         for (int i = 0; i < comment.size(); ++i) {
             CommentView cv = new CommentView(
-                    view.getContext(), comment.get(i).getUsername(), comment.get(i).getContent());
+                    view.getContext(), comment.get(i).getUser().getUserName(), comment.get(i).getContent());
             cv.setTextSize(13);
             comment_list_view.addView(cv);
 
