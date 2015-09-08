@@ -61,17 +61,33 @@ public class CommentListViewAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = convertView;
-        Comment comment = mCommentArray.get(position);
-        //CompleteListViewHolder viewHolder;
-        if (convertView == null) {
-            //view = mLayoutInflater.inflate(R.layout.fragment_comment, null);
-            view = new CommentView(parent.getContext(), comment.getUsername(), comment.getContent());
-            //viewHolder = new CompleteListViewHolder(view);
-            //view.setTag(viewHolder);
-        } else {
-            //viewHolder = (CompleteListViewHolder) view.getTag();
-            CommentView commentView = (CommentView)view;
-            commentView.setContent(comment.getUsername(), comment.getContent());
+
+        if(convertView == null){
+            CommentView cv = null;
+            if(position == 0){
+                cv = new CommentView(parent.getContext(), mPost.getUsername(), mPost.getPicDesc());
+            }
+            else if(position > 0){
+                Comment comment = mCommentArray.get(position-1);
+                //view = mLayoutInflater.inflate(R.layout.fragment_comment, null);
+                cv = new CommentView(parent.getContext(), comment.getUsername(), comment.getContent());
+                //viewHolder = new CompleteListViewHolder(view);
+                //view.setTag(viewHolder);
+            }
+            view = cv;
+        }
+        else {
+            CommentView cv = (CommentView)view;
+            if(position == 0){
+                cv.setContent(mPost.getUsername(), mPost.getPicDesc());
+            }
+            else if(position > 0){
+                Comment comment = mCommentArray.get(position-1);
+                //view = mLayoutInflater.inflate(R.layout.fragment_comment, null);
+                cv.setContent(comment.getUsername(), comment.getContent());
+                //viewHolder = new CompleteListViewHolder(view);
+                //view.setTag(viewHolder);
+            }
         }
         //viewHolder.mTVItem.setText(mList.get(position));
         return view;

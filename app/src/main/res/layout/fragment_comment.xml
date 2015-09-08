@@ -7,15 +7,7 @@
     android:clickable="true">
 
 
-    <LinearLayout
-        android:id="@+id/commentFrag_post_desc"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="left"
-        android:orientation="vertical"
-        android:paddingLeft="14dp"
-        android:paddingRight="14dp">
-    </LinearLayout>
+
 
     <!--comment list-->
     <LinearLayout

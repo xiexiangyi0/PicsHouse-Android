@@ -1,5 +1,6 @@
 package com.xiangyixie.picshouse.fragment;
 
+
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -27,7 +28,6 @@ import com.xiangyixie.picshouse.model.JsonParser;
 import com.xiangyixie.picshouse.model.Post;
 import com.xiangyixie.picshouse.util.UserWarning;
 import com.xiangyixie.picshouse.view.CommentListViewAdapter;
-import com.xiangyixie.picshouse.view.CommentView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -37,6 +37,7 @@ import java.util.ArrayList;
 /**
  * Created by xiangyixie on 9/7/15.
  */
+
 public class TabHouseCommentFragment extends Fragment {
 
     private final static String TAG = "TabHouseCommentFragment";
@@ -45,7 +46,6 @@ public class TabHouseCommentFragment extends Fragment {
 
     private Post mPost = null;
     private int mCommentIdx = -1;
-    private ArrayList<Comment> mCommentArray = null;
 
     private CommentListViewAdapter mAdapter = null;
     private ArrayList<Bitmap> mUserAvatarBitmapArray = null;
@@ -56,6 +56,7 @@ public class TabHouseCommentFragment extends Fragment {
 
 
     public TabHouseCommentFragment() {
+
     }
 
     public void initialize(Post post, int comment_idx) {
@@ -83,13 +84,14 @@ public class TabHouseCommentFragment extends Fragment {
             // TODO: read post url from bundle and ajax to get list
         }
 
-        // Input
+        // Input comment
         mInputComment = (EditText)view.findViewById(R.id.commentFrag_edittext_input);
         if (mPost != null && mCommentIdx != -1) {
             Comment comment = mPost.getComments().get(mCommentIdx);
             mInputComment.setHint("Rely to " + comment.getUsername() + ":");
         }
 
+        // Set keypad 'send' listener
         mInputComment.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
@@ -111,17 +113,6 @@ public class TabHouseCommentFragment extends Fragment {
             }
         });
 
-
-
-
-        /*
-        LinearLayout post_desc_layout = (LinearLayout)view.findViewById(R.id.commentFrag_comment_layout);
-        post_desc_layout.removeAllViews();
-        CommentView post_desc_view = new CommentView(view.getContext(),this.post.getUsername(), this.post.getPicDesc());
-        post_desc_view.setTextSize(13);
-        post_desc_layout.addView(post_desc_view);*/
-
-
         return view;
     };
 
@@ -135,8 +126,8 @@ public class TabHouseCommentFragment extends Fragment {
 
         String desc = mPost.getPicDesc();
         String username = mPost.getUsername();
-        ViewGroup descContainer = (ViewGroup)view.findViewById(R.id.commentFrag_post_desc);
-        descContainer.addView(new CommentView(mActivity, username, desc));
+        //ViewGroup comment_layout = (ViewGroup)view.findViewById(R.id.commentFrag_comment_layout);
+        //comment_layout.addView(new CommentView(mActivity, username, desc));
     }
 
     private void sendComment(String comment) {
@@ -186,7 +177,6 @@ public class TabHouseCommentFragment extends Fragment {
                 });
 
         client.send(post);
-
     }
 
     private void onCommentSend(Comment comment) {
@@ -206,8 +196,6 @@ public class TabHouseCommentFragment extends Fragment {
     }
 
 
-
-
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -216,7 +204,6 @@ public class TabHouseCommentFragment extends Fragment {
 
     @Override
     public void onDetach() {
-        super.onDetach();
     }
 
     private void toastWarning(String txt) {
