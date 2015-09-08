@@ -191,7 +191,7 @@ public class TabHouseCommentFragment extends Fragment {
             mInputComment.setHint(R.string.frag_comment_edittext_hint);
             mAdapter.appendComment(comment);
         } else {
-            toastWarning("Send commend fail");
+            toastWarning("Send comment fail");
         }
     }
 
