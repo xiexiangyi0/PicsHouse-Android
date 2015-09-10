@@ -208,7 +208,7 @@ public class HeaderListViewAdapter extends SectionedBaseAdapter {
         if (mAvatarBitmapArray.get(section)!=null) {
                 //set user_img_view to be rounded.
                 Bitmap src = mAvatarBitmapArray.get(section);
-                int len = Math.min(src.getHeight(), src.getWidth());
+                int len = Math.max(src.getHeight(), src.getWidth());
                 Bitmap dst = Bitmap.createScaledBitmap(src, len, len, true);
                 RoundedBitmapDrawable dr = RoundedBitmapDrawableFactory.create(convertView.getResources(), dst);
                 //set corner radius.

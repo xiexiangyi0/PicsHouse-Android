@@ -1,12 +1,15 @@
 package com.xiangyixie.picshouse.view;
 
 import android.graphics.Bitmap;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.xiangyixie.picshouse.R;
 import com.xiangyixie.picshouse.model.Comment;
@@ -81,26 +84,39 @@ public class CommentListViewAdapter extends BaseAdapter {
         if(convertView == null) {
             view = mInflater.inflate(R.layout.comment_listview_item, parent, false);
         }
+            ImageView avatar_imgView = (ImageView) view.findViewById(R.id.comment_user_avatar);
+            // TODO: remove guard once current user's avatar is ready
+            if (position < mUserAvatarBitmapArray.size()) {
+                //set user avatar imageView to be rounded.
+                Bitmap src = mUserAvatarBitmapArray.get(position);
+                if(src != null){
+                    int len = Math.max(src.getHeight(), src.getWidth());
+                    Bitmap dst = Bitmap.createScaledBitmap(src, len, len, true);
+                    RoundedBitmapDrawable dr = RoundedBitmapDrawableFactory.create(parent.getResources(), dst);
+                    float cornerRd = dst.getWidth() / 2.0f;
+                    dr.setCornerRadius(cornerRd);
+                    avatar_imgView.setImageDrawable(dr);
+                }
 
-        ImageView avatar_imgView = (ImageView) view.findViewById(R.id.comment_user_avatar);
+            }
 
-        // TODO: remove guard once current user's avatar is ready
-        if (position < mUserAvatarBitmapArray.size()) {
-            avatar_imgView.setImageBitmap(mUserAvatarBitmapArray.get(position));
-        }
+            LinearLayout layout = (LinearLayout) view.findViewById(R.id.comment_content_layout);
+            CommentView addedView = null;
+            if (position == 0) {
+                String username = mPost.getUser().getUserName();
+                String desc = mPost.getPicDesc();
+                addedView = new CommentView(parent.getContext(), username, desc);
 
-        LinearLayout layout = (LinearLayout)view.findViewById(R.id.comment_content_layout);
-        CommentView cv = null;
-        if(position == 0){
-            cv = new CommentView(parent.getContext(), mPost.getUser().getUserName(), mPost.getPicDesc());
-        }
-        else if(position > 0){
-            Comment comment = mCommentArray.get(position-1);
-            cv = new CommentView(parent.getContext(), comment.getUser().getUserName(), comment.getContent());
-        }
+            } else if (position > 0) {
+                Comment comment = mCommentArray.get(position - 1);
+                addedView = new CommentView(parent.getContext(), comment.getUser().getUserName(), comment.getContent());
+            }
+            layout.removeAllViews();
+            layout.addView(addedView);
 
-        layout.removeAllViews();
-        layout.addView(cv);
+            TextView comment_time_txtView = (TextView) view.findViewById(R.id.comment_time);
+            String time = "2 hours ago";
+            comment_time_txtView.setText(time);
 
         return view;
     }
