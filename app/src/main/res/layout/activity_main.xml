@@ -45,9 +45,9 @@
             android:layout_height="55dp"
             android:layout_alignParentBottom="true"
             android:baselineAligned="true"
-            android:orientation="horizontal">
-
-
+            android:orientation="horizontal"
+            android:background="@color/white">
+            
             <LinearLayout
                 android:id="@+id/bottom_house"
                 android:layout_width="wrap_content"
