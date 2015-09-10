@@ -48,17 +48,16 @@
     <string name="http_response_error">Server Error</string>
 
 
-
     <!--for 'user' tab-->
     <string name="Xiangyi">Xiangyi</string>
     <string name="Xie">Xie</string>
     <string name="edit_your_profile">Edit your profile</string>
-    <string name="followers">Followers</string>
+    <string name="followers">Follower</string>
     <string name="following">Following</string>
     <string name="posts">Posts</string>
 
     <!--comment-->
-    <string name="frag_comment_edittext_hint">Please input your comments</string>
+    <string name="frag_comment_edittext_hint">Add a comment</string>
     <string name="frag_comment_edittext_action">Send</string>
 
 

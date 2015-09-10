@@ -41,18 +41,17 @@
            android:paddingRight="6dp"
            android:paddingBottom="2dp">
 
-
        </LinearLayout>
 
         <TextView
             android:id="@+id/comment_time"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop = "3dp"
+            android:paddingTop= "2dp"
             android:paddingBottom="3dp"
             android:paddingLeft="2dp"
             android:paddingRight="6dp"
-            android:textSize = "13sp"
+            android:textSize= "13sp"
             android:textColor="@color/gray"/>
     </LinearLayout>
 

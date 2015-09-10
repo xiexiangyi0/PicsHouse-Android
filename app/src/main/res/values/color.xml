@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="yellow">#ffffe15c</color>
+    <color name="yellow_impressed">#ffF8DE47</color>
     <color name="window_bg">#ffeef1f3</color>
     <color name="blue">#ff3df0ff</color>
     <color name="blue_transparent_btn">#b33df0ff</color>
+    <color name="blue_sea">#ff33b5e5</color>
     <color name="transparent">#00000000</color>
     <color name="signup_background_color">#eee</color>
     <color name="gray_line_color">#ffd9dcee</color>
@@ -134,7 +136,6 @@
 <color name="bg_sitetype_selected">#ffd4ccc0</color>
 <color name="bg_tips_normal">#ffe3ded0</color>
 <color name="bg_tips_press">#ffccc8bc</color>
-<color name="contact_indicator_color">#ff33b5e5</color>
 
 </resources>
 
