@@ -91,13 +91,14 @@ public class CommentListViewAdapter extends BaseAdapter {
                 Bitmap src = mUserAvatarBitmapArray.get(position);
                 if(src != null){
                     int len = Math.max(src.getHeight(), src.getWidth());
-                    Bitmap dst = Bitmap.createScaledBitmap(src, len, len, true);
-                    RoundedBitmapDrawable dr = RoundedBitmapDrawableFactory.create(parent.getResources(), dst);
-                    float cornerRd = dst.getWidth() / 2.0f;
+                    //outOfMemory bug.
+                    //Bitmap dst = Bitmap.createScaledBitmap(src, len, len, true);
+                    //Bitmap dst = ThumbnailUtils.extractThumbnail(src, len, len);
+                    RoundedBitmapDrawable dr = RoundedBitmapDrawableFactory.create(parent.getResources(), src);
+                    float cornerRd = src.getWidth() / 2.0f;
                     dr.setCornerRadius(cornerRd);
                     avatar_imgView.setImageDrawable(dr);
                 }
-
             }
 
             LinearLayout layout = (LinearLayout) view.findViewById(R.id.comment_content_layout);
