@@ -18,7 +18,6 @@ import com.xiangyixie.picshouse.httpService.PHImageLoader;
 import com.xiangyixie.picshouse.httpService.PHJsonGet;
 import com.xiangyixie.picshouse.model.JsonParser;
 import com.xiangyixie.picshouse.model.Post;
-import com.xiangyixie.picshouse.util.UrlGenerator;
 import com.xiangyixie.picshouse.util.UserWarning;
 import com.xiangyixie.picshouse.view.pinnedHeaderListView.HeaderListViewAdapter;
 import com.xiangyixie.picshouse.view.pinnedHeaderListView.PinnedHeaderListView;
@@ -143,7 +142,7 @@ public class TabHouseFragment extends Fragment
                             final int pos = i;
                             if(!url.isEmpty()){
                                 new PHImageLoader(
-                                        UrlGenerator.fullUrl(url),
+                                        url,
                                         new PHImageLoader.OnImageLoadedListener() {
                                             @Override
                                             public void onImageLoaded(Bitmap image) {
@@ -165,7 +164,7 @@ public class TabHouseFragment extends Fragment
                             final int pos = i;
                             if(!url.isEmpty()) {
                                 new PHImageLoader(
-                                        UrlGenerator.fullUrl(url),
+                                        url,
                                         new PHImageLoader.OnImageLoadedListener() {
                                             @Override
                                             public void onImageLoaded(Bitmap image) {

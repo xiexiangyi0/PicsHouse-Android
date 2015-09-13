@@ -55,7 +55,12 @@ public class CommentListViewAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return mCommentArray.size();
+        int commentSize = mCommentArray.size();
+        if (mPost.getPicDesc().isEmpty()) {
+            return commentSize;
+        } else {
+            return commentSize + 1;
+        }
     }
 
     @Override

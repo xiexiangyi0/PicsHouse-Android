@@ -8,12 +8,11 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 
+import com.xiangyixie.picshouse.util.UrlGenerator;
+
 import java.io.InputStream;
 import java.net.URL;
 
-/**
- * Created by xiangyixie on 9/12/15.
- */
 public class PHImageLoader extends AsyncTask<String, String, Bitmap> {
     public interface OnImageLoadedListener {
         void onImageLoaded(Bitmap img);
@@ -47,7 +46,7 @@ public class PHImageLoader extends AsyncTask<String, String, Bitmap> {
     }
 
     public void load() {
-        execute(mUrl);
+        execute(UrlGenerator.fullUrl(mUrl));
     }
 }
 
