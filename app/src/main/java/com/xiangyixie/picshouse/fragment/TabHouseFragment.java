@@ -2,8 +2,6 @@ package com.xiangyixie.picshouse.fragment;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -16,6 +14,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.xiangyixie.picshouse.R;
 import com.xiangyixie.picshouse.httpService.PHHttpClient;
+import com.xiangyixie.picshouse.httpService.PHImageLoader;
 import com.xiangyixie.picshouse.httpService.PHJsonGet;
 import com.xiangyixie.picshouse.model.JsonParser;
 import com.xiangyixie.picshouse.model.Post;
@@ -28,8 +27,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.InputStream;
-import java.net.URL;
 import java.util.ArrayList;
 
 
@@ -143,9 +140,21 @@ public class TabHouseFragment extends Fragment
                         for (int i=0; i < mPostSize; ++i) {
                             Post post = mPostArray.get(i);
                             String url = post.getUser().getUserAvatarUrl();
+                            final int pos = i;
                             if(!url.isEmpty()){
-                                new LoadUsrAvatarImage(i).execute(
-                                        UrlGenerator.fullUrl(url));
+                                new PHImageLoader(
+                                        UrlGenerator.fullUrl(url),
+                                        new PHImageLoader.OnImageLoadedListener() {
+                                            @Override
+                                            public void onImageLoaded(Bitmap image) {
+                                                if(image != null){
+                                                    mAvatarBitmapArray.set(pos, image);
+                                                    mAdapter.notifyDataSetChanged();
+                                                }else{
+                                                    Toast.makeText(activity, "User avatar does not exist or network error", Toast.LENGTH_SHORT).show();
+                                                }
+                                    }
+                                }).load();
                             }
                         }
 
@@ -153,9 +162,22 @@ public class TabHouseFragment extends Fragment
                         for (int i=0; i < mPostArray.size(); ++i) {
                             Post post = mPostArray.get(i);
                             String url = post.getPicImgUrl();
+                            final int pos = i;
                             if(!url.isEmpty()) {
-                                new LoadPicImage(i).execute(
-                                        UrlGenerator.fullUrl(url));
+                                new PHImageLoader(
+                                        UrlGenerator.fullUrl(url),
+                                        new PHImageLoader.OnImageLoadedListener() {
+                                            @Override
+                                            public void onImageLoaded(Bitmap image) {
+                                                if(image != null){
+                                                    mPicBitmapArray.set(pos, image);
+                                                    mAdapter.notifyDataSetChanged();
+                                                }else{
+                                                    //pDialog.dismiss();
+                                                    Toast.makeText(activity, "Image does not exist or network error", Toast.LENGTH_SHORT).show();
+                                                }
+                                    }
+                                }).load();
                             }
                         }
 
@@ -183,78 +205,6 @@ public class TabHouseFragment extends Fragment
     public void onPostCommentClick(int post_idx, int comment_idx) {
         mInteractionListener.onComment(mPostArray.get(post_idx), comment_idx);
     }
-
-    //Async task LoadPicImage(i).execute(url).
-    private class LoadPicImage extends AsyncTask<String, String, Bitmap> {
-        private int pos = 0;
-
-        public LoadPicImage(int position){
-            this.pos = position;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            //pDialog = new ProgressDialog(activity);
-            //pDialog.setMessage("Loading Image ....");
-            //pDialog.show();
-        }
-
-        protected Bitmap doInBackground(String... args) {
-            Bitmap bmap = null;
-            try {
-                //decode network image to bitmap
-                bmap = BitmapFactory.decodeStream((InputStream) new URL(args[0]).getContent());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return bmap;
-        }
-
-        protected void onPostExecute(Bitmap image) {
-            if(image != null){
-                mPicBitmapArray.set(pos, image);
-                mAdapter.notifyDataSetChanged();
-            }else{
-                //pDialog.dismiss();
-                Toast.makeText(activity, "Image does not exist or network error", Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
-
-    //Async task LoadUsrAvatarImage(i).execute(url).
-    private class LoadUsrAvatarImage extends AsyncTask<String, String, Bitmap> {
-        private int pos = 0;
-
-        public LoadUsrAvatarImage(int position){
-            this.pos = position;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        protected Bitmap doInBackground(String... args) {
-            Bitmap bmap = null;
-            try {
-                bmap = BitmapFactory.decodeStream((InputStream) new URL(args[0]).getContent());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return bmap;
-        }
-
-        protected void onPostExecute(Bitmap image) {
-            if(image != null){
-                mAvatarBitmapArray.set(pos, image);
-                mAdapter.notifyDataSetChanged();
-            }else{
-                Toast.makeText(activity, "User avatar does not exist or network error", Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
-
 
     @Override
     public void onAttach(Activity activity) {
