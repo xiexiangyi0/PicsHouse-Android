@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 
 import com.facebook.Session;
 import com.facebook.SessionState;
-import com.facebook.Settings;
 import com.facebook.UiLifecycleHelper;
 import com.facebook.widget.LoginButton;
 import com.xiangyixie.picshouse.R;
@@ -150,6 +149,4 @@ public class FbLoginFragment extends Fragment {
             }
         }
     }
-
-
 }
