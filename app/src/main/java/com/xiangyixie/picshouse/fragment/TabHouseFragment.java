@@ -146,7 +146,7 @@ public class TabHouseFragment extends Fragment
                                         new PHImageLoader.OnImageLoadedListener() {
                                             @Override
                                             public void onImageLoaded(Bitmap image) {
-                                                if(image != null){
+                                                if(image != null && pos < mAvatarBitmapArray.size()){
                                                     mAvatarBitmapArray.set(pos, image);
                                                     mAdapter.notifyDataSetChanged();
                                                 }else{
@@ -168,7 +168,7 @@ public class TabHouseFragment extends Fragment
                                         new PHImageLoader.OnImageLoadedListener() {
                                             @Override
                                             public void onImageLoaded(Bitmap image) {
-                                                if(image != null){
+                                                if(image != null && pos < mPicBitmapArray.size()){
                                                     mPicBitmapArray.set(pos, image);
                                                     mAdapter.notifyDataSetChanged();
                                                 }else{

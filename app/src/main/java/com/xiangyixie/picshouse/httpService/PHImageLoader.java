@@ -32,6 +32,10 @@ public class PHImageLoader extends AsyncTask<String, String, Bitmap> {
     }
 
     protected Bitmap doInBackground(String... args) {
+        if (isCancelled()) {
+            return null;
+        }
+
         Bitmap bmap = null;
         try {
             bmap = BitmapFactory.decodeStream((InputStream) new URL(args[0]).getContent());
