@@ -15,4 +15,6 @@ public class AppConfig {
     public static final String KEY_ECODE = "ecode";
 
     public static final String KEY_FB_TOKEN = "access_token";
+
+    public static final boolean DEBUG = true;
 }

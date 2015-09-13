@@ -181,6 +181,28 @@ public class User {
         return null;
     }
 
+    public JSONObject toJsonObject() throws JSONException {
+        JSONObject juser = new JSONObject();
+
+        if (!getUserName().isEmpty()) {
+            juser.put("username", getUserName());
+        }
+
+        if (!getFirstName().isEmpty()) {
+            juser.put("first_name", getFirstName());
+        }
+
+        if (!getLastName().isEmpty()) {
+            juser.put("last_name", getLastName());
+        }
+
+        if (getGender() == 0 || getGender() == 1) {
+            juser.put("gender", getGender());
+        }
+
+        return juser;
+    }
+
     public static User parseUser(JSONObject juser) throws JSONException{
         User user = new User();
         user.setId(juser.getString("id"));

@@ -23,8 +23,10 @@ import com.xiangyixie.picshouse.fragment.TabDiscoverFragment;
 import com.xiangyixie.picshouse.fragment.TabHouseCommentFragment;
 import com.xiangyixie.picshouse.fragment.TabHouseFragment;
 import com.xiangyixie.picshouse.fragment.TabNotificationFragment;
+import com.xiangyixie.picshouse.fragment.TabUserEditProfileFragment;
 import com.xiangyixie.picshouse.fragment.TabUserFragment;
 import com.xiangyixie.picshouse.model.Post;
+import com.xiangyixie.picshouse.model.User;
 import com.xiangyixie.picshouse.view.MyViewPager_notSwiping;
 
 import java.io.File;
@@ -36,7 +38,9 @@ import java.util.Date;
 
 
 public class MainActivity extends AppCompatActivity
-implements TabHouseFragment.OnFragmentInteractionListener {
+implements TabHouseFragment.OnFragmentInteractionListener,
+TabUserFragment.OnFragmentInteractionListener,
+TabUserEditProfileFragment.OnFragmentInteractionListener {
 
     private static final int TAB_HOUSE = 0;
     private static final int TAB_DISCOVER = 1;
@@ -102,6 +106,7 @@ implements TabHouseFragment.OnFragmentInteractionListener {
         mTabNotificationFrag = new TabNotificationFragment();
         mTabUserFrag = new TabUserFragment();
 
+        mTabUserFrag.setInteractionListener(this);
         mTabHouseFrag.setInteractionListener(this);
 
         mFragmentList.add(mTabHouseFrag);
@@ -154,10 +159,9 @@ implements TabHouseFragment.OnFragmentInteractionListener {
         setSupportActionBar(mToolbar);
     }
 
+    // TabHouse
     @Override
     public void onComment(Post post, int comment_idx) {
-        Log.d("MYDEBUG", "onComment clicked " + comment_idx);
-
         TabHouseCommentFragment comment_fragment = new TabHouseCommentFragment();
         comment_fragment.initialize(post, comment_idx);
 
@@ -170,6 +174,26 @@ implements TabHouseFragment.OnFragmentInteractionListener {
 
         // Commit the transaction
         transaction.commit();
+    }
+
+    // TabUser
+    @Override
+    public void onEditProfile(User user) {
+        TabUserEditProfileFragment editProfileFragment = new TabUserEditProfileFragment();
+        editProfileFragment.initialize(user, this);
+
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+        transaction.add(R.id.main_container, editProfileFragment);
+        transaction.addToBackStack(null);
+
+        transaction.commit();
+    }
+
+    // UserEditProfile
+    @Override
+    public void onProfileUpdated(User user) {
+        getSupportFragmentManager().popBackStack();
     }
 
 

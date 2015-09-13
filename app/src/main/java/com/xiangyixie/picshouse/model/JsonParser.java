@@ -1,5 +1,7 @@
 package com.xiangyixie.picshouse.model;
 
+import com.xiangyixie.picshouse.AppConfig;
+
 import org.json.JSONException;
 
 /**
@@ -11,10 +13,8 @@ import org.json.JSONException;
     // Model.parseModelArray don't need to throw exception, but it needs to call JsonParser.onException
 public class JsonParser {
 
-    public static boolean DEBUG_MODE = true;
-
     public static void onException(JSONException e) {
-        if (DEBUG_MODE) {
+        if (AppConfig.DEBUG) {
             e.printStackTrace();
             System.exit(-1);
         }

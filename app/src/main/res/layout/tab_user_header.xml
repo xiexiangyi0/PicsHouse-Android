@@ -83,20 +83,23 @@
                     android:paddingTop="4dp"
                     android:paddingRight="2dp"
                     android:paddingBottom="4dp">
-                    <LinearLayout
+                    <!--LinearLayout
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
                         android:background="@color/yellow"
-                        android:clickable="true">
-                        <TextView
+                        android:clickable="true"-->
+                        <Button
+                            android:id="@+id/user_header_button_edit_profile"
                             android:layout_height="fill_parent"
                             android:layout_width="fill_parent"
                             android:textSize="16sp"
                             android:text="@string/edit_your_profile"
                             android:gravity="center_vertical|center_horizontal"
+                            android:textAllCaps="false"
+                            android:background="@color/yellow"
                             android:textColor="@color/black">
-                        </TextView>
-                    </LinearLayout>
+                        </Button>
+                    <!--/LinearLayout-->
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
