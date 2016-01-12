@@ -6,7 +6,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -45,7 +46,7 @@ import jp.co.cyberagent.android.gpuimage.sample.filter.IFWaldenFilter;
 import jp.co.cyberagent.android.gpuimage.sample.filter.IFXprollFilter;
 
 
-public class FilterActivity extends ActionBarActivity {
+public class FilterActivity extends AppCompatActivity {
 
 
     FilterButtonView m_cur_filter = null;
@@ -63,6 +64,7 @@ public class FilterActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_imagefactory_filter);
 
+        Log.d("MYDEBUG", "onCreate");
 
         Intent intent = getIntent();
         Uri img = Uri.parse(intent.getStringExtra(MainActivity.IMAGE_PATH));
@@ -71,8 +73,6 @@ public class FilterActivity extends ActionBarActivity {
 
 
         Bitmap bitmap = null;
-
-
 
         try {
 
@@ -150,6 +150,12 @@ public class FilterActivity extends ActionBarActivity {
 
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d("MYDEBUG", "onDestroy");
+    }
+
 
 
 
@@ -157,6 +163,7 @@ public class FilterActivity extends ActionBarActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        Log.d("MYDEBUG", "onCreateOptionsMenu");
         // Inflate the menu items for use in the action bar
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_filter, menu);
@@ -170,11 +177,15 @@ public class FilterActivity extends ActionBarActivity {
         String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String filename = "IMG_" + timestamp + ".jpg";
 
+        Log.d("MYDEBUG", "onOptionsItemSelected " + item);
+
         //call GPUImage class method: saveToPictures
         m_image_view.saveToPictures(Environment.getExternalStoragePublicDirectory(
                         Environment.DIRECTORY_PICTURES).getPath(), filename, new GPUImage.OnPictureSavedListener() {
                     @Override
                     public void onPictureSaved(Uri uri) {
+
+                        Log.d("MYDEBUG", "picture saved " + uri);
 
                         Intent intent = new Intent(FilterActivity.this, PublishActivity.class);
 

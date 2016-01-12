@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.xiangyixie.picshouse.Cache.ImageLoader;
 import com.xiangyixie.picshouse.R;
 import com.xiangyixie.picshouse.httpService.PHHttpClient;
 import com.xiangyixie.picshouse.httpService.PHImageLoader;
@@ -30,7 +31,8 @@ import java.util.ArrayList;
 
 
 public class TabHouseFragment extends Fragment
-        implements SwipeRefreshLayout.OnRefreshListener, HeaderListViewAdapter.OnPostClickListener {
+        implements SwipeRefreshLayout.OnRefreshListener {
+
     public interface OnFragmentInteractionListener {
         // comment_idx -1 implies comment on post
         void onComment(Post post, int comment_idx);
@@ -42,7 +44,7 @@ public class TabHouseFragment extends Fragment
 
     private HeaderListViewAdapter mAdapter = null;
     private PinnedHeaderListView listView = null;
-    //private ProgressDialog pDialog;
+    private ImageLoader imageLoader = null;
 
     private ArrayList<Post> mPostArray = null;
     private ArrayList<Bitmap> mAvatarBitmapArray = null;
@@ -52,6 +54,19 @@ public class TabHouseFragment extends Fragment
     private SwipeRefreshLayout refresh_layout = null;
 
     private OnFragmentInteractionListener mInteractionListener = null;
+
+    private HeaderListViewAdapter.OnPostClickListener mPostClickListener = new HeaderListViewAdapter.OnPostClickListener() {
+        @Override
+        public void onPostDescClick(int i) {
+            mInteractionListener.onComment(mPostArray.get(i), -1);
+        }
+
+        @Override
+        public void onPostCommentClick(int post_idx, int comment_idx) {
+            mInteractionListener.onComment(mPostArray.get(post_idx), comment_idx);
+
+        }
+    };
 
     public TabHouseFragment() {
 
@@ -78,7 +93,7 @@ public class TabHouseFragment extends Fragment
         mPicBitmapArray = new ArrayList<>();
 
         //create PinnedHeaderListView adpater.
-        mAdapter = new HeaderListViewAdapter(inflater, this);//, mPostArray, mBitmapArray);
+        mAdapter = new HeaderListViewAdapter(inflater, mPostClickListener);//, mPostArray, mBitmapArray);
 
         listView = (PinnedHeaderListView) view.findViewById(R.id.tab_house_listview);
         listView.setPinHeaders(true);
@@ -117,6 +132,9 @@ public class TabHouseFragment extends Fragment
                             mPostArray = Post.parsePostArray(posts);
                             mPostSize = mPostArray.size();
 
+                            destroyImageArrayIfAny(mPicBitmapArray);
+                            destroyImageArrayIfAny(mAvatarBitmapArray);
+
                             //Initiate mAvatarBitmapArray and mPicBitmapArray ArrayList.
                             mAvatarBitmapArray = new ArrayList<>(mPostSize);
                             mPicBitmapArray = new ArrayList<>(mPostSize);
@@ -131,6 +149,7 @@ public class TabHouseFragment extends Fragment
                             JsonParser.onException(e);
                             toastWarning("parse posts json array error: " + e.getMessage());
                         }
+
                         //Update Adaptor.
                         mAdapter.updatePostAndImage(mPostArray, mAvatarBitmapArray, mPicBitmapArray);
                         mAdapter.notifyDataSetChanged();
@@ -196,16 +215,6 @@ public class TabHouseFragment extends Fragment
     }
 
     @Override
-    public void onPostDescClick(int i) {
-        mInteractionListener.onComment(mPostArray.get(i), -1);
-    }
-
-    @Override
-    public void onPostCommentClick(int post_idx, int comment_idx) {
-        mInteractionListener.onComment(mPostArray.get(post_idx), comment_idx);
-    }
-
-    @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         this.activity = activity;
@@ -218,5 +227,17 @@ public class TabHouseFragment extends Fragment
 
     private void toastWarning(String txt) {
         UserWarning.warn(this.getActivity(), txt);
+    }
+
+    private static void destroyImageArrayIfAny(ArrayList<Bitmap> image_array) {
+        if (image_array == null) {
+            return;
+        }
+
+        for (Bitmap bm : image_array) {
+            if (bm != null) {
+                bm.recycle();
+            }
+        }
     }
 }

@@ -14,16 +14,35 @@ import java.io.InputStream;
 import java.net.URL;
 
 public class PHImageLoader extends AsyncTask<String, String, Bitmap> {
+
     public interface OnImageLoadedListener {
         void onImageLoaded(Bitmap img);
     }
 
-    private OnImageLoadedListener mListener = null;
     private String mUrl = "";
+    private OnImageLoadedListener mListener = null;
 
     public PHImageLoader(String url, OnImageLoadedListener listener){
         mListener = listener;
         mUrl = url;
+    }
+
+    public PHImageLoader(String url) {
+        mUrl = url;
+    }
+
+    public void setOnImageLoadedListener(OnImageLoadedListener listener) {
+        mListener = listener;
+    }
+
+    public Bitmap fetchBitmap(){
+        Bitmap bmap = null;
+
+        return bmap;
+    }
+
+    public String getUrl() {
+        return mUrl;
     }
 
     @Override
@@ -37,16 +56,22 @@ public class PHImageLoader extends AsyncTask<String, String, Bitmap> {
         }
 
         Bitmap bmap = null;
+
         try {
             bmap = BitmapFactory.decodeStream((InputStream) new URL(args[0]).getContent());
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         return bmap;
     }
 
     protected void onPostExecute(Bitmap image) {
-        mListener.onImageLoaded(image);
+        if (isCancelled()) {
+            mListener.onImageLoaded(null);
+        } else {
+            mListener.onImageLoaded(image);
+        }
     }
 
     public void load() {

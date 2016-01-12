@@ -10,9 +10,6 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by imlyc on 3/9/15.
- */
 public class PHJsonRequest extends JsonObjectRequest {
 
     public static String auth_token_ = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImphbmUiLCJwYXNzd29yZCI6IiQyYSQxMCRKM3NsNXpVeFladkJVNU1iakhlb1RlMnNNRlJnY2xUZGJLWDhTYXdMR0Y3THM0OEhnOWhFRyIsInRvZGF5IjoxNDQyMTM1MDUyOTM0LCJpYXQiOjE0NDIxMzUwNTJ9.wzd1GCYlnm625pryFv2Bajixo7Eko8a3q7cVQUfiC_I";

@@ -37,7 +37,6 @@ public class HeaderListViewAdapter extends SectionedBaseAdapter {
     private ArrayList<Bitmap> mAvatarBitmapArray = null;
     private ArrayList<Bitmap> mPicBitmapArray = null;
 
-
     private Integer mSize = 0;
     private int lastItem = 0;
 
