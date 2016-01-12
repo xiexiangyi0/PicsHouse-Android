@@ -1,24 +1,29 @@
 package com.xiangyixie.picshouse.fragment;
 
 import android.app.Activity;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.xiangyixie.picshouse.Cache.ImageLoader;
 import com.xiangyixie.picshouse.R;
 import com.xiangyixie.picshouse.httpService.PHHttpClient;
 import com.xiangyixie.picshouse.httpService.PHImageLoader;
 import com.xiangyixie.picshouse.httpService.PHJsonGet;
 import com.xiangyixie.picshouse.model.JsonParser;
 import com.xiangyixie.picshouse.model.Post;
+import com.xiangyixie.picshouse.util.ImageCache;
 import com.xiangyixie.picshouse.util.UserWarning;
 import com.xiangyixie.picshouse.view.pinnedHeaderListView.HeaderListViewAdapter;
 import com.xiangyixie.picshouse.view.pinnedHeaderListView.PinnedHeaderListView;
@@ -27,6 +32,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 
@@ -38,18 +44,35 @@ public class TabHouseFragment extends Fragment
         void onComment(Post post, int comment_idx);
     }
 
+    private static class AsyncDrawable extends BitmapDrawable {
+        private final WeakReference<PHImageLoader> mImageLoaderRef;
+
+        public AsyncDrawable(Resources res, Bitmap bitmap,
+                             PHImageLoader imageLoader) {
+            super(res, bitmap);
+            mImageLoaderRef =
+                    new WeakReference<PHImageLoader>(imageLoader);
+        }
+
+        public PHImageLoader getImageLoader() {
+            return mImageLoaderRef.get();
+        }
+    }
+
     private final static String TAG = "TabHouseFragment";
 
     private Activity activity = null;
 
     private HeaderListViewAdapter mAdapter = null;
     private PinnedHeaderListView listView = null;
-    private ImageLoader imageLoader = null;
 
     private ArrayList<Post> mPostArray = null;
     private ArrayList<Bitmap> mAvatarBitmapArray = null;
     private ArrayList<Bitmap> mPicBitmapArray = null;
     private Integer mPostSize = 0;
+
+    private ImageCache mImageCache = new ImageCache(1024 * 1024);
+    private Bitmap mDefaultImage = null;
 
     private SwipeRefreshLayout refresh_layout = null;
 
@@ -68,6 +91,20 @@ public class TabHouseFragment extends Fragment
         }
     };
 
+    private HeaderListViewAdapter.PostImageLoader mPostImageLoader = new HeaderListViewAdapter.PostImageLoader() {
+        @Override
+        public void loadImage(ImageView imageView, String url) {
+
+            if (mImageCache.contains(url)) {
+                Bitmap bitmap = mImageCache.get(url);
+                imageView.setImageBitmap(bitmap);
+            } else {
+                loadImageFromHttp(imageView, url);
+            }
+
+        }
+    };
+
     public TabHouseFragment() {
 
     }
@@ -81,6 +118,7 @@ public class TabHouseFragment extends Fragment
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+        mDefaultImage = BitmapFactory.decodeResource(getResources(), R.drawable.loading);
     }
 
     @Override
@@ -93,7 +131,7 @@ public class TabHouseFragment extends Fragment
         mPicBitmapArray = new ArrayList<>();
 
         //create PinnedHeaderListView adpater.
-        mAdapter = new HeaderListViewAdapter(inflater, mPostClickListener);//, mPostArray, mBitmapArray);
+        mAdapter = new HeaderListViewAdapter(inflater, mPostClickListener, mPostImageLoader);//, mPostArray, mBitmapArray);
 
         listView = (PinnedHeaderListView) view.findViewById(R.id.tab_house_listview);
         listView.setPinHeaders(true);
@@ -151,53 +189,8 @@ public class TabHouseFragment extends Fragment
                         }
 
                         //Update Adaptor.
-                        mAdapter.updatePostAndImage(mPostArray, mAvatarBitmapArray, mPicBitmapArray);
+                        mAdapter.updatePosts(mPostArray);
                         mAdapter.notifyDataSetChanged();
-
-                        //Fetch user avatar img from url.
-                        for (int i=0; i < mPostSize; ++i) {
-                            Post post = mPostArray.get(i);
-                            String url = post.getUser().getUserAvatarUrl();
-                            final int pos = i;
-                            if(!url.isEmpty()){
-                                new PHImageLoader(
-                                        url,
-                                        new PHImageLoader.OnImageLoadedListener() {
-                                            @Override
-                                            public void onImageLoaded(Bitmap image) {
-                                                if(image != null && pos < mAvatarBitmapArray.size()){
-                                                    mAvatarBitmapArray.set(pos, image);
-                                                    mAdapter.notifyDataSetChanged();
-                                                }else{
-                                                    Toast.makeText(activity, "User avatar does not exist or network error", Toast.LENGTH_SHORT).show();
-                                                }
-                                    }
-                                }).load();
-                            }
-                        }
-
-                        //Fetch post pic img from url.
-                        for (int i=0; i < mPostArray.size(); ++i) {
-                            Post post = mPostArray.get(i);
-                            String url = post.getPicImgUrl();
-                            final int pos = i;
-                            if(!url.isEmpty()) {
-                                new PHImageLoader(
-                                        url,
-                                        new PHImageLoader.OnImageLoadedListener() {
-                                            @Override
-                                            public void onImageLoaded(Bitmap image) {
-                                                if(image != null && pos < mPicBitmapArray.size()){
-                                                    mPicBitmapArray.set(pos, image);
-                                                    mAdapter.notifyDataSetChanged();
-                                                }else{
-                                                    //pDialog.dismiss();
-                                                    Toast.makeText(activity, "Image does not exist or network error", Toast.LENGTH_SHORT).show();
-                                                }
-                                    }
-                                }).load();
-                            }
-                        }
 
                         // set refresh circle to stop.
                         refresh_layout.setRefreshing(false);
@@ -239,5 +232,64 @@ public class TabHouseFragment extends Fragment
                 bm.recycle();
             }
         }
+    }
+
+    private void loadImageFromHttp(final ImageView imageView, final String url) {
+        boolean canceled = cancelPotentialWork(imageView, url);
+        if (canceled) {
+            final WeakReference<ImageView> imageViewWeakRef = new WeakReference<ImageView>(imageView);
+            final PHImageLoader imageLoader = new PHImageLoader(url);
+            imageLoader.setOnImageLoadedListener(new PHImageLoader.OnImageLoadedListener() {
+                @Override
+                public void onImageLoaded(Bitmap img) {
+                    if (img == null) {
+                        return;
+                    }
+
+                    ImageView weakImageView = imageViewWeakRef.get();
+                    if (weakImageView == null) {
+                        return;
+                    }
+
+                    PHImageLoader loader = getImageLoaderFromImageView(weakImageView);
+                    if (loader == imageLoader) {
+                        weakImageView.setImageBitmap(img);
+                        mImageCache.set(url, img);
+                    }
+                }
+            });
+
+            final AsyncDrawable asyncDrawable =
+                    new AsyncDrawable(getResources(), mDefaultImage, imageLoader);
+            imageView.setImageDrawable(asyncDrawable);
+            imageLoader.load();
+        }
+    }
+
+    private static boolean cancelPotentialWork(ImageView imageView, String url) {
+        final PHImageLoader imageLoader = getImageLoaderFromImageView(imageView);
+        if (imageLoader != null) {
+            final String imageUrl = imageLoader.getUrl();
+            if (!imageUrl.equals(url)) {
+                imageLoader.cancel(true);
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return true;
+        }
+    }
+
+    private static PHImageLoader getImageLoaderFromImageView(ImageView imageView) {
+        if (imageView != null) {
+            final Drawable drawable = imageView.getDrawable();
+            if (drawable instanceof AsyncDrawable) {
+                final AsyncDrawable asyncDrawable = (AsyncDrawable) drawable;
+                return asyncDrawable.getImageLoader();
+            }
+        }
+
+        return null;
     }
 }

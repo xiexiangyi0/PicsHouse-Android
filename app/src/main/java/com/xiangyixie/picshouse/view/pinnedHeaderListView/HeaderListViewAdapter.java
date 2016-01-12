@@ -29,30 +29,25 @@ public class HeaderListViewAdapter extends SectionedBaseAdapter {
         public void onPostCommentClick(int post_idx, int comment_idx);
     }
 
+    public interface PostImageLoader {
+        void loadImage(ImageView imageView, String url);
+    }
+
     private LayoutInflater inflater;
     private OnPostClickListener mListener;
+    private PostImageLoader mImageLoader;
 
     //post feed data
     private ArrayList<Post> mPostArray = null;
-    private ArrayList<Bitmap> mAvatarBitmapArray = null;
-    private ArrayList<Bitmap> mPicBitmapArray = null;
 
-    private Integer mSize = 0;
-    private int lastItem = 0;
-
-    public HeaderListViewAdapter(final LayoutInflater inflater, OnPostClickListener listener) {
+    public HeaderListViewAdapter(final LayoutInflater inflater, OnPostClickListener listener, PostImageLoader loader) {
         this.inflater = inflater;
         this.mListener = listener;
+        this.mImageLoader = loader;
     }
 
-    public void updatePostAndImage(ArrayList<Post> post_array, ArrayList<Bitmap> avatar_bitmap_array, ArrayList<Bitmap> pic_bitmap_array ) {
+    public void updatePosts(ArrayList<Post> post_array) {
         this.mPostArray = post_array;
-
-        this.mAvatarBitmapArray = avatar_bitmap_array;
-        this.mPicBitmapArray = pic_bitmap_array;
-
-        this.mSize = mPostArray.size();
-        this.lastItem = mSize - 1;
     }
 
     @Override
@@ -100,14 +95,8 @@ public class HeaderListViewAdapter extends SectionedBaseAdapter {
         }
 
         //pic imageView
-        Bitmap image = mPicBitmapArray.get(section);
         ImageView post_imageView = (ImageView) view.findViewById(R.id.pic_image);
-        if (image != null) {
-            post_imageView.setImageBitmap(image);
-        } else {
-            // TODO: set default image here
-            post_imageView.setImageResource(0);
-        }
+        mImageLoader.loadImage(post_imageView, post.getPicImgUrl());
 
         //post desc layout embedded with commentView
         LinearLayout desc_layout = (LinearLayout) view.findViewById(R.id.post_desc_layout);
@@ -203,8 +192,9 @@ public class HeaderListViewAdapter extends SectionedBaseAdapter {
         Post post = mPostArray.get(section);
 
         ImageView user_imageView = (ImageView) convertView.findViewById(R.id.post_user_image);
+        mImageLoader.loadImage(user_imageView, post.getUser().getUserAvatarUrl());
         //user_img_view.setImageBitmap(BitmapFactory.decodeFile(post.getUser_img_uri()));
-        if (mAvatarBitmapArray.get(section)!=null) {
+        /*if (mAvatarBitmapArray.get(section)!=null) {
                 //set user_img_view to be rounded.
                 Bitmap src = mAvatarBitmapArray.get(section);
                 int len = Math.max(src.getHeight(), src.getWidth());
@@ -217,7 +207,7 @@ public class HeaderListViewAdapter extends SectionedBaseAdapter {
         } else {
             // TODO: set default avatar here
             user_imageView.setImageResource(0);
-        }
+        }*/
 
         TextView username_textView = (TextView) convertView.findViewById(R.id.post_user_username);
         username_textView.setText(post.getUser().getUserName());

@@ -126,6 +126,7 @@ public class LoginActivity extends ActionBarActivity
                                     //TODO: record token in shared preference and remove the public
                                     //  access of this variable
                                     PHJsonRequest.auth_token_ = tk;
+                                    Log.d("MYDEBUG", tk);
                                 } catch(JSONException e) {
                                     UserWarning.warn(LoginActivity.this, R.string.http_response_syntax_error);
                                     return;
