@@ -1,124 +1,139 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#eee"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="com.xiangyixie.picshouse.activity.PublishActivity"
-        android:orientation="vertical"
-        android:background="#eee" >
+    tools:context="com.xiangyixie.picshouse.activity.PublishActivity">
+
+
+    <!--
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/main_activity_appbarlayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/publish_activity_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:layout_scrollFlags="scroll|enterAlways" />
+    </android.support.design.widget.AppBarLayout>
+    -->
+
+    <LinearLayout
+        android:id="@+id/layout_top"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:baselineAligned="true"
+        android:orientation="horizontal"
+        android:paddingBottom="20dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:paddingTop="15dp">
 
 
         <LinearLayout
-            android:id="@+id/layout_top"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:paddingTop="15dp"
-            android:paddingBottom="20dp"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp"
-            android:orientation="horizontal"
-            android:baselineAligned="true">
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="2"
+            android:clickable="false"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingRight="5dp">
 
-
-            <LinearLayout
-                android:layout_width="0dp"
+            <ImageView
+                android:id="@+id/Edited_image"
+                android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:layout_weight="2"
-                android:paddingRight="5dp"
-                android:gravity="center_horizontal"
-                android:orientation="vertical"
-                android:clickable="false">
-
-                <ImageView
-                    android:id="@+id/Edited_image"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/img5"
-                    android:contentDescription="@string/filter_image_desc" />
-            </LinearLayout>
-
-
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="fill_parent"
-                android:layout_weight="5">
-
-                <EditText
-                    android:id="@+id/InputText_image"
-                    android:layout_height="fill_parent"
-                    android:layout_width="fill_parent"
-                    android:textColor="#000000"
-                    android:layout_margin="3dp"
-                    android:textSize="16sp"
-                    android:hint="@string/input_addtext"
-                    android:maxLength="500"
-                    android:singleLine="false"
-                    android:inputType="textMultiLine"
-                    android:gravity="top"
-                    android:background="@drawable/inputtextview_shape" />
-            </LinearLayout>
+                android:contentDescription="@string/filter_image_desc"
+                android:scaleType="fitXY"
+                android:src="@drawable/img5" />
         </LinearLayout>
 
 
         <LinearLayout
-            android:id="@+id/layout_bottom"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="3"
-            android:orientation="vertical">
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="5">
 
-            <View android:background="@color/light_notes_color"
-                android:layout_height="1dp"
-                android:layout_width="fill_parent"/>
-
-            <LinearLayout
+            <EditText
+                android:id="@+id/InputText_image"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
-                android:paddingLeft="16dp"
-                android:paddingRight="10dp">
-
-                <TextView
-                    android:layout_height="30dp"
-                    android:layout_width="wrap_content"
-                    android:textSize="20sp"
-                    android:text="@string/publish_share_text"
-                    android:textColor= "@color/black"
-                    android:textStyle="bold">
-                </TextView>
-            </LinearLayout>
-
-
-            <View android:background="@color/light_notes_color"
-                android:layout_height="1dp"
-                android:layout_width="fill_parent"/>
-
-
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content">
-                <GridView
-                    android:id="@+id/gridView_share"
-                    android:layout_width="fill_parent"
-                    android:layout_height="200dp"
-                    android:paddingTop="15dp"
-                    android:background="@color/transparent_background"
-                    android:horizontalSpacing="5dp"
-                    android:verticalSpacing="2dp"
-                    android:numColumns="2"
-                    android:stretchMode="columnWidth"
-                    android:gravity="center"
-                    >
-                </GridView>
-            </LinearLayout>
+                android:layout_height="fill_parent"
+                android:layout_margin="3dp"
+                android:background="@drawable/inputtextview_shape"
+                android:gravity="top"
+                android:hint="@string/input_addtext"
+                android:inputType="textMultiLine"
+                android:maxLength="500"
+                android:singleLine="false"
+                android:textColor="#000000"
+                android:textSize="16sp" />
         </LinearLayout>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/layout_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="3"
+        android:orientation="vertical">
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="@color/light_notes_color" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="10dp"
+            android:paddingTop="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:text="@string/publish_share_text"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold"></TextView>
+        </LinearLayout>
+
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="@color/light_notes_color" />
+
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <GridView
+                android:id="@+id/gridView_share"
+                android:layout_width="fill_parent"
+                android:layout_height="200dp"
+                android:background="@color/transparent_background"
+                android:gravity="center"
+                android:horizontalSpacing="5dp"
+                android:numColumns="2"
+                android:paddingTop="15dp"
+                android:stretchMode="columnWidth"
+                android:verticalSpacing="2dp"></GridView>
+        </LinearLayout>
+    </LinearLayout>
 
 </LinearLayout>
 

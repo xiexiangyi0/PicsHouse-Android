@@ -119,13 +119,7 @@ public class FilterActivity extends AppCompatActivity {
 
         };
 
-
-
         m_cur_filter = null;
-
-
-
-
 
         for(final ImageFilter f : filters) {
 
@@ -141,27 +135,21 @@ public class FilterActivity extends AppCompatActivity {
                     if(FilterActivity.this.m_cur_filter != null) {
                         FilterActivity.this.m_cur_filter.dim();
                     }
-
                     FilterActivity.this.m_cur_filter = b;
                     FilterActivity.this.m_cur_filter.highlight();
-
                 }
             });
 
            filter_list.addView(b);
         }
-
     }
+
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         Log.d("MYDEBUG", "onDestroy");
     }
-
-
-
-
 
 
     @Override
@@ -178,13 +166,13 @@ public class FilterActivity extends AppCompatActivity {
 
         //generate edited img saved name
         String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String filename = "IMG_" + timestamp + ".jpg";
+        final String filename = "IMG_" + timestamp + ".jpg";
 
         Log.d("MYDEBUG", "onOptionsItemSelected " + item);
 
         //call GPUImage class method: saveToPictures
         m_image_view.saveToPictures(Environment.getExternalStoragePublicDirectory(
-                        Environment.DIRECTORY_PICTURES).getPath(), filename, new GPUImage.OnPictureSavedListener() {
+                        Environment.DIRECTORY_PICTURES).getAbsolutePath(), filename, new GPUImage.OnPictureSavedListener() {
                     @Override
                     public void onPictureSaved(Uri uri) {
 
@@ -213,8 +201,6 @@ public class FilterActivity extends AppCompatActivity {
             height = maxSize;
             width = (int) (height * bitmapRatio);
         }
-
         return Bitmap.createScaledBitmap(image, width, height, true);
     }
-
 }

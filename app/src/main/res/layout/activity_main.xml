@@ -1,150 +1,148 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main_container"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
 
-<android.support.design.widget.CoordinatorLayout
-    android:id="@+id/main_picshouse"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:background="#eee"
-    android:orientation="vertical">
+    <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/main_picshouse"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="#eee"
+        android:orientation="vertical">
 
-    <android.support.design.widget.AppBarLayout
-        android:id="@+id/main_activity_appbarlayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/main_activity_toolbar"
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/main_activity_appbarlayout"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:layout_scrollFlags="scroll|enterAlways" />
-    </android.support.design.widget.AppBarLayout>
+            android:layout_height="wrap_content">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/main_activity_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary"
+                app:layout_scrollFlags="scroll|enterAlways" />
+        </android.support.design.widget.AppBarLayout>
 
 
-    <com.xiangyixie.picshouse.view.MyViewPager_notSwiping
-        android:id="@+id/tabpager"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-    </com.xiangyixie.picshouse.view.MyViewPager_notSwiping>
+        <com.xiangyixie.picshouse.view.MyViewPager_notSwiping
+            android:id="@+id/tabpager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"></com.xiangyixie.picshouse.view.MyViewPager_notSwiping>
 
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="55dp"
-            android:layout_alignParentBottom="true"
-            android:baselineAligned="true"
-            android:orientation="horizontal"
-            android:background="@color/white">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
             <LinearLayout
-                android:id="@+id/bottom_house"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:clickable="true"
-                android:gravity="center_horizontal"
-                android:orientation="vertical"
-                android:paddingBottom="15dp"
-                android:paddingTop="15dp">
+                android:layout_width="fill_parent"
+                android:layout_height="55dp"
+                android:layout_alignParentBottom="true"
+                android:background="@color/white"
+                android:baselineAligned="true"
+                android:orientation="horizontal">
 
-                <ImageView
+                <LinearLayout
+                    android:id="@+id/bottom_house"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/house" />
-            </LinearLayout>
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical"
+                    android:paddingBottom="15dp"
+                    android:paddingTop="15dp">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/house" />
+                </LinearLayout>
 
 
-            <LinearLayout
-                android:id="@+id/bottom_discover"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:clickable="true"
-                android:gravity="center_horizontal"
-                android:orientation="vertical"
-                android:paddingBottom="15dp"
-                android:paddingTop="15dp">
-
-                <ImageView
+                <LinearLayout
+                    android:id="@+id/bottom_discover"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/discover" />
-            </LinearLayout>
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical"
+                    android:paddingBottom="15dp"
+                    android:paddingTop="15dp">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/discover" />
+                </LinearLayout>
 
 
-            <LinearLayout
-                android:id="@+id/bottom_camera"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="#111111"
-                android:clickable="true"
-                android:gravity="center_horizontal"
-                android:orientation="vertical"
-                android:paddingBottom="10dp"
-                android:paddingTop="10dp">
-
-                <ImageView
+                <LinearLayout
+                    android:id="@+id/bottom_camera"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/camera3" />
-            </LinearLayout>
+                    android:layout_weight="1"
+                    android:background="#111111"
+                    android:clickable="true"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/camera3" />
+                </LinearLayout>
 
 
-            <LinearLayout
-                android:id="@+id/bottom_notification"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:clickable="true"
-                android:gravity="center_horizontal"
-                android:orientation="vertical"
-                android:paddingBottom="15dp"
-                android:paddingTop="15dp">
-
-                <ImageView
+                <LinearLayout
+                    android:id="@+id/bottom_notification"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/notification" />
-            </LinearLayout>
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical"
+                    android:paddingBottom="15dp"
+                    android:paddingTop="15dp">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/notification" />
+                </LinearLayout>
 
 
-            <LinearLayout
-                android:id="@+id/bottom_user"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:clickable="true"
-                android:gravity="center_horizontal"
-                android:orientation="vertical"
-                android:paddingBottom="15dp"
-                android:paddingTop="15dp">
-
-                <ImageView
+                <LinearLayout
+                    android:id="@+id/bottom_user"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/user" />
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical"
+                    android:paddingBottom="15dp"
+                    android:paddingTop="15dp">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/user" />
+                </LinearLayout>
+
             </LinearLayout>
+        </RelativeLayout>
 
-        </LinearLayout>
-    </RelativeLayout>
-
-</android.support.design.widget.CoordinatorLayout>
+    </android.support.design.widget.CoordinatorLayout>
 </FrameLayout>
