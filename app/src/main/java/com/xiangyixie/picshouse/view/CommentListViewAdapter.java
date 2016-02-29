@@ -91,6 +91,8 @@ public class CommentListViewAdapter extends BaseAdapter {
             viewHolder.avatar_imageView = (ImageView) convertView.findViewById(R.id.comment_user_avatar);
             viewHolder.commentContent_layout = (LinearLayout) convertView.findViewById(R.id.comment_content_layout);
             viewHolder.commentTime_textView = (TextView) convertView.findViewById(R.id.comment_time);
+            convertView.setTag(viewHolder);
+
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
@@ -99,15 +101,17 @@ public class CommentListViewAdapter extends BaseAdapter {
             //set user avatar imageView to be rounded.
             Bitmap src = mUserAvatarBitmapArray.get(position);
             if (src != null) {
-                int len = Math.max(src.getHeight(), src.getWidth());
+                int len = Math.min(src.getHeight(), src.getWidth());
                 //outOfMemory bug.
-                //Bitmap dst = Bitmap.createScaledBitmap(src, len, len, true);
-                //Bitmap dst = ThumbnailUtils.extractThumbnail(src, len, len);
-                RoundedBitmapDrawable dr = RoundedBitmapDrawableFactory.create(parent.getResources(), src);
+                Bitmap dst = Bitmap.createScaledBitmap(src, len, len, true);
+                RoundedBitmapDrawable dr = RoundedBitmapDrawableFactory.create(parent.getResources(), dst);
                 float cornerRd = src.getWidth() / 2.0f;
                 dr.setCornerRadius(cornerRd);
-                if(viewHolder.avatar_imageView!=null) {
-                    viewHolder.avatar_imageView.setImageDrawable(dr);
+                viewHolder.avatar_imageView.setImageDrawable(dr);
+                if (dst != null){
+                    dst.recycle();
+                    dst = null;
+                    System.gc();
                 }
             }
         }

@@ -166,7 +166,8 @@ public class HeaderListViewAdapter extends SectionedBaseAdapter {
         Post post = mPostArray.get(section);
         mImageLoader.loadImage(holder.user_imageView, post.getUser().getUserAvatarUrl());
         //user_img_view.setImageBitmap(BitmapFactory.decodeFile(post.getUser_img_uri()));
-        /*if (mAvatarBitmapArray.get(section)!=null) {
+        /*
+        if (mAvatarBitmapArray.get(section)!=null) {
                 //set user_img_view to be rounded.
                 Bitmap src = mAvatarBitmapArray.get(section);
                 int len = Math.max(src.getHeight(), src.getWidth());
@@ -179,7 +180,8 @@ public class HeaderListViewAdapter extends SectionedBaseAdapter {
         } else {
             // TODO: set default avatar here
             user_imageView.setImageResource(0);
-        }*/
+        }
+        */
 
         holder.username_textView.setText(post.getUser().getUserName());
         holder.time_textView.setText(post.getTime());
