@@ -1,4 +1,4 @@
-package com.xiangyixie.picshouse.Cache;
+package com.xiangyixie.picshouse.httpService;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -6,6 +6,8 @@ import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.widget.ImageView;
 
+import com.xiangyixie.picshouse.Cache.DiskCache;
+import com.xiangyixie.picshouse.Cache.MemoryCache;
 import com.xiangyixie.picshouse.R;
 
 import java.io.File;

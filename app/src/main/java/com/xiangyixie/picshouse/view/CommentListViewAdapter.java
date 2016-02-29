@@ -36,7 +36,7 @@ public class CommentListViewAdapter extends BaseAdapter {
     private ArrayList<Bitmap> mUserAvatarBitmapArray = null;
 
 
-    public CommentListViewAdapter(final LayoutInflater inflater,Post post, ArrayList<Bitmap> avatar_bitmap_array){
+    public CommentListViewAdapter(final LayoutInflater inflater, Post post, ArrayList<Bitmap> avatar_bitmap_array) {
         mInflater = inflater;
         mPost = post;
         mCommentArray = mPost.getComments();
@@ -66,12 +66,11 @@ public class CommentListViewAdapter extends BaseAdapter {
     @Override
     public Object getItem(int pos) {
         Comment comment = null;
-        if(pos == 0){
+        if (pos == 0) {
             User user = mPost.getUser();
             String desc = mPost.getPicDesc();
-            comment = new Comment(user,desc);
-        }
-        else if(pos > 0){
+            comment = new Comment(user, desc);
+        } else if (pos > 0) {
             comment = mCommentArray.get(pos);
         }
         return comment;
@@ -84,47 +83,57 @@ public class CommentListViewAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View view = convertView;
+        ViewHolder viewHolder;
 
-        if(convertView == null) {
-            view = mInflater.inflate(R.layout.comment_listview_item, parent, false);
+        if (convertView == null) {
+            convertView = mInflater.inflate(R.layout.comment_listview_item, parent, false);
+            viewHolder = new ViewHolder();
+            viewHolder.avatar_imageView = (ImageView) convertView.findViewById(R.id.comment_user_avatar);
+            viewHolder.commentContent_layout = (LinearLayout) convertView.findViewById(R.id.comment_content_layout);
+            viewHolder.commentTime_textView = (TextView) convertView.findViewById(R.id.comment_time);
+        } else {
+            viewHolder = (ViewHolder) convertView.getTag();
         }
-            ImageView avatar_imgView = (ImageView) view.findViewById(R.id.comment_user_avatar);
-            // TODO: remove guard once current user's avatar is ready
-            if (position < mUserAvatarBitmapArray.size()) {
-                //set user avatar imageView to be rounded.
-                Bitmap src = mUserAvatarBitmapArray.get(position);
-                if(src != null){
-                    int len = Math.max(src.getHeight(), src.getWidth());
-                    //outOfMemory bug.
-                    //Bitmap dst = Bitmap.createScaledBitmap(src, len, len, true);
-                    //Bitmap dst = ThumbnailUtils.extractThumbnail(src, len, len);
-                    RoundedBitmapDrawable dr = RoundedBitmapDrawableFactory.create(parent.getResources(), src);
-                    float cornerRd = src.getWidth() / 2.0f;
-                    dr.setCornerRadius(cornerRd);
-                    avatar_imgView.setImageDrawable(dr);
+
+        if (position < mUserAvatarBitmapArray.size()) {
+            //set user avatar imageView to be rounded.
+            Bitmap src = mUserAvatarBitmapArray.get(position);
+            if (src != null) {
+                int len = Math.max(src.getHeight(), src.getWidth());
+                //outOfMemory bug.
+                //Bitmap dst = Bitmap.createScaledBitmap(src, len, len, true);
+                //Bitmap dst = ThumbnailUtils.extractThumbnail(src, len, len);
+                RoundedBitmapDrawable dr = RoundedBitmapDrawableFactory.create(parent.getResources(), src);
+                float cornerRd = src.getWidth() / 2.0f;
+                dr.setCornerRadius(cornerRd);
+                if(viewHolder.avatar_imageView!=null) {
+                    viewHolder.avatar_imageView.setImageDrawable(dr);
                 }
             }
+        }
 
-            LinearLayout layout = (LinearLayout) view.findViewById(R.id.comment_content_layout);
-            CommentView addedView = null;
-            if (position == 0) {
-                String username = mPost.getUser().getUserName();
-                String desc = mPost.getPicDesc();
-                addedView = new CommentView(parent.getContext(), username, desc);
+        CommentView addedView = null;
+        if (position == 0) {
+            String username = mPost.getUser().getUserName();
+            String desc = mPost.getPicDesc();
+            addedView = new CommentView(parent.getContext(), username, desc);
 
-            } else if (position > 0) {
-                Comment comment = mCommentArray.get(position - 1);
-                addedView = new CommentView(parent.getContext(), comment.getUser().getUserName(), comment.getContent());
-            }
-            layout.removeAllViews();
-            layout.addView(addedView);
+        } else if (position > 0) {
+            Comment comment = mCommentArray.get(position - 1);
+            addedView = new CommentView(parent.getContext(), comment.getUser().getUserName(), comment.getContent());
+        }
+        viewHolder.commentContent_layout.removeAllViews();
+        viewHolder.commentContent_layout.addView(addedView);
 
-            TextView comment_time_txtView = (TextView) view.findViewById(R.id.comment_time);
-            String time = "2 hours ago";
-            comment_time_txtView.setText(time);
+        viewHolder.commentTime_textView.setText(R.string.comment_time);
 
-        return view;
+        return convertView;
+    }
+
+    static private class ViewHolder {
+        ImageView avatar_imageView;
+        LinearLayout commentContent_layout;
+        TextView commentTime_textView;
     }
 }
 

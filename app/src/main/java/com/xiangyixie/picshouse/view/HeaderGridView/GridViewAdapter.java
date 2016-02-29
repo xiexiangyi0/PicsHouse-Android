@@ -18,12 +18,10 @@ import java.util.ArrayList;
 
 public class GridViewAdapter extends BaseAdapter{
 
-    //important!To instantiate imageview for user photos.
     private ArrayList<Bitmap> mBitmapArray = null;
 
     public GridViewAdapter(ArrayList<Bitmap> bitmapArray) {
         super();
-
         mBitmapArray = bitmapArray;
     }
 
@@ -44,18 +42,27 @@ public class GridViewAdapter extends BaseAdapter{
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        ViewHolder holder;
 
         if(convertView == null) {
             LayoutInflater inflater = (LayoutInflater)parent.getContext().getSystemService
                     (Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.tab_user_gridview_item, null);
-        }
+            holder = new ViewHolder();
+            holder.imageView = (ImageView)convertView.findViewById(R.id.griditem_userphoto_view);
+            convertView.setTag(holder);
 
-        ImageView img = (ImageView) convertView.findViewById(R.id.griditem_userphoto_view);
+        }else{
+            holder = (ViewHolder)convertView.getTag();
+        }
 
         if (position < getCount() && mBitmapArray.get(position) != null) {
-            img.setImageBitmap(mBitmapArray.get(position));
+            holder.imageView.setImageBitmap(mBitmapArray.get(position));
         }
         return convertView;
+    }
+
+    static private class ViewHolder{
+        ImageView imageView;
     }
 }

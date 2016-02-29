@@ -4,6 +4,7 @@ import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+
 import com.xiangyixie.picshouse.view.pinnedHeaderListView.PinnedHeaderListView.PinnedSectionedHeaderAdapter;
 
 public abstract class SectionedBaseAdapter extends BaseAdapter implements PinnedSectionedHeaderAdapter {
@@ -204,5 +205,4 @@ public abstract class SectionedBaseAdapter extends BaseAdapter implements Pinned
         mSectionCount = getSectionCount();
         return mSectionCount;
     }
-
 }

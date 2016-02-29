@@ -6,7 +6,7 @@ android {
         config {
             keyAlias 'test'
             keyPassword 'asdfgh'
-            storeFile file('/Users/xxie/.android/debug.keystore')
+            storeFile file('/Users/xiangyixie/.android/debug.keystore')
             storePassword 'asdfgh'
         }
     }
@@ -20,6 +20,8 @@ android {
         versionName "1.0"
 
         signingConfig signingConfigs.config
+        multiDexEnabled true
+
     }
     buildTypes {
         release {

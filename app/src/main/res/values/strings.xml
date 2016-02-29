@@ -14,6 +14,7 @@
     <string name="title_activity_publish">Share To</string>
     <string name="input_addtext">Say Something...</string>
     <string name="publish_share_text">Share</string>
+    <string name="comment_time">2 hours ago</string>
 
     <!--login and signup-->
     <string name="title_activity_login">Login</string>

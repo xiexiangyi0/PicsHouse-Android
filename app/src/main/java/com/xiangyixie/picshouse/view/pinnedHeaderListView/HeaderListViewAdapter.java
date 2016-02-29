@@ -4,9 +4,6 @@ package com.xiangyixie.picshouse.view.pinnedHeaderListView;
  * Created by xiangyixie on 8/8/15.
  */
 
-import android.graphics.Bitmap;
-import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
-import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -143,46 +140,23 @@ public class HeaderListViewAdapter extends SectionedBaseAdapter {
             });
         }
         return view;
-
-            /*
-            ///////comment view
-            LinearLayout one_comment_view = new LinearLayout(view.getContext());
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            layoutParams.setMargins(0, 2, 0, 2);
-            one_comment_view.setLayoutParams(layoutParams);
-
-            TextView username_view = new TextView(view.getContext());
-            TextView comment_view = new TextView(view.getContext());
-
-            username_view.setText(comment.get(i).getUsername());
-            username_view.setTextSize(TypedValue.COMPLEX_UNIT_SP, 13);
-            username_view.setPadding(2, 1, 8, 3);
-            //username_view.setTypeface(Typeface.DEFAULT_BOLD);
-            //username_view.setGravity(Gravity.LEFT | Gravity.CENTER);
-            username_view.setTextColor(comment_view.getResources().getColor(R.color.dark_blue_like_text));
-            username_view.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT, 1f));
-
-            comment_view.setText(comment.get(i).getContent());
-            comment_view.setTextSize(TypedValue.COMPLEX_UNIT_SP, 13);
-            username_view.setPadding(4, 1, 3, 1);
-            //username_view.setTypeface(Typeface.DEFAULT);
-            //username_view.setGravity(Gravity.LEFT | Gravity.CENTER);
-            comment_view.setTextColor(comment_view.getResources().getColor(R.color.black));
-            comment_view.setEllipsize(TextUtils.TruncateAt.END);
-            comment_view.setMaxLines(4);
-            comment_view.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT, 1f));
-
-            one_comment_view.addView(username_view,0);
-            one_comment_view.addView(comment_view);
-            */
     }
 
     //pinned Header view.
     @Override
     public View getSectionHeaderView(int section, View convertView, ViewGroup parent) {
+        ViewHolder holder;
 
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.tab_house_listview_item_header, parent, false);
+            holder = new ViewHolder();
+            holder.user_imageView = (ImageView) convertView.findViewById(R.id.post_user_image);
+            holder.username_textView = (TextView) convertView.findViewById(R.id.post_user_username);
+            holder.time_textView= (TextView) convertView.findViewById(R.id.post_time);
+            convertView.setTag(holder);
+
+        }else{
+            holder = (ViewHolder)convertView.getTag();
         }
 
         if (section >= getSectionCount()) {
@@ -190,9 +164,7 @@ public class HeaderListViewAdapter extends SectionedBaseAdapter {
         }
 
         Post post = mPostArray.get(section);
-
-        ImageView user_imageView = (ImageView) convertView.findViewById(R.id.post_user_image);
-        mImageLoader.loadImage(user_imageView, post.getUser().getUserAvatarUrl());
+        mImageLoader.loadImage(holder.user_imageView, post.getUser().getUserAvatarUrl());
         //user_img_view.setImageBitmap(BitmapFactory.decodeFile(post.getUser_img_uri()));
         /*if (mAvatarBitmapArray.get(section)!=null) {
                 //set user_img_view to be rounded.
@@ -209,13 +181,17 @@ public class HeaderListViewAdapter extends SectionedBaseAdapter {
             user_imageView.setImageResource(0);
         }*/
 
-        TextView username_textView = (TextView) convertView.findViewById(R.id.post_user_username);
-        username_textView.setText(post.getUser().getUserName());
-
-        TextView time_textView= (TextView) convertView.findViewById(R.id.post_time);
-        time_textView.setText(post.getTime());
+        holder.username_textView.setText(post.getUser().getUserName());
+        holder.time_textView.setText(post.getTime());
 
         return convertView;
+    }
+
+
+    static private class ViewHolder{
+        ImageView user_imageView;
+        TextView username_textView;
+        TextView time_textView;
     }
 }
 
