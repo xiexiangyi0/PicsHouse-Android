@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.support.v7.app.AppCompatActivity;
@@ -57,8 +58,9 @@ TabUserEditProfileFragment.OnFragmentInteractionListener {
     public static final int MEDIA_TYPE_IMAGE = 0;
     public static final int MEDIA_TYPE_VIDEO = 1;
 
-    public static final String IMAGE_PATH = "IMAGE_PATH";
+    private static final String TAG = "MainActivity";
 
+    public static final String IMAGE_PATH = "IMAGE_PATH";
 
     public static MainActivity instance = null;
 
@@ -88,16 +90,14 @@ TabUserEditProfileFragment.OnFragmentInteractionListener {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
+
+        instance = this;
         Fresco.initialize(this);
         setContentView(R.layout.activity_main);
 
         initToolbar();
-        //启动activity时不自动弹出软键盘
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-        instance = this;
-
 
         mFragmentList = new ArrayList<Fragment>();
         mTabHouseFrag = new TabHouseFragment();
@@ -126,10 +126,7 @@ TabUserEditProfileFragment.OnFragmentInteractionListener {
         mTabPager.setAdapter(mFragPagerAdapter);
         mTabPager.setOnPageChangeListener(new MyOnPageChangeListener());
 
-
         mTab = new View[COUNT_TAB];
-
-
         mTab[TAB_HOUSE] = (View) findViewById(R.id.bottom_house);
         mTab[TAB_DISCOVER] = (View) findViewById(R.id.bottom_discover);
         mTab[TAB_CAMERA] = (View) findViewById(R.id.bottom_camera);
@@ -142,16 +139,18 @@ TabUserEditProfileFragment.OnFragmentInteractionListener {
 
 
         for (int i = 0; i < COUNT_TAB; ++i) {
-
             if (i != TAB_CAMERA) {
                 mTab[i].setOnClickListener(new MyOnClickListener(i));
             }
         }
-
         //set TabCamera onClickListener
         mTab[TAB_CAMERA].setOnClickListener(new TabCameraClickListener());
 
-
+        getSupportFragmentManager().addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
+            public void onBackStackChanged() {
+                Log.d(TAG, "back stack changed ");
+            }
+            });
     }
 
     private void initToolbar() {
@@ -213,9 +212,7 @@ TabUserEditProfileFragment.OnFragmentInteractionListener {
             //important!Use this to control 'mTabPager' visible fragment index!
 
         }
-    }
-
-    ;
+    };
 
 
     //for 'mTabPager' change page

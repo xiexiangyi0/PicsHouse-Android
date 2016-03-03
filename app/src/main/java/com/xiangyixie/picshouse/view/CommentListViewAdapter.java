@@ -35,7 +35,6 @@ public class CommentListViewAdapter extends BaseAdapter {
     //private Integer mSize = 0;
     private ArrayList<Bitmap> mUserAvatarBitmapArray = null;
 
-
     public CommentListViewAdapter(final LayoutInflater inflater, Post post, ArrayList<Bitmap> avatar_bitmap_array) {
         mInflater = inflater;
         mPost = post;
@@ -44,11 +43,6 @@ public class CommentListViewAdapter extends BaseAdapter {
     }
 
     public void appendComment(Comment comment) {
-        if (!mOwnCommentArray) {
-            mOwnCommentArray = true;
-            mCommentArray = new ArrayList<>(mCommentArray);
-        }
-
         mCommentArray.add(comment);
         notifyDataSetChanged();
     }

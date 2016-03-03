@@ -6,7 +6,7 @@
 
 
     <uses-sdk
-        android:minSdkVersion="23"
+        android:minSdkVersion="15"
         android:maxSdkVersion="23" />
 
 
@@ -32,22 +32,13 @@
 
         <activity
             android:name=".activity.MainActivity"
-            android:label="@string/app_name"
-            android:screenOrientation="portrait">
-
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-
-
+            android:label="@string/app_name">
         </activity>
 
         <activity
             android:name=".activity.CameraActivity"
             android:label="@string/title_activity_camera"
-            android:parentActivityName=".activity.MainActivity"
-            android:screenOrientation="portrait">
+            android:parentActivityName=".activity.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.MainActivity" />
@@ -69,7 +60,6 @@
             android:label="@string/title_activity_publish"
             android:theme="@style/Theme.AppCompat.Light"
             android:parentActivityName=".activity.FilterActivity"
-            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -78,18 +68,21 @@
 
         <activity
             android:name=".register.LoginActivity"
-            android:label="@string/app_name"
-            android:screenOrientation="portrait">
-
+            android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
 
         <activity android:name="com.facebook.LoginActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"
-            android:label="@string/app_name"
-            android:screenOrientation="portrait"/>
+            android:label="@string/app_name">
+        </activity>
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id_test"/>
+
     </application>
 
 </manifest>

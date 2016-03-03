@@ -115,7 +115,6 @@ public class TabHouseFragment extends Fragment
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         mDefaultImage = BitmapFactory.decodeResource(getResources(), R.drawable.loading);
     }

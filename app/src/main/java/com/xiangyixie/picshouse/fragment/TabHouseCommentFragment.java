@@ -200,6 +200,7 @@ public class TabHouseCommentFragment extends Fragment {
 
     private void onCommentSend(Comment comment) {
         View view = mActivity.getCurrentFocus();
+        //hide keyboard
         if (view != null) {
             InputMethodManager imm = (InputMethodManager) mActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
