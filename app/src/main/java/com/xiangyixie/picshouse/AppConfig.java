@@ -16,5 +16,7 @@ public class AppConfig {
 
     public static final String KEY_FB_TOKEN = "access_token";
 
+    public static final String NOTIFY_SERVER = "pics-house.appspot.com";
+
     public static final boolean DEBUG = true;
 }

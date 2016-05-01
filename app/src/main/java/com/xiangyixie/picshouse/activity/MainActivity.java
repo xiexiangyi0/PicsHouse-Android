@@ -1,6 +1,9 @@
 package com.xiangyixie.picshouse.activity;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -8,15 +11,21 @@ import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.xiangyixie.picshouse.R;
 import com.xiangyixie.picshouse.fragment.FragPagerAdapter;
 import com.xiangyixie.picshouse.fragment.TabCameraFragment;
@@ -28,6 +37,7 @@ import com.xiangyixie.picshouse.fragment.TabUserEditProfileFragment;
 import com.xiangyixie.picshouse.fragment.TabUserFragment;
 import com.xiangyixie.picshouse.model.Post;
 import com.xiangyixie.picshouse.model.User;
+import com.xiangyixie.picshouse.service.NotificationRegistrationService;
 import com.xiangyixie.picshouse.view.MyViewPager_notSwiping;
 
 import java.io.File;
@@ -42,6 +52,8 @@ public class MainActivity extends AppCompatActivity
 implements TabHouseFragment.OnFragmentInteractionListener,
 TabUserFragment.OnFragmentInteractionListener,
 TabUserEditProfileFragment.OnFragmentInteractionListener {
+
+    private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
 
     private static final int TAB_HOUSE = 0;
     private static final int TAB_DISCOVER = 1;
@@ -86,6 +98,23 @@ TabUserEditProfileFragment.OnFragmentInteractionListener {
 
     private LayoutInflater inflater;
     private Uri mImageUri = null;
+
+    private BroadcastReceiver mNotifyRegBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Log.d(TAG, "Notification Registeration complete");
+        }
+    };
+    private boolean mIsNotifyRegReceiverRegistered = false;
+
+
+    private FragmentManager.OnBackStackChangedListener mFragBackStackChangeListener =
+            new FragmentManager.OnBackStackChangedListener() {
+                @Override
+                public void onBackStackChanged() {
+
+                }
+            };
 
 
     @Override
@@ -151,6 +180,26 @@ TabUserEditProfileFragment.OnFragmentInteractionListener {
                 Log.d(TAG, "back stack changed ");
             }
             });
+
+        registerNotifyRegBroadcastReceiver();
+
+        if (checkPlayServices()) {
+            Intent intent = new Intent(this, NotificationRegistrationService.class);
+            startService(intent);
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        registerNotifyRegBroadcastReceiver();
+    }
+
+    @Override
+    public void onPause() {
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mNotifyRegBroadcastReceiver);
+        mIsNotifyRegReceiverRegistered = false;
+        super.onPause();
     }
 
     private void initToolbar() {
@@ -327,6 +376,59 @@ TabUserEditProfileFragment.OnFragmentInteractionListener {
             default:
                 break;
         }
+    }
+
+    // Debug menu
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int item_id = item.getItemId();
+
+        if (item_id == R.id.action_notify) {
+            requestPushNotification();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void requestPushNotification() {
+
+    }
+
+    /**
+     * Check the device to make sure it has the Google Play Services APK. If
+     * it doesn't, display a dialog that allows users to download the APK from
+     * the Google Play Store or enable it in the device's system settings.
+     */
+    private boolean checkPlayServices() {
+        GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
+        int resultCode = apiAvailability.isGooglePlayServicesAvailable(this);
+        if (resultCode != ConnectionResult.SUCCESS) {
+            if (apiAvailability.isUserResolvableError(resultCode)) {
+                apiAvailability.getErrorDialog(this, resultCode, PLAY_SERVICES_RESOLUTION_REQUEST)
+                        .show();
+            } else {
+                Log.i(TAG, "This device is not supported.");
+                finish();
+            }
+            return false;
+        }
+        return true;
+    }
+
+    private void registerNotifyRegBroadcastReceiver() {
+        if (!mIsNotifyRegReceiverRegistered) {
+            LocalBroadcastManager.getInstance(this).registerReceiver(
+                    mNotifyRegBroadcastReceiver,
+                    new IntentFilter(NotificationRegistrationService.REGISTRATION_COMPLETE));
+            mIsNotifyRegReceiverRegistered = true;        }
     }
 
 }

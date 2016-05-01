@@ -30,7 +30,7 @@ public class CommentListViewAdapter extends BaseAdapter {
 
     // NOTE: if mOwnCommentArray is true, mCommentArray has its own copy
     private ArrayList<Comment> mCommentArray = null;
-    boolean mOwnCommentArray = false;
+    boolean mOwnCommentArray = true;
 
     //private Integer mSize = 0;
     private ArrayList<Bitmap> mUserAvatarBitmapArray = null;

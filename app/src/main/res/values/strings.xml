@@ -4,6 +4,7 @@
     <!--camera related-->
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="action_notify">Notification</string>
 
     <!--camera and edit photo-->
     <string name="filter_image_desc">Picture from camera</string>
