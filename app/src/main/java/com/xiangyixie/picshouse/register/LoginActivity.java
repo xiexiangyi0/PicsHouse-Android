@@ -1,10 +1,10 @@
 package com.xiangyixie.picshouse.register;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -45,7 +45,6 @@ public class LoginActivity extends AppCompatActivity
     private Button facebook_login_btn;
 
     private TextView forget_pwd = null;
-
 
 
     private FbLoginFragment m_fbLoginFragment;
@@ -124,6 +123,10 @@ public class LoginActivity extends AppCompatActivity
                                 try {
                                     tk = response.getString("token");
 
+                                    SharedPreferences sharedPreferences =
+                                            getSharedPreferences(getPackageName(), MODE_PRIVATE);
+                                    sharedPreferences.edit().putString("token", tk).apply();
+
                                     //TODO: record token in shared preference and remove the public
                                     //  access of this variable
                                     PHJsonRequest.auth_token_ = tk;
@@ -187,11 +190,25 @@ public class LoginActivity extends AppCompatActivity
                 fragmentTransaction.add(android.R.id.content, m_signupFragment);
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
-                getSupportActionBar().show();
+                if (getSupportActionBar() != null)
+                  getSupportActionBar().show();
             }
         });
 
+        // try login
+        login_btn.post(new Runnable() {
 
+            @Override
+            public void run() {
+                SharedPreferences sharedPreferences = getSharedPreferences(getPackageName(), MODE_PRIVATE);
+                if (sharedPreferences.contains("token")) {
+                    PHJsonRequest.auth_token_ = sharedPreferences.getString("token", "");
+                    if (PHJsonRequest.auth_token_ != null && !PHJsonRequest.auth_token_.isEmpty()) {
+                        gotoMain();
+                    }
+                }
+            }
+        });
     }
 
 
@@ -219,12 +236,9 @@ public class LoginActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
 
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_signup1, menu);
+        inflater.inflate(R.menu.menu_login, menu);
 
-        super.onCreateOptionsMenu(menu);
-
-        return false;
-
+        return super.onCreateOptionsMenu(menu);
     }
 
 

@@ -173,7 +173,6 @@ public class TabHouseCommentFragment extends Fragment {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-
                         Comment comment = null;
 
                         try {
@@ -181,9 +180,7 @@ public class TabHouseCommentFragment extends Fragment {
                         } catch (JSONException e) {
                             JsonParser.onException(e);
                         }
-
                         onCommentSend(comment);
-
                     }
                 },
                 new Response.ErrorListener() {
@@ -191,7 +188,6 @@ public class TabHouseCommentFragment extends Fragment {
                     public void onErrorResponse(VolleyError error) {
 
                         onCommentSend(null);
-
                     }
                 });
 

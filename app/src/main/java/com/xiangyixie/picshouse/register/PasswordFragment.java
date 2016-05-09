@@ -1,9 +1,9 @@
 package com.xiangyixie.picshouse.register;
 
-import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -48,7 +48,7 @@ public class PasswordFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_signup2, menu);
 
-        ((ActionBarActivity)getActivity()).getSupportActionBar().show();
+        ((AppCompatActivity)getActivity()).getSupportActionBar().show();
 
     }
 
@@ -94,21 +94,20 @@ public class PasswordFragment extends Fragment {
     }
 
     @Override
-    public void onAttach(Activity activity) {
+    public void onAttach(Context activity) {
         super.onAttach(activity);
         setHasOptionsMenu(true);
         setMenuVisibility(true);
 
         //register call back
         m_step2_next = (SignupStep2NextListener) activity;
-        ((ActionBarActivity)activity).getSupportActionBar().show();
-
+        ((AppCompatActivity)activity).getSupportActionBar().show();
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        ((ActionBarActivity)getActivity()).getSupportActionBar().show();
+        ((AppCompatActivity)getActivity()).getSupportActionBar().show();
 
     }
 

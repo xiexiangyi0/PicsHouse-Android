@@ -187,6 +187,12 @@ TabUserEditProfileFragment.OnFragmentInteractionListener {
             Intent intent = new Intent(this, NotificationRegistrationService.class);
             startService(intent);
         }
+
+        Intent intent = getIntent();
+        if (intent != null && intent.getStringExtra("TAB") != null &&
+                intent.getStringExtra("TAB").equals("USER")) {
+            mTabPager.setCurrentItem(TAB_USER);
+        }
     }
 
     @Override

@@ -1,10 +1,10 @@
 package com.xiangyixie.picshouse.register;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -77,7 +77,7 @@ public class SignupFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 
-        menu.clear();
+        // menu.clear();
 
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_signup1, menu);
@@ -170,19 +170,25 @@ public class SignupFragment extends Fragment {
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onAttach(Context context) {
+        super.onAttach(context);
 
         //register call back
-        m_step1_next = (SignupStep1NextListener) activity;
-        ((ActionBarActivity)activity).getSupportActionBar().show();
+        m_step1_next = (SignupStep1NextListener) context;
+        ActionBar bar = ((AppCompatActivity)context).getSupportActionBar();
+        if ( bar != null) {
+            bar.show();
+        }
 
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        ((ActionBarActivity)getActivity()).getSupportActionBar().hide();
+        ActionBar bar = ((AppCompatActivity)getActivity()).getSupportActionBar();
+        if ( bar != null) {
+            bar.hide();
+        }
     }
 
     private void toastWarning(String txt) {
