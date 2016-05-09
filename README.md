@@ -5,9 +5,9 @@ Screen shots:
 
 Feed list:
 
-<img src="https://storage.googleapis.com/pics-house-public/home.png" width="360">
-<img src="https://storage.googleapis.com/pics-house-public/home2.png" width="360">
+<img src="https://storage.googleapis.com/pics-house-public/home.png" width="240">
+        <img src="https://storage.googleapis.com/pics-house-public/home2.png" width="240">
 
 Pseronal profile:
 
-<img src="https://storage.googleapis.com/pics-house-public/personal.png" width="360">
+<img src="https://storage.googleapis.com/pics-house-public/personal.png" width="240">
